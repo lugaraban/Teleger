@@ -1,0 +1,30 @@
+module teleger{
+	struct User{
+		string id;
+		string password;
+		string name;
+		string image;
+	};
+	struct SafeUser{
+		string id;
+		string name;
+		string image;
+		string ip;
+	};
+
+	typedef sequence <SafeUser> userFriends;
+
+	interface ClientInterface{
+		void notifyConnection(in SafeUser connectedUser);
+		boolean receiveFriendRequest(in SafeUser user);
+		void notifyAnswerRequest(in SafeUser connectedUser, in boolean acceptance);
+	};
+
+	interface ServerInterface{
+		boolean register(in User userData);
+		userFriends logIn(in string userId, in string userPassword);
+		boolean logOut(in string userId, in string userPassword);
+		userFriends searchNewFriends(in string name);
+		void sendRequestForFriend(in SafeUser user, in SafeUser friend);
+	};
+};
