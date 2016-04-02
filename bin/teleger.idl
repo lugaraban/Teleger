@@ -1,3 +1,6 @@
+#ifndef _telger_idl_
+#define _telger_idl
+
 module teleger{
 	struct User{
 		string id;
@@ -28,3 +31,5 @@ module teleger{
 		void sendRequestForFriend(in SafeUser user, in SafeUser friend);
 	};
 };
+
+#endif // _telger_idl_
