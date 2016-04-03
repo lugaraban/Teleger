@@ -1,3 +1,17 @@
 ﻿  stdafx.cpp
   CORBAServer.cpp
-  CORBAServer.vcxproj -> D:\USC\Terceiro\Cuatrimestre_2\CORBA\Teleger\ServerCode\CORBAServer\Debug\CORBAServer.exe
+  telegerSK.cc
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(3): warning C4627: '#include "teleger.hh"': skipped when looking for precompiled header use
+  d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(3): note: Add directive to 'stdafx.h' or rebuild precompiled header
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(4): warning C4627: '#include <omniORB4/IOP_S.h>': skipped when looking for precompiled header use
+  d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(4): note: Add directive to 'stdafx.h' or rebuild precompiled header
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(5): warning C4627: '#include <omniORB4/IOP_C.h>': skipped when looking for precompiled header use
+  d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(5): note: Add directive to 'stdafx.h' or rebuild precompiled header
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(6): warning C4627: '#include <omniORB4/callDescriptor.h>': skipped when looking for precompiled header use
+  d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(6): note: Add directive to 'stdafx.h' or rebuild precompiled header
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(7): warning C4627: '#include <omniORB4/callHandle.h>': skipped when looking for precompiled header use
+  d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(7): note: Add directive to 'stdafx.h' or rebuild precompiled header
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(8): warning C4627: '#include <omniORB4/objTracker.h>': skipped when looking for precompiled header use
+  d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(8): note: Add directive to 'stdafx.h' or rebuild precompiled header
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\bin\telegersk.cc(1076): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Generating Code...
