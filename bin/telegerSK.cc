@@ -647,7 +647,7 @@ _0RL_lcfn_3a4e01c462c0e4fe_70000000(omniCallDescriptor* cd, omniServant* svnt)
 // Code for teleger::ServerInterface::logIn
 
 // Proxy call descriptor class. Mangled signature:
-//  _cteleger_muserFriends_i_cstring_i_cstring_i_cstring
+//  _cteleger_muserFriends_i_cstring_i_cstring_i_cstring_i_cteleger_mClientInterface
 class _0RL_cd_3a4e01c462c0e4fe_80000000
   : public omniCallDescriptor
 {
@@ -673,6 +673,8 @@ public:
   const char* arg_1;
   ::CORBA::String_var arg_2_;
   const char* arg_2;
+  teleger::ClientInterface_var arg_3_;
+  teleger::ClientInterface_ptr arg_3;
   teleger::userFriends_var result;
 };
 
@@ -681,6 +683,7 @@ void _0RL_cd_3a4e01c462c0e4fe_80000000::marshalArguments(cdrStream& _n)
   _n.marshalString(arg_0,0);
   _n.marshalString(arg_1,0);
   _n.marshalString(arg_2,0);
+  teleger::ClientInterface::_marshalObjRef(arg_3,_n);
 
 }
 
@@ -692,6 +695,8 @@ void _0RL_cd_3a4e01c462c0e4fe_80000000::unmarshalArguments(cdrStream& _n)
   arg_1 = arg_1_.in();
   arg_2_ = _n.unmarshalString(0);
   arg_2 = arg_2_.in();
+  arg_3_ = teleger::ClientInterface::_unmarshalObjRef(_n);
+  arg_3 = arg_3_.in();
 
 }
 
@@ -718,17 +723,18 @@ _0RL_lcfn_3a4e01c462c0e4fe_90000000(omniCallDescriptor* cd, omniServant* svnt)
 {
   _0RL_cd_3a4e01c462c0e4fe_80000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_80000000*)cd;
   teleger::_impl_ServerInterface* impl = (teleger::_impl_ServerInterface*) svnt->_ptrToInterface(teleger::ServerInterface::_PD_repoId);
-  tcd->result = impl->logIn(tcd->arg_0, tcd->arg_1, tcd->arg_2);
+  tcd->result = impl->logIn(tcd->arg_0, tcd->arg_1, tcd->arg_2, tcd->arg_3);
 
 
 }
 
-teleger::userFriends* teleger::_objref_ServerInterface::logIn(const char* userId, const char* userPassword, const char* ip)
+teleger::userFriends* teleger::_objref_ServerInterface::logIn(const char* userId, const char* userPassword, const char* ip, ::teleger::ClientInterface_ptr client)
 {
   _0RL_cd_3a4e01c462c0e4fe_80000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_90000000, "logIn", 6);
   _call_desc.arg_0 = userId;
   _call_desc.arg_1 = userPassword;
   _call_desc.arg_2 = ip;
+  _call_desc.arg_3 = client;
 
   _invoke(_call_desc);
   return _call_desc.result._retn();

@@ -5,7 +5,62 @@
 #include <iostream>
 #include <teleger.hh>
 
+//
+// Example class implementing IDL interface teleger::ClientInterface
+//
+class teleger_ClientInterface_i : public POA_teleger::ClientInterface {
+private:
+  // Make sure all instances are built on the heap by making the
+  // destructor non-public
+  //virtual ~teleger_ClientInterface_i();
 
+public:
+  // standard constructor
+  teleger_ClientInterface_i();
+  virtual ~teleger_ClientInterface_i();
+
+  // methods corresponding to defined IDL attributes and operations
+  void notifyConnection(const teleger::SafeUser& connectedUser);
+  ::CORBA::Boolean receiveFriendRequest(const teleger::SafeUser& user);
+  void notifyAnswerRequest(const teleger::SafeUser& connectedUser, ::CORBA::Boolean acceptance);
+};
+
+//
+// Example implementation code for IDL interface 'teleger::ClientInterface'
+//
+teleger_ClientInterface_i::teleger_ClientInterface_i(){
+  // add extra constructor code here
+}
+teleger_ClientInterface_i::~teleger_ClientInterface_i(){
+  // add extra destructor code here
+}
+
+// Methods corresponding to IDL attributes and operations
+void teleger_ClientInterface_i::notifyConnection(const teleger::SafeUser& connectedUser)
+{
+  // insert code here and remove the warning
+  #warning "Code missing in function <void teleger_ClientInterface_i::notifyConnection(const teleger::SafeUser& connectedUser)>"
+}
+
+::CORBA::Boolean teleger_ClientInterface_i::receiveFriendRequest(const teleger::SafeUser& user)
+{
+  // insert code here and remove the warning
+  #warning "Code missing in function <::CORBA::Boolean teleger_ClientInterface_i::receiveFriendRequest(const teleger::SafeUser& user)>"
+}
+
+void teleger_ClientInterface_i::notifyAnswerRequest(const teleger::SafeUser& connectedUser, ::CORBA::Boolean acceptance)
+{
+  // insert code here and remove the warning
+  #warning "Code missing in function <void teleger_ClientInterface_i::notifyAnswerRequest(const teleger::SafeUser& connectedUser, ::CORBA::Boolean acceptance)>"
+}
+
+
+
+// End of example implementation code
+
+//
+// Example class implementing IDL interface teleger::ServerInterface
+//
 class teleger_ServerInterface_i : public POA_teleger::ServerInterface {
 private:
   // Make sure all instances are built on the heap by making the
@@ -19,7 +74,7 @@ public:
 
   // methods corresponding to defined IDL attributes and operations
   ::CORBA::Boolean _cxx_register(const teleger::User& userData);
-  teleger::userFriends* logIn(const char* userId, const char* userPassword, const char* ip);
+  teleger::userFriends* logIn(const char* userId, const char* userPassword, const char* ip, teleger::ClientInterface_ptr client);
   ::CORBA::Boolean logOut(const char* userId, const char* userPassword);
   teleger::userFriends* searchNewFriends(const char* name);
   void sendRequestForFriend(const teleger::SafeUser& user, const teleger::SafeUser& _cxx_friend);
@@ -42,10 +97,10 @@ teleger_ServerInterface_i::~teleger_ServerInterface_i(){
   #warning "Code missing in function <::CORBA::Boolean teleger_ServerInterface_i::_cxx_register(const teleger::User& userData)>"
 }
 
-teleger::userFriends* teleger_ServerInterface_i::logIn(const char* userId, const char* userPassword, const char* ip)
+teleger::userFriends* teleger_ServerInterface_i::logIn(const char* userId, const char* userPassword, const char* ip, teleger::ClientInterface_ptr client)
 {
   // insert code here and remove the warning
-  #warning "Code missing in function <teleger::userFriends* teleger_ServerInterface_i::logIn(const char* userId, const char* userPassword, const char* ip)>"
+  #warning "Code missing in function <teleger::userFriends* teleger_ServerInterface_i::logIn(const char* userId, const char* userPassword, const char* ip, teleger::ClientInterface_ptr client)>"
 }
 
 ::CORBA::Boolean teleger_ServerInterface_i::logOut(const char* userId, const char* userPassword)
@@ -85,14 +140,24 @@ int main(int argc, char** argv)
     // We allocate the objects on the heap.  Since these are reference
     // counted objects, they will be deleted by the POA when they are no
     // longer needed.
+    teleger_ClientInterface_i* myteleger_ClientInterface_i = new teleger_ClientInterface_i();
     teleger_ServerInterface_i* myteleger_ServerInterface_i = new teleger_ServerInterface_i();
 
 
     // Activate the objects.  This tells the POA that the objects are
     // ready to accept requests.
+    PortableServer::ObjectId_var myteleger_ClientInterface_iid = poa->activate_object(myteleger_ClientInterface_i);
     PortableServer::ObjectId_var myteleger_ServerInterface_iid = poa->activate_object(myteleger_ServerInterface_i);
 
 
+    // Obtain a reference to each object and output the stringified
+    // IOR to stdout
+    {
+      // IDL interface: teleger::ClientInterface
+      CORBA::Object_var ref = myteleger_ClientInterface_i->_this();
+      CORBA::String_var sior(orb->object_to_string(ref));
+      std::cout << "IDL object teleger::ClientInterface IOR = '" << (char*)sior << "'" << std::endl;
+    }
 
     {
       // IDL interface: teleger::ServerInterface
