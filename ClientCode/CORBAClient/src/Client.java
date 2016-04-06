@@ -58,6 +58,7 @@ public class Client {
             Object ref = rootpoa.servant_to_reference(callBackClient);
             ClientInterface client = ClientInterfaceHelper.narrow((org.omg.CORBA.Object) ref);
             
+            //Aquí se dará el menú de las opciones que se podrán realizar
             server.logIn("Marcos", "Contrasinal", "ip", client);
             
         } catch (InvalidName | NotFound | CannotProceed | org.omg.CosNaming.NamingContextPackage.InvalidName | ServantNotActive | WrongPolicy | AdapterInactive ex) {
