@@ -1,6 +1,5 @@
-﻿  stdafx.cpp
-  telegerImpl.cpp
-  CORBAServer.cpp
-  telegerSK.cc
+﻿  SQLConnector.cpp
   Generating Code...
+  Skipping... (no relevant changes detected)
+  CORBAServer.cpp
   CORBAServer.vcxproj -> D:\USC\Terceiro\Cuatrimestre_2\CORBA\Teleger\ServerCode\CORBAServer\x64\Debug\CORBAServer.exe
