@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "telegerImpl.h"
-#include "SQLConnector.h"
 using namespace std;
 
 static CORBA::ORB_ptr orb;
@@ -13,7 +12,7 @@ static omni_condition sigobj(&mu);
 
 int main(int argc, char** argv)
 {
-	/*try {
+	try {
 		orb = CORBA::ORB_init(argc, argv);
 
 		{
@@ -61,9 +60,15 @@ int main(int argc, char** argv)
 		cerr << "Caught CORBA::Exception: " << ex._name() << endl;
 	}
 	///connection test
-	*/
-	SQLConnector * connector = new SQLConnector;
-	connector->startConection();
-	getchar();
+	/*telegerImpl * tmp = new telegerImpl;
+	User *testUser = new User;
+	testUser->id = "id";
+	testUser->image = "img";
+	testUser->name = "name";
+	testUser->password = "pass";
+	tmp->startSQLConnector();
+	tmp->_cxx_register(*testUser);
+	cout << "Ola!" << endl;
+	getchar();*/
 	return 0;
 }

@@ -11,10 +11,12 @@ private:
 	sqlite3 *db;
 	char *zErrMsg = 0;
 	int rc;
-	char * routeToFile = "teleger.db";
+	char * routeToFile = "../SQLite/teleger.db";
+	char * queryResult;
 public:
-	SQLConnector();
-	void startConection();
-	~SQLConnector();
+	SQLConnector() {};
+	void startConnector();
+	bool registerNewUser(teleger::User user);
+	~SQLConnector() {};
 };
 

@@ -1,14 +1,22 @@
-#include "stdafx.h"
 #include "telegerImpl.h"
 
 using namespace std;
 
 
 
+void telegerImpl::startSQLConnector()
+{
+	//Initialize the sql connector
+	connector = new SQLConnector;
+	connector->startConnector();
+}
+
 ::CORBA::Boolean telegerImpl::_cxx_register(const teleger::User& userData)
 {
-	cout << "Function called successfully!" << endl;
-	return true;
+	if(!connector->registerNewUser(userData))
+		return false;
+	else
+		return true;
 }
 
 userFriends * telegerImpl::logIn(const char * userId, const char * userPassword, const char * ip, ::teleger::ClientInterface_ptr client)
@@ -42,5 +50,5 @@ teleger::userFriends* telegerImpl::searchNewFriends(const char* name)
 
 void telegerImpl::sendRequestForFriend(const teleger::SafeUser& user, const teleger::SafeUser& _cxx_friend)
 {
-	
 }
+
