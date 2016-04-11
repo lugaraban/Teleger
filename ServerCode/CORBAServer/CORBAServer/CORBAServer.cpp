@@ -1,26 +1,36 @@
 #include "stdafx.h"
 #include "telegerImpl.h"
+#include "linkedList.h"
 using namespace std;
 
 static CORBA::ORB_ptr orb;
-static int            dying = 0;
-static int            num_active_servers = 0;
-static omni_mutex     mu;
-static omni_condition sigobj(&mu);
-
+//static int            dying = 0;
+//static int            num_active_servers = 0;
+//static omni_mutex     mu;
+//static omni_condition sigobj(&mu);
 //////////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv)
 {
-	try {
+	linkedList * connectedUsers = new linkedList();
+	teleger::SafeUser * testSafeUser = new SafeUser;
+	testSafeUser->id = "eu";
+	testSafeUser->image = "img";
+	testSafeUser->name = "name";
+	testSafeUser->ip = "ip";
+	connectedUsers->_insert(*testSafeUser);
+	cout << (connectedUsers->search("eu")).name << endl;
+	connectedUsers->_delete("eu");
+	cout << (connectedUsers->search("eu")).name << endl;
+	/*try {
 		orb = CORBA::ORB_init(argc, argv);
 
 		{
 			CORBA::Object_var obj = orb->resolve_initial_references("RootPOA");
 			PortableServer::POA_var poa = PortableServer::POA::_narrow(obj);
 			PortableServer::POAManager_var pman = poa->the_POAManager();
-			//server_i* myserver = new server_i;
 			telegerImpl * myserver = new telegerImpl;
+
 			////////////////////////////////////////////////////////
 			try {
 				CORBA::Object_var ns_obj = orb->resolve_initial_references("NameService");
@@ -32,6 +42,7 @@ int main(int argc, char** argv)
 					name[0].kind = CORBA::string_dup("");
 					//Start the service
 					nc->rebind(name, myserver->_this());
+					myserver->startSQLConnector();
 					cout << "Server is running ..." << endl;
 				}
 			}
@@ -58,17 +69,18 @@ int main(int argc, char** argv)
 	}
 	catch (CORBA::Exception& ex) {
 		cerr << "Caught CORBA::Exception: " << ex._name() << endl;
-	}
+	}*/
 	///connection test
-	/*telegerImpl * tmp = new telegerImpl;
+	telegerImpl * tmp = new telegerImpl;
 	User *testUser = new User;
-	testUser->id = "id";
+	testUser->id = "eu";
 	testUser->image = "img";
 	testUser->name = "name";
 	testUser->password = "pass";
 	tmp->startSQLConnector();
 	tmp->_cxx_register(*testUser);
 	cout << "Ola!" << endl;
-	getchar();*/
+
+	getchar();
 	return 0;
 }

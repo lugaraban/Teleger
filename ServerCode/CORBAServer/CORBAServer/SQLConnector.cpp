@@ -1,40 +1,43 @@
 #include "SQLConnector.h"
 using namespace std;
 
-static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
-	int i;
-	for (i = 0; i<argc; i++) {
-		printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-	}
-	printf("\n");
-	return 0;
-}
-
 
 void SQLConnector::startConnector() {
-	rc = sqlite3_open(routeToFile, &db);
-	if (rc) {
+	if (sqlite3_open(routeToFile, &db)) {
 		exit(0);
 	}
 }
 
 bool SQLConnector::registerNewUser(teleger::User user) {
-	char * sql = (char *)malloc(200 * sizeof(char));
-	strcpy(sql,"INSERT INTO USERS values('");
-	strcat(sql, (&user)->id);
-	strcat(sql, "' , '");
-	strcat(sql, (&user)->name);
-	strcat(sql, "' , '");
-	strcat(sql, (&user)->password);
-	strcat(sql, "' , '");
-	strcat(sql, (&user)->image);
-	strcat(sql, "');");
-	rc = sqlite3_exec(
-		db,
-		sql,
-		callback,
-		0,
-		&zErrMsg
-	);
-	return true;
+	//First It's checked if the id already exists
+	char * statement = (char *)malloc(200 * (sizeof(char)));
+	strcat(statement,"SELECT id FROM users WHERE id like '");
+	strcat(statement, (&user)->id);
+	strcat(statement, "'");
+	sqlite3_prepare(db, statement, -1, &queryResult, NULL);
+	mutex.trylock();
+	sqlite3_step(queryResult);
+	mutex.unlock();
+	if (sqlite3_column_text(queryResult, 0)!=NULL) {
+	//	cout << "O usuario existe!!" << endl;
+		return false;
+	}
+	else {
+		//If it doesn't the user is added to the database
+		strcpy(statement, "INSERT INTO USERS values('");
+		strcat(statement, (&user)->id);
+		strcat(statement, "' , '");
+		strcat(statement, (&user)->name);
+		strcat(statement, "' , '");
+		strcat(statement, (&user)->password);
+		strcat(statement, "' , '");
+		strcat(statement, (&user)->image);
+		strcat(statement, "');");
+		sqlite3_prepare(db, statement, -1, &queryResult, NULL);
+		mutex.trylock();
+		sqlite3_step(queryResult);
+		mutex.unlock();
+		//cout << "Usuario engadido de forma satisfactoria!!!" << endl;
+		return true;
+	}
 }

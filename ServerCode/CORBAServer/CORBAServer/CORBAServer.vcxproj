@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\SQLite\sqlite3.h" />
+    <ClInclude Include="linkedList.h" />
     <ClInclude Include="SQLConnector.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h">
@@ -164,6 +165,7 @@
     <ClCompile Include="..\..\..\bin\telegerSK.cc" />
     <ClCompile Include="..\SQLite\sqlite3.c" />
     <ClCompile Include="CORBAServer.cpp" />
+    <ClCompile Include="linkedList.cpp" />
     <ClCompile Include="SQLConnector.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

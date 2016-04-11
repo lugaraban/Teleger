@@ -1,8 +1,7 @@
 #include "telegerImpl.h"
 
+
 using namespace std;
-
-
 
 void telegerImpl::startSQLConnector()
 {
@@ -17,12 +16,15 @@ void telegerImpl::startSQLConnector()
 		return false;
 	else
 		return true;
+
 }
+
+
 
 userFriends * telegerImpl::logIn(const char * userId, const char * userPassword, const char * ip, ::teleger::ClientInterface_ptr client)
 {
 	if (client->_is_nil()) {
-		cout << "Cliente vacioi!!!" << endl;
+		cout << "Cliente vacio!!!" << endl;
 	}
 	else {
 		client->notifyConnection(* new SafeUser);

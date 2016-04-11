@@ -1,14 +1,13 @@
 #pragma once
 #include "SQLConnector.h"
-
+#include "stdafx.h"
 using namespace teleger;
-
-
+using namespace std;
+//The omni_thread allow to use threads
 class telegerImpl : public POA_teleger::ServerInterface
 {
 private:
 	SQLConnector * connector;
-	//std::unordered_map<char *, teleger::SafeUser> activeClients;
 public:
 	inline telegerImpl(){};
 	virtual void startSQLConnector();
