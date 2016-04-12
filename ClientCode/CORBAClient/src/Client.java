@@ -14,6 +14,7 @@ import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 import teleger.ClientInterface;
 import teleger.ClientInterfaceHelper;
+import teleger.SafeUser;
 import teleger.ServerInterface;
 import teleger.ServerInterfaceHelper;
 
@@ -59,7 +60,13 @@ public class Client {
             ClientInterface client = ClientInterfaceHelper.narrow((org.omg.CORBA.Object) ref);
             
             //Aquí se dará el menú de las opciones que se podrán realizar
+            //Introducir una función que cree el socket udp y que se ponga a escuchar
+            
+            //Iniciar la interfaz y hacer logIn/Registro
+            
             server.logIn("Marcos", "Contrasinal", "ip", client);
+            
+            //Después crear la pantalla con la lista de amigos (toda esta lógica iría en la interfaz ya)
             
         } catch (InvalidName | NotFound | CannotProceed | org.omg.CosNaming.NamingContextPackage.InvalidName | ServantNotActive | WrongPolicy | AdapterInactive ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
