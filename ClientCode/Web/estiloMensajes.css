@@ -1,0 +1,51 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+
+body{
+	background-color: black;
+	background-image: url("madera.jpg");
+	font-family: Verdana;
+}
+
+#contenido{
+	width: 900px;
+	height: 500px;
+	background-color: #F0FFF0;
+	border-radius: 20px;
+	margin-top: 20px;
+}
+
+#columna{
+	float: left;
+	margin: 0px;
+	width: 350px;
+}
+
+#barraUsuario{
+	background-color: #3CB371;
+	margin: 0px;
+	padding: 10px;
+}
+
+/*#amigos{
+	margin: 0px;
+	background-color: green;
+}*/
+
+#mensajes{
+	margin: 0px;
+	width: 100px;
+}
+
+#barraDescripcion{
+	background-color: #3CB371;
+	margin: 0px;
+	padding: 10px;
+	border-left: solid #000000;
+}
+
+#cuerpoMensajes{
+	background-color: green;
+}
