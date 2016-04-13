@@ -27,10 +27,16 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 		cout << "Cliente vacio!!!" << endl;
 	}
 	else {
+		cout << userId << endl;
+
 		client->notifyConnection(* new SafeUser);
 	}
-	
-return		new userFriends;
+	userFriends * test = new userFriends;
+	test->length(2);
+	SafeUser * testUser = new SafeUser;
+	testUser->name = "pene";
+	(*test)[0] = *(testUser);
+return		test;
 }
 
 teleger::userFriends* logIn(const char* userId, const char* userPassword, const char* ip,ClientInterface_ptr client){

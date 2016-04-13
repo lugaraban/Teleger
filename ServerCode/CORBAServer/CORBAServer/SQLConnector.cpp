@@ -4,6 +4,7 @@ using namespace std;
 
 void SQLConnector::startConnector() {
 	if (sqlite3_open(routeToFile, &db)) {
+		cout << "erro!" << endl;
 		exit(0);
 	}
 }
@@ -19,7 +20,7 @@ bool SQLConnector::registerNewUser(teleger::User user) {
 	sqlite3_step(queryResult);
 	mutex.unlock();
 	if (sqlite3_column_text(queryResult, 0)!=NULL) {
-	//	cout << "O usuario existe!!" << endl;
+		cout << "O usuario existe!!" << endl;
 		return false;
 	}
 	else {
@@ -37,7 +38,7 @@ bool SQLConnector::registerNewUser(teleger::User user) {
 		mutex.trylock();
 		sqlite3_step(queryResult);
 		mutex.unlock();
-		//cout << "Usuario engadido de forma satisfactoria!!!" << endl;
+		cout << "Usuario engadido de forma satisfactoria!!!" << endl;
 		return true;
 	}
 }

@@ -1,1 +1,1 @@
-CORBAServer -ORBInitRef NameService=corbaloc::localhost:9000/NameService
+CORBAServer -ORBInitRef NameService=corbaloc::192.168.0.157:6666/NameService

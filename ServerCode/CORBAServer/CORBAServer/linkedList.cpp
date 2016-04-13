@@ -7,11 +7,12 @@ linkedList::linkedList()
 	first = (struct node *)malloc(sizeof(struct node));
 	first->next = NULL;
 }
-bool linkedList::_insert(teleger::SafeUser user) {
+bool linkedList::_insert(teleger::SafeUser user, teleger::ClientInterface_ptr clientObject) {
 	if (first->next == NULL) {
 		struct node * addedNode;
 		addedNode = (struct node *)malloc(sizeof(struct node));
 		addedNode->user = user;
+		addedNode->clientObject = clientObject;
 		first->next = addedNode;
 		return true;
 	}else{

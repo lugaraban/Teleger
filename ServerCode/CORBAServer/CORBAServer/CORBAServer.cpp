@@ -12,7 +12,7 @@ static CORBA::ORB_ptr orb;
 
 int main(int argc, char** argv)
 {
-	linkedList * connectedUsers = new linkedList();
+	/*linkedList * connectedUsers = new linkedList();
 	teleger::SafeUser * testSafeUser = new SafeUser;
 	testSafeUser->id = "eu";
 	testSafeUser->image = "img";
@@ -21,8 +21,8 @@ int main(int argc, char** argv)
 	connectedUsers->_insert(*testSafeUser);
 	cout << (connectedUsers->search("eu")).name << endl;
 	connectedUsers->_delete("eu");
-	cout << (connectedUsers->search("eu")).name << endl;
-	/*try {
+	cout << (connectedUsers->search("eu")).name << endl;*/
+	try {
 		orb = CORBA::ORB_init(argc, argv);
 
 		{
@@ -30,7 +30,6 @@ int main(int argc, char** argv)
 			PortableServer::POA_var poa = PortableServer::POA::_narrow(obj);
 			PortableServer::POAManager_var pman = poa->the_POAManager();
 			telegerImpl * myserver = new telegerImpl;
-
 			////////////////////////////////////////////////////////
 			try {
 				CORBA::Object_var ns_obj = orb->resolve_initial_references("NameService");
@@ -40,8 +39,8 @@ int main(int argc, char** argv)
 					name.length(1);
 					name[0].id = CORBA::string_dup("TestServer");
 					name[0].kind = CORBA::string_dup("");
-					//Start the service
 					nc->rebind(name, myserver->_this());
+					//Start the service
 					myserver->startSQLConnector();
 					cout << "Server is running ..." << endl;
 				}
@@ -69,8 +68,9 @@ int main(int argc, char** argv)
 	}
 	catch (CORBA::Exception& ex) {
 		cerr << "Caught CORBA::Exception: " << ex._name() << endl;
-	}*/
+	}
 	///connection test
+	/*
 	telegerImpl * tmp = new telegerImpl;
 	User *testUser = new User;
 	testUser->id = "eu";
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
 	tmp->startSQLConnector();
 	tmp->_cxx_register(*testUser);
 	cout << "Ola!" << endl;
-
-	getchar();
+	*/
+	//getchar();
 	return 0;
 }
