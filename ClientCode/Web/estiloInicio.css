@@ -14,7 +14,7 @@ body{
 	width: 900px;
 	height: 500px;
 	background-color: #F0FFF0;
-	border-radius: 20px;
+	margin-top: 20px;
 }
 
 header{
@@ -22,7 +22,6 @@ header{
 	height: 50px;
 	margin-bottom: 50px;
 	background-color: #3CB371;
-	border-radius: 20px;
 }
 
 div{
@@ -33,18 +32,18 @@ input[type='text'], input[type='password']{
     padding: 3px 3px;
     width: 150px; /* una longitud definida */
     border: none;
-    border-bottom: solid #3CB371;
+    border-bottom: solid 2px #3CB371;
     background-color: #F0FFF0;
 }
 
 input[type='text']:hover, input[type='password']:hover{
     outline: none; /* reset especifico para Chrome/Safari */
-    border-bottom: solid #000000;
+    border-bottom: solid 2px #000000;
 }
 
 input[type='text']:focus, input[type='password']:focus{
 	outline: 0px;
-	border-bottom: solid #000000;
+	border-bottom: solid 2px #000000;
 }
 
 input[type='button']{
