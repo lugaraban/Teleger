@@ -38,7 +38,27 @@ bool SQLConnector::registerNewUser(teleger::User user) {
 		mutex.trylock();
 		sqlite3_step(queryResult);
 		mutex.unlock();
-		cout << "Usuario engadido de forma satisfactoria!!!" << endl;
+		//cout << "Usuario engadido de forma satisfactoria!!!" << endl;
 		return true;
+	}
+}
+
+bool SQLConnector::login(const char * id, const  char * pass)
+{
+	char * statement = (char *)malloc(200 * (sizeof(char)));
+	strcat(statement, "SELECT id FROM users WHERE id like '");
+	strcat(statement, id);
+	strcat(statement, "' AND password = '");
+	strcat(statement, pass);
+	strcat(statement, "'");
+	sqlite3_prepare(db, statement, -1, &queryResult, NULL);
+	mutex.trylock();
+	sqlite3_step(queryResult);
+	mutex.unlock();
+	if (sqlite3_column_text(queryResult, 0) != NULL) {
+		return true;
+	}
+	else {
+		return false;
 	}
 }

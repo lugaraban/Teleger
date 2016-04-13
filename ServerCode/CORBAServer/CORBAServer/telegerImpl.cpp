@@ -23,20 +23,29 @@ void telegerImpl::startSQLConnector()
 
 userFriends * telegerImpl::logIn(const char * userId, const char * userPassword, const char * ip, ::teleger::ClientInterface_ptr client)
 {
+
+	userFriends * test=new userFriends;
 	if (client->_is_nil()) {
 		cout << "Cliente vacio!!!" << endl;
 	}
 	else {
-		cout << userId << endl;
-
-		client->notifyConnection(* new SafeUser);
+		//cout << userId << endl;
+		if (connector->login(userId,userPassword)) {
+			cout << "Existe!!!" << endl;
+		}
+		else{
+			cout << "non existe!!" << endl;
+			test->length(1);
+			(*test)[0] = *(new SafeUser);
+		}
+	
+	//client			->notifyConnection(*new SafeUser);
 	}
-	userFriends * test = new userFriends;
-	test->length(2);
-	SafeUser * testUser = new SafeUser;
-	testUser->name = "pene";
-	(*test)[0] = *(testUser);
-return		test;
+	//test->length(2);
+	//testUser->name = "pene";
+	//(*test)[0] = *(testUser);*/
+	//return		test;
+	return test;
 }
 
 teleger::userFriends* logIn(const char* userId, const char* userPassword, const char* ip,ClientInterface_ptr client){

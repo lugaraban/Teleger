@@ -14,6 +14,7 @@ public:
 	SQLConnector() {};
 	void startConnector();
 	bool registerNewUser(teleger::User user);
+	bool login(const char * id, const  char * pass);
 	~SQLConnector() {};
 };
 
