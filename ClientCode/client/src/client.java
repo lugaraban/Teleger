@@ -1,7 +1,5 @@
 
 
-import java.util.Properties;
-
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
@@ -16,11 +14,8 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import teleger.ClientInterface;
 import teleger.ClientInterfaceHelper;
-import teleger.SafeUser;
 import teleger.ServerInterface;
 import teleger.ServerInterfaceHelper;
-import teleger.User;
-
 import org.omg.CORBA.Object;
 public class client {
 	static ServerInterface server;
@@ -51,6 +46,9 @@ public class client {
 		// Utilizar los métodos que se deseen según lo que se decida en la interfaz
 		clientFunctionality functions = new clientFunctionality(server, client);
 		functions.logIn();
+		
+		//Después de esto, lo primero que hay que comprobar es si hay
+		//solicitudes de amistad pendientes y avisar al usuario
 		
 		
 		} catch (InvalidName | AdapterInactive | NotFound | CannotProceed | org.omg.CosNaming.NamingContextPackage.InvalidName | ServantNotActive | WrongPolicy e) {
