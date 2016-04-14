@@ -1,0 +1,89 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+
+body{
+	background-color: black;
+	background-image: url("madera.jpg");
+	font-family: Verdana;
+}
+
+#contenido{
+	width: 900px;
+	height: 500px;
+	background-color: #F0FFF0;
+	margin-top: 20px;
+}
+
+#columna{
+	float: left;
+	margin: 0px;
+	width: 350px;
+	overflow: hidden;
+}
+
+#barraUsuario{
+	background-color: #3CB371;
+	margin: 0px;
+	padding: 10px;
+}
+
+#amigos{
+	margin: 0px;
+	height: 460px;
+	background-color: #F0FFF0;
+}
+
+#mensajes{
+	float: right;
+	width: 550px;
+}
+
+#barraDescripcion{
+	background-color: #3CB371;
+	margin: 0px;
+	padding: 10px;
+	border-left: solid #000000;
+}
+
+#cuerpoMensajes{
+	background-color: green;
+	background-image: url("fondoMensajes.jpg");
+	height: 400px;
+}
+
+textarea{
+	float: left;
+	margin: 5px;
+	width: 455px;
+	height: 50px;
+	outline: 0px;
+	border: none;
+	background-color: #F0FFF0;
+	resize: none;
+}
+
+#enviarMensaje{
+	margin: 5px;
+	float: right;
+	background-color: #3CB371;
+	color: white;
+	padding: 15px;
+	width: 65px;
+	border: none;
+	border-radius: 5px;
+}
+
+#enviarMensaje:hover{
+	background-color: #3CC371;
+}
+
+#enviarMensaje:focus{
+	outline: none;
+	background-color: #3CC371;
+}
+
+#enviarMensaje:active{
+	background-color: #3CB371;
+}
