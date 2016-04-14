@@ -16,7 +16,7 @@ public class CallBackObject extends  ClientInterfacePOA{
 	@Override
 	public void notifyConnection(SafeUser connectedUser) {
 		// Notificar que el usuario se ha conectado
-		System.out.println("User "+connectedUser.name+" has been conected");
+		System.out.println("User "+connectedUser.id+" has been conected");
 	}
 
 	@Override

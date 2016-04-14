@@ -14,6 +14,7 @@ public class clientFunctionality {
 	
 	public clientFunctionality(ServerInterface server, ClientInterface client){
 		this.server=server;
+		this.client=client;
 	}
 	
 	//En todas las funciones en las que hay llamadas al servidor queda hacer
@@ -30,7 +31,7 @@ public class clientFunctionality {
 		//Se iniciaría la interfaz con todos sus amigos reflejados
 		int i;
 		for(i=0;i<friends.length;i++){
-			System.out.println(friends[i].name);
+			System.out.println(friends[i].id);
 		}
 		return friends;
 	}

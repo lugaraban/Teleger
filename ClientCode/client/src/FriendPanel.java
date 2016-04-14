@@ -4,21 +4,24 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Color;
 
 public class FriendPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
 	public FriendPanel(String image, String name, JLabel imageBar, JLabel nameBar) {
+		setBackground(new Color(204, 255, 204));
+		setForeground(new Color(204, 255, 204));
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				nameBar.setText(name);
-				ImageIcon buildImage = new ImageIcon(getClass().getResource(image));
-				if(buildImage!=null){
-					imageBar.setIcon(buildImage);
-					imageBar.setText("");
-				}
+//				ImageIcon buildImage = new ImageIcon(getClass().getResource(image));
+//				if(buildImage!=null){
+//					imageBar.setIcon(buildImage);
+//					imageBar.setText("");
+//				}
 			}
 		});
 		setLayout(null);
@@ -33,11 +36,11 @@ public class FriendPanel extends JPanel {
 		add(lblNombreAmigo);
 		
 		//Insertar la imagen
-		ImageIcon buildImage = new ImageIcon(getClass().getResource(image));
+		/*ImageIcon buildImage = new ImageIcon(getClass().getResource(image));
 		if(buildImage!=null){
 			lblImagen.setIcon(buildImage);
 			lblImagen.setText("");
-		}
+		}*/
 		
 		//Insertar el nombre
 		lblNombreAmigo.setText(name);

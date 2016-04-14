@@ -103,14 +103,17 @@ public class EnterRegister extends JPanel {
 				
 				SafeUser[] friends;
 				friends=functions.logIn(name, password);
-				
-				
-				//Mandamos la vista al panel de los mensajes
-				v.getContentPane().setVisible(false);
-		        Message msg=new Message(friends);
-		        msg.setVisible(true);
-		        msg.setV(v);
-		        v.setContentPane(msg);
+				if(friends.length>0 && friends[0].id.equals("NULL")){
+					System.out.println("Error en el loggeo");
+				}
+				else{
+					//Mandamos la vista al panel de los mensajes
+					v.getContentPane().setVisible(false);
+			        Message msg=new Message(friends, server, client);
+			        msg.setVisible(true);
+			        msg.setV(v);
+			        v.setContentPane(msg);
+				}
 
 			}
 		});
@@ -192,7 +195,7 @@ public class EnterRegister extends JPanel {
 					
 					//Mandamos la vista al panel de los mensajes
 					v.getContentPane().setVisible(false);
-			        Message msg=new Message(friends);
+			        Message msg=new Message(friends, server, client);
 			        msg.setVisible(true);
 			        msg.setV(v);
 			        v.setContentPane(msg);
