@@ -5,6 +5,9 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
+
+import teleger.SafeUser;
+
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JPasswordField;
@@ -16,9 +19,12 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import java.awt.SystemColor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Message extends JPanel {
 	
+	SafeUser[] friends;
 	Inicio v;
 
     public Inicio getV() {
@@ -31,7 +37,8 @@ public class Message extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Message() {
+	public Message(SafeUser[] f) {
+		friends=f;
 		setBackground(new Color(204, 255, 204));
 		v=new Inicio();
 		setMinimumSize(new Dimension(434, 340));
@@ -44,13 +51,8 @@ public class Message extends JPanel {
 		panel_1.setBackground(new Color(60, 179, 113));
 		panel_1.setLayout(null);
 		
-		JLabel lblNombreuser = new JLabel("NombreUser");
-		lblNombreuser.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNombreuser.setBounds(92, 11, 115, 19);
-		panel_1.add(lblNombreuser);
-		
 		JLabel lblImagen = new JLabel("Imagen");
-		lblImagen.setBounds(44, 15, 46, 14);
+		lblImagen.setBounds(44, 0, 46, 41);
 		panel_1.add(lblImagen);
 		
 		JButton btnMenu = new JButton("Menu");
@@ -65,8 +67,12 @@ public class Message extends JPanel {
 		
 		JLabel lblNombreamigo = new JLabel("NombreAmigo");
 		lblNombreamigo.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNombreamigo.setBounds(107, 11, 133, 19);
+		lblNombreamigo.setBounds(69, 9, 133, 19);
 		panel_2.add(lblNombreamigo);
+		
+		JLabel label = new JLabel("Imagen");
+		label.setBounds(10, 0, 48, 41);
+		panel_2.add(label);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
@@ -74,6 +80,15 @@ public class Message extends JPanel {
 		add(textArea);
 		
 		JButton btnSend = new JButton("Send");
+		btnSend.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//Mandar mensaje al amigo de la conversación actual
+				String name = label.getText();
+				String message = textArea.getText();
+				System.out.println("Le mando a "+name+" el siguiente mensaje:\n"+message+"");
+			}
+		});
 		btnSend.setBackground(new Color(60, 179, 113));
 		btnSend.setBounds(503, 337, 71, 64);
 		add(btnSend);
@@ -88,6 +103,11 @@ public class Message extends JPanel {
 		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setBounds(0, 41, 236, 360);
 		add(scrollPane);
+		
+		int i;
+		for(i=0; i<friends.length;i++){
+			scrollPane.setViewportView(new FriendPanel(friends[i].image, friends[i].name, label, lblNombreamigo));
+		}
 
 	}
 }

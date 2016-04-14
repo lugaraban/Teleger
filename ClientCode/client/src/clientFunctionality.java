@@ -20,9 +20,9 @@ public class clientFunctionality {
 	//la lógica de presentación de la interfaz, pues una vez que te loggeas
 	//pasas a la interfaz principal, etc.
 	
-	public SafeUser[] logIn(){
+	public SafeUser[] logIn(String name, String password){
 		SafeUser[] friends;
-		friends=server.logIn("Marcos", "Contrasinal", "ip", client);
+		friends=server.logIn(name, password, "ip", client);
 		
 		//Una vez que inicia sesión se pone a escuchar
 		//receiveMessage();
@@ -35,12 +35,11 @@ public class clientFunctionality {
 		return friends;
 	}
 	
-	public void register(String id, String password, String name, String image){
+	public boolean register(String id, String password, String name, String image){
 		User user = new User(id, password, name, image);
-		System.out.println("Register?: "+server.register(user)+"");
-		//System.out.println("Prueba: "+user.id+"");
-		//Seguir en la misma pantalla, el usuario tiene que iniciar sesión
-		//para entrar a la aplicación
+		//System.out.println("Register?: "+server.register(user)+"");
+		
+		return server.register(user);
 	}
 	
 	public void logOut(){

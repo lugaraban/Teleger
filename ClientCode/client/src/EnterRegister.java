@@ -3,6 +3,7 @@ import java.awt.Color;
 import javax.swing.border.LineBorder;
 
 import teleger.ClientInterface;
+import teleger.SafeUser;
 import teleger.ServerInterface;
 
 import java.awt.Font;
@@ -49,8 +50,6 @@ public class EnterRegister extends JPanel {
 	public EnterRegister(ServerInterface s, ClientInterface c) {
 		client=c;
 		server=s;
-		//this.server=v.server;
-		//this.client=v.client;
 		functions = new clientFunctionality(server, client);
 		setLayout(null);
 		
@@ -102,12 +101,13 @@ public class EnterRegister extends JPanel {
 				char[] pass = passwordField.getPassword();
 				String password = String.valueOf(pass);
 				
-				functions.logIn();
+				SafeUser[] friends;
+				friends=functions.logIn(name, password);
 				
 				
 				//Mandamos la vista al panel de los mensajes
 				v.getContentPane().setVisible(false);
-		        Message msg=new Message();
+		        Message msg=new Message(friends);
 		        msg.setVisible(true);
 		        msg.setV(v);
 		        v.setContentPane(msg);
@@ -179,14 +179,24 @@ public class EnterRegister extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String name = textField_1.getText();
-				//String completeName = textField_2.getText();
-				//String image = textField_3.getText();
-				//char [] pass = passwordField_1.getPassword();
-				//String password = String.valueOf(pass);
+				String completeName = textField_2.getText();
+				String image = textField_3.getText();
+				char [] pass = passwordField_1.getPassword();
+				String password = String.valueOf(pass);
 				
 				//System.out.println(password);
 				
-				functions.register(name, "password", "completeName", "image");
+				if(functions.register(name, password, completeName, image)){
+					SafeUser[] friends;
+					friends=functions.logIn(name, password);
+					
+					//Mandamos la vista al panel de los mensajes
+					v.getContentPane().setVisible(false);
+			        Message msg=new Message(friends);
+			        msg.setVisible(true);
+			        msg.setV(v);
+			        v.setContentPane(msg);
+				}
 			}
 		});
 		button_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
