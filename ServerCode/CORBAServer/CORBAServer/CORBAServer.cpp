@@ -1,9 +1,16 @@
 #include "stdafx.h"
 #include "telegerImpl.h"
 #include "linkedList.h"
+#include "../SQLite/sqlite3.h"
+
+
 using namespace std;
 
 static CORBA::ORB_ptr orb;
+static linkedList * onlineClient= new linkedList();
+static omni_mutex * mutex = new omni_mutex;
+static sqlite3 *db;
+static char * routeToFile = "../SQLite/teleger.db";
 //static int            dying = 0;
 //static int            num_active_servers = 0;
 //static omni_mutex     mu;
@@ -12,25 +19,15 @@ static CORBA::ORB_ptr orb;
 
 int main(int argc, char** argv)
 {
-	/*linkedList * connectedUsers = new linkedList();
-	teleger::SafeUser * testSafeUser = new SafeUser;
-	testSafeUser->id = "eu";
-	testSafeUser->image = "img";
-	testSafeUser->name = "name";
-	testSafeUser->ip = "ip";
-	connectedUsers->_insert(*testSafeUser);
-	cout << (connectedUsers->search("eu")).name << endl;
-	connectedUsers->_delete("eu");
-	cout << (connectedUsers->search("eu")).name << endl;*/
 	try {
+		sqlite3_open(routeToFile, &db);
 		orb = CORBA::ORB_init(argc, argv);
 
-		{
+		 {
 			CORBA::Object_var obj = orb->resolve_initial_references("RootPOA");
 			PortableServer::POA_var poa = PortableServer::POA::_narrow(obj);
 			PortableServer::POAManager_var pman = poa->the_POAManager();
 			telegerImpl * myserver = new telegerImpl;
-			////////////////////////////////////////////////////////
 			try {
 				CORBA::Object_var ns_obj = orb->resolve_initial_references("NameService");
 				if (!CORBA::is_nil(ns_obj)) {
@@ -41,7 +38,7 @@ int main(int argc, char** argv)
 					name[0].kind = CORBA::string_dup("");
 					nc->rebind(name, myserver->_this());
 					//Start the service
-					myserver->startSQLConnector();
+					myserver->telegerImplInit(onlineClient,mutex,db);
 					cout << "Server is running ..." << endl;
 				}
 			}
@@ -54,14 +51,11 @@ int main(int argc, char** argv)
 			catch (CosNaming::NamingContext::CannotProceed &) {
 				cerr << "cannot proceed" << endl;
 			}
-
-			//////////////////////////////////////////////////
 			pman->activate();
 			orb->run();
-
 		}
-		cout << "cb_server: Returned from orb->run()." << endl;
-		orb->destroy();
+
+		 orb->destroy();
 	}
 	catch (CORBA::SystemException& ex) {
 		cerr << "Caught CORBA::" << ex._name() << endl;
@@ -69,18 +63,6 @@ int main(int argc, char** argv)
 	catch (CORBA::Exception& ex) {
 		cerr << "Caught CORBA::Exception: " << ex._name() << endl;
 	}
-	///connection test
-	/*
-	telegerImpl * tmp = new telegerImpl;
-	User *testUser = new User;
-	testUser->id = "eu";
-	testUser->image = "img";
-	testUser->name = "name";
-	testUser->password = "pass";
-	tmp->startSQLConnector();
-	tmp->_cxx_register(*testUser);
-	cout << "Ola!" << endl;
-	*/
-	//getchar();
+	sqlite3_close(db);
 	return 0;
 }

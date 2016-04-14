@@ -3,16 +3,21 @@
 
 using namespace std;
 
-void telegerImpl::startSQLConnector()
+void telegerImpl::telegerImplInit(linkedList * onlineClient, omni_mutex * mutex, sqlite3 *db)
 {
 	//Initialize the sql connector
 	connector = new SQLConnector;
-	connector->startConnector();
+	connector->startConnector(mutex,db);
+	mutex->trylock();
+	lList = onlineClient;
+	telegerImpl::mutex = mutex;
+	mutex->unlock();
 }
 
 ::CORBA::Boolean telegerImpl::_cxx_register(const teleger::User& userData)
 {
-	if(!connector->registerNewUser(userData))
+	bool notRegistered = connector->registerNewUser(userData);
+	if(!notRegistered)
 		return false;
 	else
 		return true;
@@ -24,19 +29,29 @@ void telegerImpl::startSQLConnector()
 userFriends * telegerImpl::logIn(const char * userId, const char * userPassword, const char * ip, ::teleger::ClientInterface_ptr client)
 {
 
-	userFriends * test=new userFriends;
+	userFriends * userFriendsArray=new userFriends();
+
 	if (client->_is_nil()) {
 		cout << "Cliente vacio!!!" << endl;
 	}
 	else {
 		//cout << userId << endl;
-		if (connector->login(userId,userPassword)) {
+		bool loginBoolean = connector->login(userId, userPassword);
+
+		if (loginBoolean) {
 			cout << "Existe!!!" << endl;
+			//I create it's representation and add it to the linked list
+			teleger::SafeUser  * loggedUser = new teleger::SafeUser;
+
+			connector->getUserData(userId, userPassword, loggedUser);
+			//lList->_insert(*loggedUser,client);
+			//I it exist, then I return a list with their connected friends
+			//cout << lList->search("Lucia").id << endl;
 		}
 		else{
 			cout << "non existe!!" << endl;
-			test->length(1);
-			(*test)[0] = *(new SafeUser);
+			userFriendsArray->length(1);
+			(*userFriendsArray)[0] = *(new SafeUser);
 		}
 	
 	//client			->notifyConnection(*new SafeUser);
@@ -45,7 +60,8 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 	//testUser->name = "pene";
 	//(*test)[0] = *(testUser);*/
 	//return		test;
-	return test;
+	cout << "ola" << endl;
+	return userFriendsArray;
 }
 
 teleger::userFriends* logIn(const char* userId, const char* userPassword, const char* ip,ClientInterface_ptr client){
