@@ -17,4 +17,8 @@ public class JavaApplication {
     public void logIn(String nombre, String contrasena){
         System.out.println("Hola");
     }
+    
+    public void prueba(){
+        System.out.println("Hola");
+    }
 }

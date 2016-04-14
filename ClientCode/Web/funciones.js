@@ -8,8 +8,9 @@ function registro(){
 }
 
 function logIn(){
-	var alias=document.getElementById("alias");
+	/*var alias=document.getElementById("alias");
 	var contrasena=document.getElementById("contrasena");
 
-	app.LogIn(alias, contrasena);
+	app.LogIn(alias, contrasena);*/
+	alert("Hello");
 }

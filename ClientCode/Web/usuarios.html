@@ -7,7 +7,12 @@
 		<meta content="página de mensajería instantánea" name="description">
 		<meta content="mensajes, contactos, amigos, chat" name="keywords">
 		<link rel="stylesheet" type="text/css" href="estiloInicio.css">
-		<link rel="javascript" type="text/js" href="funciones.js">
+		<script type="text/javascript" src="funciones.js"></script>
+		<script>
+			function prueba(){
+				alert("Hola");
+			}
+		</script>
     </head>
     <body>
     	<center>
@@ -28,7 +33,7 @@
 		    				<form>
 		    					<div><input type="text" name="alias" id="alias" placeholder="Alias" pattern="[A-Za-z]{2,}" required></div>
 		    					<div><input type="password" name="contrasena" id="contrasena" placeholder="Password" required></div>
-		    					<div><input type="button" id="comprar" name="entrar" value="Enter" onclick="logIn();"></div> 
+		    					<div><input type="button" id="comprar" name="entrar" value="Enter" onclick="prueba();"></div> 
 		    				</form>
 		    			</td>
 	    			</tr>
