@@ -12,7 +12,6 @@ static sqlite3 *db;
 static char * routeToFile = "../SQLite/teleger.db";
 static omni_mutex * mtx= new omni_mutex;
 static linkedList * lList= new linkedList();
-
 using namespace teleger;
 //The omni_thread allow to use threads
 class telegerImpl : public POA_teleger::ServerInterface
@@ -23,10 +22,12 @@ public:
 	inline telegerImpl() {};
 	void telegerImplInit();
 	::CORBA::Boolean _cxx_register(const teleger::User& userData);
-	userFriends* logIn(const char* userId, const char* userPassword, const char* ip, ::teleger::ClientInterface_ptr client);
+	teleger::userFriends* logIn(const char* userId, const char* userPassword, const char* ip, teleger::ClientInterface_ptr client);
 	::CORBA::Boolean logOut(const char* userId, const char* userPassword);
 	teleger::userFriends* searchNewFriends(const char* name);
-	void sendRequestForFriend(const teleger::SafeUser& user, const teleger::SafeUser& _cxx_friend);
+	void sendRequestForFriend(const teleger::SafeUser& user, const char* _cxx_friend);
+	void notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance);
+	::CORBA::Boolean changePassword(const char* old, const char* _cxx_new, const char* user);
 	virtual ~telegerImpl() {};
 };
 
@@ -57,44 +58,46 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 {
 	mtx->lock();
 	userFriends * userFriendsArray = new userFriends();
-	userFriends * userFriendsSol = new userFriends();
+	serverSideUser * userFriendsSol = new serverSideUser();
 	if (client->_is_nil()) {
 		cout << "Cliente vacio!!!" << endl;
 	}
 	else {
-		//mtx->lock();
 		if (connector->login(userId, userPassword)) {
-			//mtx->unlock();
 			//I create it's representation and add it to the linked list
-			teleger::SafeUser  * loggedUser = new teleger::SafeUser;
-			//mtx->lock();
+			//teleger::SafeUser  * loggedUser = new teleger::SafeUser;
+			struct serverSideUser * loggedUser;
+			loggedUser = (struct serverSideUser *)malloc(sizeof(struct serverSideUser));
 			connector->getUserData(userId, userPassword,&loggedUser);
-			loggedUser->ip = ip;
 			lList->_insert(*loggedUser,client);
-			//mtx->unlock();
 			//I it exist, then I return a list with their connected friends  
 			char ** friends=nullptr;
 			int arraySize, friendsNumber;
-			//mtx->lock();
 			connector->getFriendsId(userId,&friendsNumber,&arraySize,&friends);
-			//mtx->unlock();
 			int i = 1;
 			userFriendsArray->length(friendsNumber+1);
-			(*userFriendsArray)[0] = *loggedUser;
+			(*userFriendsArray)[0].id = loggedUser->id;
+			(*userFriendsArray)[0].image = loggedUser->image;
+			(*userFriendsArray)[0].name = loggedUser->name;
+			(*userFriendsArray)[0].reference = teleger::ClientInterface::_duplicate(client);
 			for (i = 1; i < userFriendsArray->length(); i++) {
 				if (lList->search(friends[i - 1])->user.id != NULL)
 				if (strcmp(lList->search(friends[i-1])->user.id, friends[i - 1]) == 0) {
-					(*userFriendsArray)[i]=(lList->search(friends[i - 1])->user);
-					lList->search(friends[i - 1])->clientObject->notifyConnection(*loggedUser);
+					(*userFriendsArray)[i].id = (lList->search(friends[i - 1])->user).id;
+					(*userFriendsArray)[i].image = (lList->search(friends[i - 1])->user).image;
+					(*userFriendsArray)[i].name = (lList->search(friends[i - 1])->user).name;
+					(*userFriendsArray)[i].reference = (lList->search(friends[i - 1])->reference);
+					(*userFriendsArray)[i].reference->notifyConnection((*userFriendsArray)[0]);
 				}
 			}
-			//Friends solitudes
+			////Friends solitudes
 			connector->getFriendRequests(userId, &friendsNumber,&userFriendsSol);
 			cout << "friends number " << friendsNumber << endl;
-			for (i = 0; i < friendsNumber; i++) {
-				//lList->search(userId)->clientObject->receiveFriendRequest((*userFriendsSol)[i]);
+			SafeUser dummyUser;
+			/*for (i = 0; i < friendsNumber; i++) {
+				dummyUser.reference= (*userFriendsSol[i])-
 				client->receiveFriendRequest((*userFriendsSol)[i]);
-			}
+			}*/
 		}
 		else {
 			//mtx->unlock();
@@ -136,15 +139,24 @@ teleger::userFriends* telegerImpl::searchNewFriends(const char* name)
 	return searchArray;
 }
 
-void telegerImpl::sendRequestForFriend(const teleger::SafeUser& user, const teleger::SafeUser& _cxx_friend)
+void telegerImpl::sendRequestForFriend(const teleger::SafeUser& user, const char * _cxx_friend)
 {
-	if (strcmp(lList->search(_cxx_friend.id)->user.id,_cxx_friend.id)==0) {
-		connector->insertFriendRequest(user.id, _cxx_friend.id);
-		lList->search(_cxx_friend.id)->clientObject->receiveFriendRequest(user);
+	if (strcmp(lList->search(_cxx_friend)->user.id,_cxx_friend)==0) {
+		connector->insertFriendRequest(user.id, _cxx_friend);
+	//	lList->search(_cxx_friend)->clientObject->receiveFriendRequest(user);
 	}
 	else {
-		connector->insertFriendRequest(user.id, _cxx_friend.id);
+		connector->insertFriendRequest(user.id, _cxx_friend);
 	}
+}
+
+void telegerImpl::notifyAnswerRequest(const char * connectedUser, const char * pass, const char * _cxx_friend, ::CORBA::Boolean acceptance)
+{
+}
+
+::CORBA::Boolean telegerImpl::changePassword(const char * old, const char * _cxx_new, const char * user)
+{
+	return ::CORBA::Boolean();
 }
 
 
@@ -152,7 +164,6 @@ int main(int argc, char** argv)
 {
 	try {
 		orb = CORBA::ORB_init(argc, argv);
-
 		 {
 			CORBA::Object_var obj = orb->resolve_initial_references("RootPOA");
 			PortableServer::POA_var poa = PortableServer::POA::_narrow(obj);
@@ -165,7 +176,7 @@ int main(int argc, char** argv)
 					CosNaming::Name name = * new CosNaming::Name;
 					name.length(1);
 					name[0].id = CORBA::string_dup("TestServer");
-					//name[0].kind = CORBA::string_dup("");
+					name[0].kind = CORBA::string_dup("");
 					nc->rebind(name, myserver->_this());
 					//Start the service
 					myserver->telegerImplInit();
@@ -193,7 +204,6 @@ int main(int argc, char** argv)
 	catch (CORBA::Exception& ex) {
 		cerr << "Caught CORBA::Exception: " << ex._name() << endl;
 	}
-	//sqlite3_close(db);
 	return 0;
 }
 

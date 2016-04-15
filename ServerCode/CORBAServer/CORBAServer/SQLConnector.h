@@ -18,11 +18,11 @@ public:
 	SQLConnector() {};
 	void startConnector();
 	bool registerNewUser(teleger::User user);
-	void getUserData(const char * id, const char * pass, teleger::SafeUser ** user);
+	void getUserData(const char * id, const char * pass, serverSideUser ** user);
 	bool login(const char * id, const  char * pass);
 	void getFriendsId(const char * userName, int *friendNumber, int *arraySize, char*** friendsArray);
 	void searchNewFriends(const char * userName, int *friendNumber, teleger::userFriends ** friendsArray);
-	void getFriendRequests(const char * userName, int *friendNumber, teleger::userFriends ** friendsArray);
+	void getFriendRequests(const char * userName, int *friendNumber, serverSideUser  ** friendsArray);
 	void insertFriendRequest(const char *solicitor,const char *requested);
 	~SQLConnector() {};
 };

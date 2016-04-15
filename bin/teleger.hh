@@ -307,7 +307,7 @@ _CORBA_MODULE_BEG
   public:
     // IDL operations
     void notifyConnection(const ::teleger::SafeUser& connectedUser);
-    ::CORBA::Boolean receiveFriendRequest(const ::teleger::SafeUser& user);
+    void receiveFriendRequest(const char* user);
     ::CORBA::Boolean sendMessage(const char* message, const char* type);
 
     // Constructors
@@ -344,7 +344,7 @@ _CORBA_MODULE_BEG
     virtual ~_impl_ClientInterface();
 
     virtual void notifyConnection(const ::teleger::SafeUser& connectedUser) = 0;
-    virtual ::CORBA::Boolean receiveFriendRequest(const ::teleger::SafeUser& user) = 0;
+    virtual void receiveFriendRequest(const char* user) = 0;
     virtual ::CORBA::Boolean sendMessage(const char* message, const char* type) = 0;
     
   public:  // Really protected, workaround for xlC
@@ -426,7 +426,7 @@ _CORBA_MODULE_BEG
   public:
     // IDL operations
     ::CORBA::Boolean _cxx_register(const ::teleger::User& userData);
-    userFriends* logIn(const char* userId, const char* userPassword, const char* ip, ::teleger::ClientInterface_ptr client);
+    userFriends* logIn(const char* userId, const char* userPassword, ::teleger::ClientInterface_ptr client);
     ::CORBA::Boolean logOut(const char* userId, const char* userPassword);
     userFriends* searchNewFriends(const char* name);
     void sendRequestForFriend(const ::teleger::SafeUser& user, const char* _cxx_friend);
@@ -467,7 +467,7 @@ _CORBA_MODULE_BEG
     virtual ~_impl_ServerInterface();
 
     virtual ::CORBA::Boolean _cxx_register(const ::teleger::User& userData) = 0;
-    virtual userFriends* logIn(const char* userId, const char* userPassword, const char* ip, ::teleger::ClientInterface_ptr client) = 0;
+    virtual userFriends* logIn(const char* userId, const char* userPassword, ::teleger::ClientInterface_ptr client) = 0;
     virtual ::CORBA::Boolean logOut(const char* userId, const char* userPassword) = 0;
     virtual userFriends* searchNewFriends(const char* name) = 0;
     virtual void sendRequestForFriend(const ::teleger::SafeUser& user, const char* _cxx_friend) = 0;

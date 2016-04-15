@@ -14,4 +14,11 @@
 #include <vector>
 #include <mutex>
 
+
+static struct serverSideUser {
+	const char * id;
+	const char * name;
+	const char * image;
+};
+
 // TODO: reference additional headers your program requires here
