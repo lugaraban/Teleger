@@ -68,8 +68,8 @@ public class Inicio extends JFrame {
 						//Obtengo la referencia del objeto servidor
 						server = ServerInterfaceHelper.narrow(ncRef.resolve_str("TestServer"));
 						
-						
-						CallBackObject callBackClient = new CallBackObject();
+						Inicio frame = new Inicio();
+						CallBackObject callBackClient = new CallBackObject(frame, server);
 						callBackClient.setORB(orb);
 						
 						Object ref = rootpoa.servant_to_reference(callBackClient);
@@ -77,13 +77,11 @@ public class Inicio extends JFrame {
 						
 						
 						//Una vez establecida la conexión, inicio la interfaz gráfica
-						Inicio frame = new Inicio();
+						
 						frame.setVisible(true);
-		                EnterRegister h=new EnterRegister(server, client);
+		                EnterRegister h=new EnterRegister(server, client, callBackClient);
 		                h.setV(frame);
 		                frame.setContentPane(h);
-//		                h.client=client;
-//		                h.server=server;
 						
 						} catch (InvalidName | AdapterInactive | NotFound | CannotProceed | org.omg.CosNaming.NamingContextPackage.InvalidName | ServantNotActive | WrongPolicy e) {
 							e.printStackTrace();

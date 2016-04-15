@@ -24,10 +24,11 @@ public class EnterRegister extends JPanel {
 	private JTextField textField_3;
 	private JPasswordField passwordField_1;
 
-	clientFunctionality functions;
+	CallBackObject callBack;
+	
 	ClientInterface client;
 	ServerInterface server;
-	Inicio v=new Inicio();;
+	Inicio v=new Inicio();
 
 	public void setServer(ServerInterface server){
 		this.server=server;
@@ -48,10 +49,10 @@ public class EnterRegister extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public EnterRegister(ServerInterface s, ClientInterface c) {
+	public EnterRegister(ServerInterface s, ClientInterface c, CallBackObject callBackClient) {
+		callBack=callBackClient;
 		client=c;
 		server=s;
-		functions = new clientFunctionality(server, client);
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -106,15 +107,19 @@ public class EnterRegister extends JPanel {
 				friends=server.logIn(name, password, "ip", client);
 				if(friends.length>0 && friends[0].id.equals("NULL")){
 					System.out.println("Error en el loggeo");
+					Popup error = new Popup("Can't log in, maybe your credentials are incorrect", v);
+					error.setVisible(true);
 				}
 				else{
+					callBack.userId=friends[0].id;
+					callBack.userPassword=password;
 					int i;
 					for(i=0;i<friends.length;i++){
 						System.out.println(friends[i].id);
 					}
 					//Mandamos la vista al panel de los mensajes
 					v.getContentPane().setVisible(false);
-			        Message msg=new Message(friends, server, client, password);
+			        Message msg=new Message(friends, server, client, password, callBack);
 			        msg.setVisible(true);
 			        msg.setV(v);
 			        v.setContentPane(msg);
@@ -205,7 +210,7 @@ public class EnterRegister extends JPanel {
 					
 					//Mandamos la vista al panel de los mensajes
 					v.getContentPane().setVisible(false);
-			        Message msg=new Message(friends, server, client, password);
+			        Message msg=new Message(friends, server, client, password, callBack);
 			        msg.setVisible(true);
 			        msg.setV(v);
 			        v.setContentPane(msg);

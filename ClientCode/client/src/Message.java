@@ -38,10 +38,13 @@ import javax.swing.JTabbedPane;
 public class Message extends JPanel {
 	
 	SafeUser[] friends;
+	SafeUser newFriend;
 	Inicio v;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	
+	CallBackObject callBack;
 
     public Inicio getV() {
         return v;
@@ -53,8 +56,11 @@ public class Message extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Message(SafeUser[] f, ServerInterface server, ClientInterface client, String password) {
+	public Message(SafeUser[] f, ServerInterface server, ClientInterface client, String password, CallBackObject callBackClient) {
 		friends=f;
+		
+		callBack=callBackClient;
+		
 		setBackground(new Color(204, 255, 204));
 		v=new Inicio();
 		setMinimumSize(new Dimension(434, 340));
@@ -67,6 +73,13 @@ public class Message extends JPanel {
 		panel_1.setBackground(new Color(60, 179, 113));
 		panel_1.setLayout(null);
 		
+		/*ImageIcon buildImage = new ImageIcon(getClass().getResource(friends[0].image));
+		if(buildImage!=null){
+			lblImagen.setIcon(buildImage);
+			lblImagen.setText("");
+		}*/
+		//JLabel lblImagen = new JLabel(buildImage);
+		
 		JLabel lblImagen = new JLabel("Imagen");
 		lblImagen.setBounds(0, 0, 46, 41);
 		panel_1.add(lblImagen);
@@ -77,7 +90,7 @@ public class Message extends JPanel {
 		panel_2.setBackground(new Color(60, 179, 113));
 		panel_2.setLayout(null);
 		
-		JLabel lblNombreamigo = new JLabel("NombreAmigo");
+		JLabel lblNombreamigo = new JLabel("Marcos");
 		lblNombreamigo.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNombreamigo.setBounds(69, 9, 133, 19);
 		panel_2.add(lblNombreamigo);
@@ -87,6 +100,7 @@ public class Message extends JPanel {
 		panel_2.add(label);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
 		textArea.setEditable(false);
 		textArea.setBounds(240, 41, 334, 285);
 		add(textArea);
@@ -96,9 +110,16 @@ public class Message extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Mandar mensaje al amigo de la conversación actual
-				String name = label.getText();
+				String name = lblNombreamigo.getText();
 				String message = textArea.getText();
 				System.out.println("Le mando a "+name+" el siguiente mensaje:\n"+message+"");
+				
+				for(SafeUser friend: friends){
+					if(friend.id.equals(name)){
+						friend.reference.sendMessage(message, "text");
+						break;
+					}
+				}
 			}
 		});
 		btnSend.setBackground(new Color(60, 179, 113));
@@ -106,6 +127,7 @@ public class Message extends JPanel {
 		add(btnSend);
 		
 		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setLineWrap(true);
 		textArea_1.setBounds(240, 337, 265, 64);
 		add(textArea_1);
 		
@@ -131,38 +153,55 @@ public class Message extends JPanel {
 		tabbedPane.addTab("My profile", null, panel, null);
 		panel.setLayout(null);
 		
+		//JLabel lblImage = new JLabel("");
 		JLabel lblImage = new JLabel("Image");
-		lblImage.setBounds(29, 56, 177, 131);
+		lblImage.setBounds(28, 44, 177, 131);
 		panel.add(lblImage);
 		
-		JLabel lblNombreusuario = new JLabel("NombreUsuario");
+		
+		/*ImageIcon buildImage = new ImageIcon(getClass().getResource(friends[0].image));
+		if(buildImage!=null){
+			lblImage.setIcon(buildImage);
+			lblImage.setText("");
+		}*/
+		
+		
+		JLabel lblNombreusuario = new JLabel(friends[0].id);
 		lblNombreusuario.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNombreusuario.setBounds(64, 186, 106, 28);
+		lblNombreusuario.setBounds(115, 176, 106, 28);
 		panel.add(lblNombreusuario);
 		
 		JLabel lblPassword = new JLabel("Actual password:");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblPassword.setBounds(22, 212, 95, 20);
+		lblPassword.setBounds(52, 212, 95, 20);
 		panel.add(lblPassword);
 		
 		textField = new JTextField();
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		textField.setBounds(22, 234, 125, 20);
+		textField.setBounds(45, 233, 125, 20);
 		panel.add(textField);
 		textField.setColumns(10);
 		
 		JButton btnCambiar = new JButton("Cambiar");
+		btnCambiar.setBackground(new Color(60, 179, 113));
 		btnCambiar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Llamar a la función de cambiar contraseña
+				String actual = textField.getText();
+				String newPass = textField_2.getText();
+				
+				if(server.changePassword(actual, newPass, friends[0].id)){
+					Popup p = new Popup("Your password has been changed", v);
+				}
 			}
 		});
 		btnCambiar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCambiar.setBounds(145, 310, 86, 23);
+		btnCambiar.setBounds(45, 310, 125, 23);
 		panel.add(btnCambiar);
 		
 		JButton btnLogOut = new JButton("Log out");
+		btnLogOut.setBackground(new Color(60, 179, 113));
 		btnLogOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -171,7 +210,7 @@ public class Message extends JPanel {
 					
 					//Volver a la pantalla de inicio
 					v.getContentPane().setVisible(false);
-			        EnterRegister er = new EnterRegister(server, client);
+			        EnterRegister er = new EnterRegister(server, client, callBack);
 			        er.setVisible(true);
 			        er.setV(v);
 			        v.setContentPane(er);
@@ -179,18 +218,23 @@ public class Message extends JPanel {
 			}
 		});
 		btnLogOut.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnLogOut.setBounds(45, 11, 125, 34);
+		btnLogOut.setBounds(45, 11, 118, 28);
 		panel.add(btnLogOut);
 		
 		JLabel lblNewPassword = new JLabel("New password:");
 		lblNewPassword.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewPassword.setBounds(22, 264, 95, 14);
+		lblNewPassword.setBounds(64, 258, 95, 14);
 		panel.add(lblNewPassword);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(22, 283, 125, 20);
+		textField_2.setBounds(45, 279, 125, 20);
 		panel.add(textField_2);
 		textField_2.setColumns(10);
+		
+		JLabel lblUserName = new JLabel("User name:");
+		lblUserName.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblUserName.setBounds(23, 180, 82, 21);
+		panel.add(lblUserName);
 		
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("Search", null, panel_5, null);
@@ -201,7 +245,10 @@ public class Message extends JPanel {
 		panel_5.add(textField_1);
 		textField_1.setColumns(10);
 		
+		
 		JButton btnSearch = new JButton("Search");
+		btnSearch.setBackground(new Color(60, 179, 113));
+		btnSearch.setBounds(131, 38, 77, 23);
 		btnSearch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -211,26 +258,19 @@ public class Message extends JPanel {
 				SafeUser[] newFriends;
 				newFriends=server.searchNewFriends(patron);
 				
+				newFriend=newFriends[0];
+				
 				//Se ofrecen los resultados coincidentes
 				int i;
 				for(i=0;i<newFriends.length;i++){
 					System.out.println(newFriends[i].id);
 				}
+				
+				panel_5.add(new SearchFriendPanel(newFriend, server, friends[0]));
+				panel_5.updateUI();
 			}
 		});
-		btnSearch.setBounds(131, 38, 77, 23);
 		panel_5.add(btnSearch);
-		
-		JButton btnAdd = new JButton("Add");
-		btnAdd.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				SafeUser u = new SafeUser("Josentonio", "pass", "pruebaImagen", "ip");
-				server.sendRequestForFriend(friends[0], u);
-			}
-		});
-		btnAdd.setBounds(131, 99, 89, 23);
-		panel_5.add(btnAdd);
 		
 		int i;
 		System.out.println(friends.length);
@@ -324,5 +364,6 @@ public class Message extends JPanel {
 //            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 //            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 //        );
+//		scrollPane.updateUI();
 	}
 }
