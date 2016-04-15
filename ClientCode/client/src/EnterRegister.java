@@ -5,6 +5,7 @@ import javax.swing.border.LineBorder;
 import teleger.ClientInterface;
 import teleger.SafeUser;
 import teleger.ServerInterface;
+import teleger.User;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -73,7 +74,7 @@ public class EnterRegister extends JPanel {
 		
 		JLabel label = new JLabel("Password:");
 		label.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label.setBounds(20, 95, 103, 14);
+		label.setBounds(20, 92, 103, 14);
 		panel.add(label);
 		
 		JLabel label_1 = new JLabel("User name:");
@@ -102,14 +103,18 @@ public class EnterRegister extends JPanel {
 				String password = String.valueOf(pass);
 				
 				SafeUser[] friends;
-				friends=functions.logIn(name, password);
+				friends=server.logIn(name, password, "ip", client);
 				if(friends.length>0 && friends[0].id.equals("NULL")){
 					System.out.println("Error en el loggeo");
 				}
 				else{
+					int i;
+					for(i=0;i<friends.length;i++){
+						System.out.println(friends[i].id);
+					}
 					//Mandamos la vista al panel de los mensajes
 					v.getContentPane().setVisible(false);
-			        Message msg=new Message(friends, server, client);
+			        Message msg=new Message(friends, server, client, password);
 			        msg.setVisible(true);
 			        msg.setV(v);
 			        v.setContentPane(msg);
@@ -164,7 +169,7 @@ public class EnterRegister extends JPanel {
 		
 		JLabel label_6 = new JLabel("Image URL:");
 		label_6.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label_6.setBounds(25, 129, 100, 14);
+		label_6.setBounds(25, 123, 100, 20);
 		panel_1.add(label_6);
 		
 		passwordField_1 = new JPasswordField();
@@ -174,7 +179,7 @@ public class EnterRegister extends JPanel {
 		
 		JLabel label_7 = new JLabel("Password:");
 		label_7.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label_7.setBounds(25, 177, 86, 14);
+		label_7.setBounds(25, 175, 86, 14);
 		panel_1.add(label_7);
 		
 		JButton button_1 = new JButton("Register");
@@ -188,14 +193,19 @@ public class EnterRegister extends JPanel {
 				String password = String.valueOf(pass);
 				
 				//System.out.println(password);
-				
-				if(functions.register(name, password, completeName, image)){
+				User user = new User(name, password, completeName, image);
+				if(server.register(user)){
 					SafeUser[] friends;
-					friends=functions.logIn(name, password);
+					friends=server.logIn(name, password, "ip", client);
+					int i;
+					for(i=0;i<friends.length;i++){
+						System.out.println(friends[i].id);
+					}
+					
 					
 					//Mandamos la vista al panel de los mensajes
 					v.getContentPane().setVisible(false);
-			        Message msg=new Message(friends, server, client);
+			        Message msg=new Message(friends, server, client, password);
 			        msg.setVisible(true);
 			        msg.setV(v);
 			        v.setContentPane(msg);

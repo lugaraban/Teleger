@@ -52,7 +52,7 @@ public class Message extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Message(SafeUser[] f, ServerInterface server, ClientInterface client) {
+	public Message(SafeUser[] f, ServerInterface server, ClientInterface client, String password) {
 		friends=f;
 		setBackground(new Color(204, 255, 204));
 		v=new Inicio();
@@ -165,8 +165,10 @@ public class Message extends JPanel {
 		btnLogOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(server.logOut("id", "Contrasinal")){
+				if(server.logOut(friends[0].id, password)){
 					System.out.println("User has sucessfully logged out");
+					
+					//Volver a la pantalla de inicio
 					v.getContentPane().setVisible(false);
 			        EnterRegister er = new EnterRegister(server, client);
 			        er.setVisible(true);
@@ -223,48 +225,84 @@ public class Message extends JPanel {
 		
 		//Disponer todos los amigos conectados unos debajo de otros en el scroll pane
 		//setHorizontalGroup
-		GroupLayout panelLayout = new GroupLayout(panel_3);
-		panel_3.setLayout(panelLayout);
-		
-		ParallelGroup p = panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
-		SequentialGroup seqH = panelLayout.createSequentialGroup();
-		ParallelGroup p2 = panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
-		
-//		panelLayout.setHorizontalGroup(p);
-//		p.addGroup(seqH);
+//		GroupLayout panelLayout = new GroupLayout(panel_3);
+//		panel_3.setLayout(panelLayout);
+//		
+//		ParallelGroup p = panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+//		SequentialGroup seqH = panelLayout.createSequentialGroup();
+//		ParallelGroup p2 = panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+//		
+////		panelLayout.setHorizontalGroup(p);
+////		p.addGroup(seqH);
+////		seqH.addGroup(p2);
+//		
+//		FriendPanel prueba = new FriendPanel("image", "nombre", label, lblNombreamigo);
+//		p2.addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+////		ArrayList<FriendPanel> panels = new ArrayList<>();
+////		for(i=0; i<friends.length;i++){
+////			panels.add(new FriendPanel(friends[i].image, friends[i].name, label, lblNombreamigo));
+////        	p2.addComponent(panels.get(i), javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+////		}
 //		seqH.addGroup(p2);
+//		p.addGroup(seqH);
+//		panelLayout.setHorizontalGroup(p);
+//            
+//        
+//		//setVerticalGroup
+//		ParallelGroup v = panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
+//		SequentialGroup seqG = panelLayout.createSequentialGroup();
+//		
+//		seqG.addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+//    	seqG.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+////		for(i=0; i<panels.size();i++){
+////        	seqG.addComponent(panels.get(i), javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
+////        	seqG.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+////		}
+//		seqG.addGap(0, 2012, Short.MAX_VALUE);
+//		v.addGroup(seqG);
+//		
+//		panelLayout.setVerticalGroup(v);
+//        
+//		scrollPane.setViewportView(panel_3);
+//		
+//		
+//		GroupLayout layout = new GroupLayout(panel_4);
+//        panel_4.setLayout(layout);
+//        layout.setHorizontalGroup(
+//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//        );
+//        layout.setVerticalGroup(
+//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+//        );
 		
-		FriendPanel prueba = new FriendPanel("image", "nombre", label, lblNombreamigo);
-		p2.addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
-//		ArrayList<FriendPanel> panels = new ArrayList<>();
-//		for(i=0; i<friends.length;i++){
-//			panels.add(new FriendPanel(friends[i].image, friends[i].name, label, lblNombreamigo));
-//        	p2.addComponent(panels.get(i), javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
-//		}
-		seqH.addGroup(p2);
-		p.addGroup(seqH);
-		panelLayout.setHorizontalGroup(p);
-            
-        
-		//setVerticalGroup
-		ParallelGroup v = panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
-		SequentialGroup seqG = panelLayout.createSequentialGroup();
-		
-		seqG.addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
-    	seqG.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
-//		for(i=0; i<panels.size();i++){
-//        	seqG.addComponent(panels.get(i), javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
-//        	seqG.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
-//		}
-		seqG.addGap(0, 2012, Short.MAX_VALUE);
-		v.addGroup(seqG);
-		
-		panelLayout.setVerticalGroup(v);
-        
-		scrollPane.setViewportView(panel_3);
-		
-		
-		GroupLayout layout = new GroupLayout(panel_4);
+		//PRUEBA CON EL CÓDIGO DE IPO
+		javax.swing.GroupLayout panelContenedorLayout = new javax.swing.GroupLayout(panel_3);
+        panel_3.setLayout(panelContenedorLayout);
+        FriendPanel prueba = new FriendPanel("image", "nombre", label, lblNombreamigo);
+        panelContenedorLayout.setHorizontalGroup(
+            panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelContenedorLayout.createSequentialGroup()
+                .addGroup(panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                )
+                .addGap(0, 24, Short.MAX_VALUE))
+        );
+        panelContenedorLayout.setVerticalGroup(
+            panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelContenedorLayout.createSequentialGroup()
+                .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+               .addGap(0, 2012, Short.MAX_VALUE))
+        );
+
+        scrollPane.setViewportView(panel_3);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel_4);
         panel_4.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

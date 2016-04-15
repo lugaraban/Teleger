@@ -1,4 +1,8 @@
 import javax.swing.JPanel;
+
+import teleger.SafeUser;
+import teleger.ServerInterface;
+
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
@@ -11,7 +15,7 @@ public class SearchFriendPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public SearchFriendPanel(String image, String name) {
+	public SearchFriendPanel(SafeUser friend, ServerInterface server, SafeUser user) {
 		setBackground(new Color(204, 255, 204));
 		setLayout(null);
 		
@@ -29,21 +33,21 @@ public class SearchFriendPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Enviar una petición de amistad
-				
+				server.sendRequestForFriend(user, friend);
 			}
 		});
 		btnFriend.setBounds(172, 0, 73, 55);
 		add(btnFriend);
 		
 		//Insertar la imagen
-				/*ImageIcon buildImage = new ImageIcon(getClass().getResource(image));
+				/*ImageIcon buildImage = new ImageIcon(getClass().getResource(friend.image));
 				if(buildImage!=null){
 					label.setIcon(buildImage);
 					label.setText("");
 				}*/
 				
 		//Insertar el nombre
-		lblNombreusuario.setText(name);
+		lblNombreusuario.setText(friend.id);
 
 	}
 

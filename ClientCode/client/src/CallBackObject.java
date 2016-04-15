@@ -2,6 +2,9 @@
 
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import org.omg.CORBA.ORB;
 
 import teleger.ClientInterfacePOA;
@@ -17,6 +20,9 @@ public class CallBackObject extends  ClientInterfacePOA{
 	public void notifyConnection(SafeUser connectedUser) {
 		// Notificar que el usuario se ha conectado
 		System.out.println("User "+connectedUser.id+" has been conected");
+		//JOptionPane.showMessageDialog(new JPanel(), "User "+connectedUser.id+" has been conected\n", "NOTIFICACIÓN", JOptionPane.INFORMATION_MESSAGE);
+		Popup p = new Popup("User "+connectedUser.id+" has been conected");
+		p.setVisible(true);
 	}
 
 	@Override
