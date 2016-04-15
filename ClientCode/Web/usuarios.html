@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+     	<title>Teleger</title>
+		<meta charset="utf-8">
+		<meta content="Marcos y Lucía" name="author">
+		<meta content="página de mensajería instantánea" name="description">
+		<meta content="mensajes, contactos, amigos, chat" name="keywords">
+		<link rel="stylesheet" type="text/css" href="estiloInicio.css">
+		<script type="text/javascript" src="funciones.js"></script>
+		<script>
+			function prueba(){
+				alert("Hola");
+			}
+		</script>
+    </head>
+    <body>
+    	<center>
+
+    	<section id="contenido">
+    	<header>
+    		<h1>Welcome to Teleger!</h1>
+    	</header>
+	    	<table>
+	    	<tr>
+	    		<td>
+	    		<table>
+	    			<tr>
+	    				<th>Log in</th>
+	    			</tr>
+	    			<tr>
+		    			<td>
+		    				<form>
+		    					<div><input type="text" name="alias" id="alias" placeholder="Alias" pattern="[A-Za-z]{2,}" required></div>
+		    					<div><input type="password" name="contrasena" id="contrasena" placeholder="Password" required></div>
+		    					<div><input type="button" id="comprar" name="entrar" value="Enter" onclick="prueba();"></div> 
+		    				</form>
+		    			</td>
+	    			</tr>
+	    		</table>
+	    		</td>
+
+	    		<td>
+	    		<table>
+	    			<tr>
+	    				<th>Register</th>
+	    			</tr>
+	    			<tr>
+		    			<td>
+		    				<form>
+		    					<div><input type="text" name="nombre" id="nombre" placeholder="first and last name" pattern="[A-Za-z áéíóúÁÉÍÓÚ]{2,}" required></div>
+		    					<div><input type="text" name="alias" id="aliasR" placeholder="Alias" pattern="[A-Za-záéíóúÁÉÍÓÚ]{2,}" required></div>
+		    					<div><input type="text" name="imagen" id="imagen" placeholder="image URL"></div>
+		    					<div><input type="password" name="contrasena" id="password" placeholder="Password" pattern="[A-Za-z0-9\-\.\,\_]{6,}" required></div>
+		    					<div><input type="button" id="comprar" name="registro" value="Register" onclick="registro();"></div> 
+		    					
+		    				</form>
+		    			</td>
+		    		</tr>
+	    		</table>
+	    		</td>
+	    	</tr>
+			</table>
+	  	</section>
+	  </center>
+    </body>
+</html>
