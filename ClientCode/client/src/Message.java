@@ -14,6 +14,7 @@ import javax.swing.border.LineBorder;
 import teleger.ClientInterface;
 import teleger.SafeUser;
 import teleger.ServerInterface;
+import teleger.User;
 
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -220,6 +221,17 @@ public class Message extends JPanel {
 		btnSearch.setBounds(131, 38, 77, 23);
 		panel_5.add(btnSearch);
 		
+		JButton btnAdd = new JButton("Add");
+		btnAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				SafeUser u = new SafeUser("Josentonio", "pass", "pruebaImagen", "ip");
+				server.sendRequestForFriend(friends[0], u);
+			}
+		});
+		btnAdd.setBounds(131, 99, 89, 23);
+		panel_5.add(btnAdd);
+		
 		int i;
 		System.out.println(friends.length);
 		
@@ -278,39 +290,39 @@ public class Message extends JPanel {
 //        );
 		
 		//PRUEBA CON EL CÓDIGO DE IPO
-		javax.swing.GroupLayout panelContenedorLayout = new javax.swing.GroupLayout(panel_3);
-        panel_3.setLayout(panelContenedorLayout);
-        FriendPanel prueba = new FriendPanel("image", "nombre", label, lblNombreamigo);
-        panelContenedorLayout.setHorizontalGroup(
-            panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelContenedorLayout.createSequentialGroup()
-                .addGroup(panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                )
-                .addGap(0, 24, Short.MAX_VALUE))
-        );
-        panelContenedorLayout.setVerticalGroup(
-            panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelContenedorLayout.createSequentialGroup()
-                .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-               .addGap(0, 2012, Short.MAX_VALUE))
-        );
-
-        scrollPane.setViewportView(panel_3);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel_4);
-        panel_4.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-        );
+//		javax.swing.GroupLayout panelContenedorLayout = new javax.swing.GroupLayout(panel_3);
+//        panel_3.setLayout(panelContenedorLayout);
+//        FriendPanel prueba = new FriendPanel("image", "nombre", label, lblNombreamigo);
+//        panelContenedorLayout.setHorizontalGroup(
+//            panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(panelContenedorLayout.createSequentialGroup()
+//                .addGroup(panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                    .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                )
+//                .addGap(0, 24, Short.MAX_VALUE))
+//        );
+//        panelContenedorLayout.setVerticalGroup(
+//            panelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(panelContenedorLayout.createSequentialGroup()
+//                .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//                .addComponent(prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//               .addGap(0, 2012, Short.MAX_VALUE))
+//        );
+//
+//        scrollPane.setViewportView(panel_3);
+//
+//        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel_4);
+//        panel_4.setLayout(layout);
+//        layout.setHorizontalGroup(
+//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//        );
+//        layout.setVerticalGroup(
+//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+//        );
 	}
 }
