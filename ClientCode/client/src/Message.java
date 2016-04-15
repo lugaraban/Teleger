@@ -2,6 +2,7 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
@@ -100,10 +101,17 @@ public class Message extends JPanel {
 		panel_2.add(label);
 		
 		JTextArea textArea = new JTextArea();
+		//textArea.setBorder(BorderFactory.createEmptyBorder());
+		//textArea.setBackground(new Color(0, 0, 0, 0));
 		textArea.setLineWrap(true);
 		textArea.setEditable(false);
-		textArea.setBounds(240, 41, 334, 285);
+		textArea.setBounds(250, 48, 314, 278);
 		add(textArea);
+		
+		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setLineWrap(true);
+		textArea_1.setBounds(240, 337, 265, 64);
+		add(textArea_1);
 		
 		JButton btnSend = new JButton("Send");
 		btnSend.addMouseListener(new MouseAdapter() {
@@ -111,28 +119,43 @@ public class Message extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				//Mandar mensaje al amigo de la conversación actual
 				String name = lblNombreamigo.getText();
-				String message = textArea.getText();
-				System.out.println("Le mando a "+name+" el siguiente mensaje:\n"+message+"");
+				String message = textArea_1.getText();
+				System.out.println("Le mando a "+name+" el siguiente mensaje:"+message+"");
 				
-				for(SafeUser friend: friends){
-					if(friend.id.equals(name)){
-						friend.reference.sendMessage(message, "text");
-						break;
+				//Meter mi mensaje en mi textarea
+				textArea.append(friends[0].id+" says:\n");
+				textArea.append(message+"\n");
+				textArea.setCaretPosition(textArea.getDocument().getLength());
+				//textArea.updateUI();
+				
+				int i;
+				System.out.println(friends.length);
+				for(i=0;i<friends.length;i++){
+					if(friends[i].id.equals(name)){
+						//Mandar el mensaje al otro cliente
+						System.out.println(friends[i].reference);
+						friends[i].reference.sendMessage(message, "text");
+						
+//						//Meter mi mensaje en mi textarea
+//						textArea.append(friends[0].id+" says:\n");
+//						textArea.append(message+"\n");
+//						textArea.setCaretPosition(textArea.getDocument().getLength());
+						
+						//break;
 					}
 				}
+				textArea_1.setText("");
 			}
 		});
+		
+		
 		btnSend.setBackground(new Color(60, 179, 113));
 		btnSend.setBounds(503, 337, 71, 64);
 		add(btnSend);
 		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setLineWrap(true);
-		textArea_1.setBounds(240, 337, 265, 64);
-		add(textArea_1);
-		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 40, 236, 361);
+		tabbedPane.setBackground(new Color(144, 238, 144));
+		tabbedPane.setBounds(0, 40, 242, 361);
 		add(tabbedPane);
 		
 		JPanel panel_4 = new JPanel();
@@ -191,8 +214,11 @@ public class Message extends JPanel {
 				String actual = textField.getText();
 				String newPass = textField_2.getText();
 				
+				System.out.println(friends[0].id+" quiere cambiar de "+actual+" a "+newPass);
+				
 				if(server.changePassword(actual, newPass, friends[0].id)){
 					Popup p = new Popup("Your password has been changed", v);
+					p.setVisible(true);
 				}
 			}
 		});

@@ -103,8 +103,11 @@ public class EnterRegister extends JPanel {
 				char[] pass = passwordField.getPassword();
 				String password = String.valueOf(pass);
 				
+				callBack.userId=name;
+				callBack.userPassword=password;
+				
 				SafeUser[] friends;
-				friends=server.logIn(name, password, "ip", client);
+				friends=server.logIn(name, password, client);
 				if(friends.length>0 && friends[0].id.equals("NULL")){
 					System.out.println("Error en el loggeo");
 					Popup error = new Popup("Can't log in, maybe your credentials are incorrect", v);
@@ -113,6 +116,7 @@ public class EnterRegister extends JPanel {
 				else{
 					callBack.userId=friends[0].id;
 					callBack.userPassword=password;
+					callBack.friends=friends;
 					int i;
 					for(i=0;i<friends.length;i++){
 						System.out.println(friends[i].id);
@@ -201,7 +205,7 @@ public class EnterRegister extends JPanel {
 				User user = new User(name, password, completeName, image);
 				if(server.register(user)){
 					SafeUser[] friends;
-					friends=server.logIn(name, password, "ip", client);
+					friends=server.logIn(name, password, client);
 					int i;
 					for(i=0;i<friends.length;i++){
 						System.out.println(friends[i].id);

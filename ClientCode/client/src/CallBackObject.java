@@ -1,5 +1,7 @@
 
 
+import java.util.Scanner;
+
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
@@ -16,6 +18,8 @@ public class CallBackObject extends  ClientInterfacePOA{
 	String userPassword;
 	String userId;
 	JTextArea textArea;
+	SafeUser[] friends;
+	
 	
 	public CallBackObject(JFrame inicio, ServerInterface server){
 		this.inicio=inicio;
@@ -39,32 +43,42 @@ public class CallBackObject extends  ClientInterfacePOA{
 		// Notificar que el usuario se ha conectado
 		System.out.println("User "+connectedUser.id+" has been conected");
 		
+		//Actualizar mi lista de amigos conectados
+		SafeUser[] newFriends = new SafeUser[friends.length+1];
+		int i;
+		for(i=0;i<friends.length;i++){
+			newFriends[i]=friends[i];
+			System.out.println(newFriends[i].id);
+		}
+		newFriends[friends.length]=connectedUser;
+		System.out.println(newFriends[friends.length].id);
+		
+		friends=newFriends;
+		for(i=0;i<friends.length;i++){
+			System.out.println(friends[i].id);
+		}
+		
 		Popup p = new Popup("User "+connectedUser.id+" has been conected", inicio);
 		p.setVisible(true);
 	}
 
 	@Override
-	public boolean receiveFriendRequest(SafeUser friend) {
+	public void receiveFriendRequest(String friend) {
 		// Indicar que se ha recibido una petición de amistad y aceptarla o no
-//        Scanner entrada=new Scanner(System.in);
-//
-//        System.out.println("User "+user.id+" sent you a friend request\n ¿Do you want to accept it (y/n)?");
-//        String respuesta=entrada.next();
-        
-        Boolean response = false;
-        PopupButtons p = new PopupButtons("User "+friend.id+" sent you a friend request", inicio, response);
-		p.setVisible(true);
-        
-		server.notifyAnswerRequest(userId, userPassword, friend.id, response);
 		
-        return response;
+        System.out.println(userId+" "+userPassword);
+        PopupButtons p = new PopupButtons("User "+friend+" sent you a friend request", inicio, userId, userPassword, friend, server);
+		p.setVisible(true);
+		
 	}
 	
 	public boolean sendMessage(String message, String type){
 		if(type.equals("text")){
+			System.out.println(userId+" says:\n"+message);
 			textArea.append(userId+" says:\n");
 			textArea.append(message+"\n");
 			textArea.setCaretPosition(textArea.getDocument().getLength());
+			textArea.updateUI();
 			return true;
 		}
 		return false;
