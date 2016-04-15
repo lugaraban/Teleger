@@ -229,7 +229,7 @@ void teleger::_objref_ClientInterface::notifyConnection(const ::teleger::SafeUse
 // Code for teleger::ClientInterface::receiveFriendRequest
 
 // Proxy call descriptor class. Mangled signature:
-//  _cboolean_i_cteleger_mSafeUser
+//  void_i_cstring
 class _0RL_cd_3a4e01c462c0e4fe_20000000
   : public omniCallDescriptor
 {
@@ -243,40 +243,24 @@ public:
   void marshalArguments(cdrStream&);
   void unmarshalArguments(cdrStream&);
 
-  void unmarshalReturnedValues(cdrStream&);
-  void marshalReturnedValues(cdrStream&);
-  
+    
   
   static const char* const _user_exns[];
 
-  teleger::SafeUser_var arg_0_;
-  const teleger::SafeUser* arg_0;
-  ::CORBA::Boolean result;
+  ::CORBA::String_var arg_0_;
+  const char* arg_0;
 };
 
 void _0RL_cd_3a4e01c462c0e4fe_20000000::marshalArguments(cdrStream& _n)
 {
-  (const teleger::SafeUser&) *arg_0 >>= _n;
+  _n.marshalString(arg_0,0);
 
 }
 
 void _0RL_cd_3a4e01c462c0e4fe_20000000::unmarshalArguments(cdrStream& _n)
 {
-  arg_0_ = new teleger::SafeUser;
-  (teleger::SafeUser&)arg_0_ <<= _n;
-  arg_0 = &arg_0_.in();
-
-}
-
-void _0RL_cd_3a4e01c462c0e4fe_20000000::marshalReturnedValues(cdrStream& _n)
-{
-  _n.marshalBoolean(result);
-
-}
-
-void _0RL_cd_3a4e01c462c0e4fe_20000000::unmarshalReturnedValues(cdrStream& _n)
-{
-  result = _n.unmarshalBoolean();
+  arg_0_ = _n.unmarshalString(0);
+  arg_0 = arg_0_.in();
 
 }
 
@@ -290,18 +274,18 @@ _0RL_lcfn_3a4e01c462c0e4fe_30000000(omniCallDescriptor* cd, omniServant* svnt)
 {
   _0RL_cd_3a4e01c462c0e4fe_20000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_20000000*)cd;
   teleger::_impl_ClientInterface* impl = (teleger::_impl_ClientInterface*) svnt->_ptrToInterface(teleger::ClientInterface::_PD_repoId);
-  tcd->result = impl->receiveFriendRequest(*tcd->arg_0);
+  impl->receiveFriendRequest(tcd->arg_0);
 
 
 }
 
-::CORBA::Boolean teleger::_objref_ClientInterface::receiveFriendRequest(const ::teleger::SafeUser& user)
+void teleger::_objref_ClientInterface::receiveFriendRequest(const char* user)
 {
   _0RL_cd_3a4e01c462c0e4fe_20000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_30000000, "receiveFriendRequest", 21);
-  _call_desc.arg_0 = &(::teleger::SafeUser&) user;
+  _call_desc.arg_0 = user;
 
   _invoke(_call_desc);
-  return _call_desc.result;
+
 
 
 }
@@ -663,7 +647,7 @@ _0RL_lcfn_3a4e01c462c0e4fe_70000000(omniCallDescriptor* cd, omniServant* svnt)
 // Code for teleger::ServerInterface::logIn
 
 // Proxy call descriptor class. Mangled signature:
-//  _cteleger_muserFriends_i_cstring_i_cstring_i_cstring_i_cteleger_mClientInterface
+//  _cteleger_muserFriends_i_cstring_i_cstring_i_cteleger_mClientInterface
 class _0RL_cd_3a4e01c462c0e4fe_80000000
   : public omniCallDescriptor
 {
@@ -687,10 +671,8 @@ public:
   const char* arg_0;
   ::CORBA::String_var arg_1_;
   const char* arg_1;
-  ::CORBA::String_var arg_2_;
-  const char* arg_2;
-  teleger::ClientInterface_var arg_3_;
-  teleger::ClientInterface_ptr arg_3;
+  teleger::ClientInterface_var arg_2_;
+  teleger::ClientInterface_ptr arg_2;
   teleger::userFriends_var result;
 };
 
@@ -698,8 +680,7 @@ void _0RL_cd_3a4e01c462c0e4fe_80000000::marshalArguments(cdrStream& _n)
 {
   _n.marshalString(arg_0,0);
   _n.marshalString(arg_1,0);
-  _n.marshalString(arg_2,0);
-  teleger::ClientInterface_Helper::marshalObjRef(arg_3,_n);
+  teleger::ClientInterface_Helper::marshalObjRef(arg_2,_n);
 
 }
 
@@ -709,10 +690,8 @@ void _0RL_cd_3a4e01c462c0e4fe_80000000::unmarshalArguments(cdrStream& _n)
   arg_0 = arg_0_.in();
   arg_1_ = _n.unmarshalString(0);
   arg_1 = arg_1_.in();
-  arg_2_ = _n.unmarshalString(0);
+  arg_2_ = teleger::ClientInterface_Helper::unmarshalObjRef(_n);
   arg_2 = arg_2_.in();
-  arg_3_ = teleger::ClientInterface_Helper::unmarshalObjRef(_n);
-  arg_3 = arg_3_.in();
 
 }
 
@@ -739,18 +718,17 @@ _0RL_lcfn_3a4e01c462c0e4fe_90000000(omniCallDescriptor* cd, omniServant* svnt)
 {
   _0RL_cd_3a4e01c462c0e4fe_80000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_80000000*)cd;
   teleger::_impl_ServerInterface* impl = (teleger::_impl_ServerInterface*) svnt->_ptrToInterface(teleger::ServerInterface::_PD_repoId);
-  tcd->result = impl->logIn(tcd->arg_0, tcd->arg_1, tcd->arg_2, tcd->arg_3);
+  tcd->result = impl->logIn(tcd->arg_0, tcd->arg_1, tcd->arg_2);
 
 
 }
 
-teleger::userFriends* teleger::_objref_ServerInterface::logIn(const char* userId, const char* userPassword, const char* ip, ::teleger::ClientInterface_ptr client)
+teleger::userFriends* teleger::_objref_ServerInterface::logIn(const char* userId, const char* userPassword, ::teleger::ClientInterface_ptr client)
 {
   _0RL_cd_3a4e01c462c0e4fe_80000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_90000000, "logIn", 6);
   _call_desc.arg_0 = userId;
   _call_desc.arg_1 = userPassword;
-  _call_desc.arg_2 = ip;
-  _call_desc.arg_3 = client;
+  _call_desc.arg_2 = client;
 
   _invoke(_call_desc);
   return _call_desc.result._retn();

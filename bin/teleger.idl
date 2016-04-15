@@ -21,13 +21,13 @@ module teleger{
 
 	interface ClientInterface{
 		void notifyConnection(in SafeUser connectedUser);
-		boolean receiveFriendRequest(in SafeUser user);
+		void receiveFriendRequest(in string user);
 		boolean sendMessage(in string message,in string type);
 	};
 
 	interface ServerInterface{
 		boolean register(in User userData);
-		userFriends logIn(in string userId, in string userPassword, in string ip, in ClientInterface client);
+		userFriends logIn(in string userId, in string userPassword, in ClientInterface client);
 		boolean logOut(in string userId, in string userPassword);
 		userFriends searchNewFriends(in string name);
 		void sendRequestForFriend(in SafeUser user, in string friend);

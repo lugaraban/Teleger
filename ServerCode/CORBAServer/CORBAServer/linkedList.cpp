@@ -5,16 +5,16 @@
 linkedList::linkedList()
 {
 	first = (struct node *)malloc(sizeof(struct node));
-	first->user = * new teleger::SafeUser();
 	first->user.id= "23184093217598021393214432";
 	first->next = NULL;
 }
-bool linkedList::_insert(teleger::SafeUser user, teleger::ClientInterface_ptr clientObject) {
+
+bool linkedList::_insert(serverSideUser user, teleger::ClientInterface_ptr clientObject) {
 	if (first->next == NULL) {
 		struct node * addedNode;
 		addedNode = (struct node *)malloc(sizeof(struct node));
 		addedNode->user = user;
-		addedNode->clientObject = teleger::ClientInterface::_duplicate(clientObject);
+		addedNode->reference = teleger::ClientInterface::_duplicate(clientObject);
 		addedNode->next = NULL;
 		first->next = addedNode;
 		return true;
@@ -23,7 +23,7 @@ bool linkedList::_insert(teleger::SafeUser user, teleger::ClientInterface_ptr cl
 		struct node * addedNode;
 		addedNode = (struct node *)malloc(sizeof(struct node));
 		addedNode->user = user;
-		addedNode->clientObject = teleger::ClientInterface::_duplicate(clientObject);
+		addedNode->reference = teleger::ClientInterface::_duplicate(clientObject);
 		addedNode->next = NULL;
 		iterator = first;
 		while (iterator->next != NULL) {
@@ -45,6 +45,7 @@ bool linkedList::_delete(const char * id) {
 		if (strcmp(iterator->next->user.id, id) == 0) {
 			std::cout << "borro " << iterator->next->user.id << std::endl;
 			tmp = iterator->next->next;
+			iterator->next->user.id = "23184093217598021393214432";
 			free(iterator->next);
 			iterator->next = tmp;
 			return true;

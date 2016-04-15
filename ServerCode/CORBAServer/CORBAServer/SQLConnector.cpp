@@ -50,7 +50,7 @@ bool SQLConnector::registerNewUser(teleger::User user) {
 	}
 }
 
-void SQLConnector::getUserData(const char * id, const char * pass, teleger::SafeUser ** user)
+void SQLConnector::getUserData(const char * id, const char * pass, serverSideUser ** user)
 {
 	char * statement;
 	statement = (char *)malloc(200 * (sizeof(char)));
@@ -82,7 +82,6 @@ bool SQLConnector::login(const char * id, const  char * pass)
 	sqlite3_open(routeToFile, &db);
 	rc = sqlite3_get_table(db, reinterpret_cast<const char *>(statement), &results, &nRow, &nColumn, &zErrMsg);
 	sqlite3_close(db);
-	//cout << "fixen algo" << endl;
 	free(&zErrMsg);
 	free(statement);
 	if (nRow>0) 
@@ -148,7 +147,7 @@ void SQLConnector::searchNewFriends(const char * userName, int * friendNumber, t
 	*friendNumber = z;
 }
 
-void SQLConnector::getFriendRequests(const char * userName, int * friendNumber, teleger::userFriends ** friendsArray)
+void SQLConnector::getFriendRequests(const char * userName, int * friendNumber, serverSideUser ** friendsArray)
 {
 	char * statement;
 	statement = (char *)malloc(200 * (sizeof(char)));
@@ -160,11 +159,12 @@ void SQLConnector::getFriendRequests(const char * userName, int * friendNumber, 
 	rc = sqlite3_get_table(db, reinterpret_cast<const char *>(statement), &results, &nRow, &nColumn, &zErrMsg);
 	std::cout << "erro " << rc << std::endl;
 	int i, z = 0;
-	(*friendsArray)->length(nColumn*nRow + 1);
+	//(*friendsArray)->length(nColumn*nRow + 1);
+	(*friendsArray) = (struct serverSideUser *)malloc(nRow*nColumn*sizeof(struct serverSideUser));
 	for (i = 3; i < (nRow + 1)*nColumn; i += 3) {
-		(*friendsArray)->get_buffer()[i - 3].id = results[i];
-		(*friendsArray)->get_buffer()[i - 3].id = results[i + 1];
-		(*friendsArray)->get_buffer()[i - 3].id = results[i + 2];
+		(*friendsArray)[i - 3].id = results[i];
+		(*friendsArray)[i - 3].name = results[i + 1];
+		(*friendsArray)[i - 3].image = results[i + 2];
 		z++;
 	}
 	sqlite3_close(db);
