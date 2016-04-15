@@ -12,8 +12,8 @@ private:
 public:
 	linkedList();
 	bool _insert(teleger::SafeUser, teleger::ClientInterface_ptr clientObject);
-	bool _delete(char * id);
-	teleger::SafeUser search(char * id);
+	bool _delete(const char * id);
+	struct node * search(const char * id);
 	~linkedList();
 };
 

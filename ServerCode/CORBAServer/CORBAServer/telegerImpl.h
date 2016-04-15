@@ -9,12 +9,10 @@ using namespace std;
 class telegerImpl : public POA_teleger::ServerInterface
 {
 private:
-	linkedList * lList;
 	SQLConnector * connector;
-	omni_mutex * mutex;
 public:
 	inline telegerImpl(){};
-	virtual void telegerImplInit(linkedList * onlineClient, omni_mutex * mutex, sqlite3 *db);
+	virtual void telegerImplInit();
 	virtual ::CORBA::Boolean _cxx_register(const teleger::User& userData);
 	virtual userFriends* logIn(const char* userId, const char* userPassword, const char* ip, ::teleger::ClientInterface_ptr client);
 	virtual ::CORBA::Boolean logOut(const char* userId, const char* userPassword);

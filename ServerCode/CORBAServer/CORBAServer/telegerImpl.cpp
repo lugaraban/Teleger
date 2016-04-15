@@ -3,24 +3,28 @@
 
 using namespace std;
 
-void telegerImpl::telegerImplInit(linkedList * onlineClient, omni_mutex * mutex, sqlite3 *db)
+void telegerImpl::telegerImplInit()
 {
 	//Initialize the sql connector
-	connector = new SQLConnector;
-	connector->startConnector(mutex,db);
-	mutex->trylock();
-	lList = onlineClient;
-	telegerImpl::mutex = mutex;
-	mutex->unlock();
+	connector = new SQLConnector();
+	connector->startConnector();
+//	mutex->trylock();
+	//lList = onlineClient;
+	//telegerImpl::mtx = mtx;
+//	mutex->unlock();
 }
 
 ::CORBA::Boolean telegerImpl::_cxx_register(const teleger::User& userData)
 {
-	bool notRegistered = connector->registerNewUser(userData);
-	if(!notRegistered)
+	bool Registered = connector->registerNewUser(userData);
+	if (!Registered) {
+		delete(connector);
 		return false;
-	else
+	}
+	else {
+		delete(connector);
 		return true;
+	}
 
 }
 

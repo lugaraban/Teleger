@@ -12,24 +12,30 @@ bool linkedList::_insert(teleger::SafeUser user, teleger::ClientInterface_ptr cl
 		struct node * addedNode;
 		addedNode = (struct node *)malloc(sizeof(struct node));
 		addedNode->user = user;
-		addedNode->clientObject = clientObject;
+		addedNode->clientObject = teleger::ClientInterface::_duplicate(clientObject);
+		addedNode->next = NULL;
 		first->next = addedNode;
 		return true;
 	}else{
 		struct node * iterator;
 		struct node * addedNode;
 		addedNode = (struct node *)malloc(sizeof(struct node));
+		addedNode->user = user;
+		addedNode->clientObject = teleger::ClientInterface::_duplicate(clientObject);
+		addedNode->next = NULL;
 		iterator = first;
 		while (iterator->next != NULL) {
-			iterator = iterator->next;
+			if (strcmp(iterator->next->user.id, user.id) == 0)
+				return true;
+			else
+				iterator = iterator->next;
 		}
-		addedNode->user = user;
 		iterator->next = addedNode;
 		return true;
 	}
 	return false;
 }
-bool linkedList::_delete(char * id) {
+bool linkedList::_delete(const char * id) {
 	struct node * iterator;
 	struct node * tmp;
 	iterator = first;
@@ -44,15 +50,29 @@ bool linkedList::_delete(char * id) {
 	}
 	return 0;
 }
-teleger::SafeUser linkedList::search(char * id) {
-	struct node * iterator;
+struct node * linkedList::search(const char * id) {
+	struct node * iterator=nullptr;
+	struct node * dummy = nullptr;
+	dummy = (struct node *)malloc(sizeof(struct node));
+	dummy->user = * new teleger::SafeUser();
+	dummy->user.id = "23184093217598021393214432";
+	dummy->next = NULL;
+
 	iterator = first;
+	std::cout << "id do iterator " << id << std::endl;
 	while (iterator->next != NULL) {
 		if (strcmp(iterator->next->user.id, id) == 0) {
-			return iterator->next->user;
+			return iterator->next;
+		}
+		else {
+			if (iterator->next != NULL)
+				iterator = iterator->next;
 		}
 	}
-	return * new teleger::SafeUser;
+	//if (strcmp(iterator->user.id, id) == 0)
+	//	return iterator;
+	//else
+		return  dummy;
 }
 linkedList::~linkedList()
 {
