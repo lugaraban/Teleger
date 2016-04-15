@@ -40,7 +40,7 @@ teleger::SafeUser::operator>>= (cdrStream &_n) const
   _n.marshalString(id,0);
   _n.marshalString(name,0);
   _n.marshalString(image,0);
-  _n.marshalString(ip,0);
+  ClientInterface_Helper::marshalObjRef(reference,_n);
 
 }
 
@@ -50,7 +50,7 @@ teleger::SafeUser::operator<<= (cdrStream &_n)
   id = _n.unmarshalString(0);
   name = _n.unmarshalString(0);
   image = _n.unmarshalString(0);
-  ip = _n.unmarshalString(0);
+  reference = ClientInterface_Helper::unmarshalObjRef(_n);
 
 }
 
@@ -308,10 +308,10 @@ _0RL_lcfn_3a4e01c462c0e4fe_30000000(omniCallDescriptor* cd, omniServant* svnt)
 
 
 //
-// Code for teleger::ClientInterface::notifyAnswerRequest
+// Code for teleger::ClientInterface::sendMessage
 
 // Proxy call descriptor class. Mangled signature:
-//  void_i_cteleger_mSafeUser_i_cboolean
+//  _cboolean_i_cstring_i_cstring
 class _0RL_cd_3a4e01c462c0e4fe_40000000
   : public omniCallDescriptor
 {
@@ -325,28 +325,44 @@ public:
   void marshalArguments(cdrStream&);
   void unmarshalArguments(cdrStream&);
 
-    
+  void unmarshalReturnedValues(cdrStream&);
+  void marshalReturnedValues(cdrStream&);
+  
   
   static const char* const _user_exns[];
 
-  teleger::SafeUser_var arg_0_;
-  const teleger::SafeUser* arg_0;
-  ::CORBA::Boolean arg_1;
+  ::CORBA::String_var arg_0_;
+  const char* arg_0;
+  ::CORBA::String_var arg_1_;
+  const char* arg_1;
+  ::CORBA::Boolean result;
 };
 
 void _0RL_cd_3a4e01c462c0e4fe_40000000::marshalArguments(cdrStream& _n)
 {
-  (const teleger::SafeUser&) *arg_0 >>= _n;
-  _n.marshalBoolean(arg_1);
+  _n.marshalString(arg_0,0);
+  _n.marshalString(arg_1,0);
 
 }
 
 void _0RL_cd_3a4e01c462c0e4fe_40000000::unmarshalArguments(cdrStream& _n)
 {
-  arg_0_ = new teleger::SafeUser;
-  (teleger::SafeUser&)arg_0_ <<= _n;
-  arg_0 = &arg_0_.in();
-  arg_1 = _n.unmarshalBoolean();
+  arg_0_ = _n.unmarshalString(0);
+  arg_0 = arg_0_.in();
+  arg_1_ = _n.unmarshalString(0);
+  arg_1 = arg_1_.in();
+
+}
+
+void _0RL_cd_3a4e01c462c0e4fe_40000000::marshalReturnedValues(cdrStream& _n)
+{
+  _n.marshalBoolean(result);
+
+}
+
+void _0RL_cd_3a4e01c462c0e4fe_40000000::unmarshalReturnedValues(cdrStream& _n)
+{
+  result = _n.unmarshalBoolean();
 
 }
 
@@ -360,19 +376,19 @@ _0RL_lcfn_3a4e01c462c0e4fe_50000000(omniCallDescriptor* cd, omniServant* svnt)
 {
   _0RL_cd_3a4e01c462c0e4fe_40000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_40000000*)cd;
   teleger::_impl_ClientInterface* impl = (teleger::_impl_ClientInterface*) svnt->_ptrToInterface(teleger::ClientInterface::_PD_repoId);
-  impl->notifyAnswerRequest(*tcd->arg_0, tcd->arg_1);
+  tcd->result = impl->sendMessage(tcd->arg_0, tcd->arg_1);
 
 
 }
 
-void teleger::_objref_ClientInterface::notifyAnswerRequest(const ::teleger::SafeUser& connectedUser, ::CORBA::Boolean acceptance)
+::CORBA::Boolean teleger::_objref_ClientInterface::sendMessage(const char* message, const char* type)
 {
-  _0RL_cd_3a4e01c462c0e4fe_40000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_50000000, "notifyAnswerRequest", 20);
-  _call_desc.arg_0 = &(::teleger::SafeUser&) connectedUser;
-  _call_desc.arg_1 = acceptance;
+  _0RL_cd_3a4e01c462c0e4fe_40000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_50000000, "sendMessage", 12);
+  _call_desc.arg_0 = message;
+  _call_desc.arg_1 = type;
 
   _invoke(_call_desc);
-
+  return _call_desc.result;
 
 
 }
@@ -422,9 +438,9 @@ teleger::_impl_ClientInterface::_dispatch(omniCallHandle& _handle)
     return 1;
   }
 
-  if (omni::strMatch(op, "notifyAnswerRequest")) {
+  if (omni::strMatch(op, "sendMessage")) {
 
-    _0RL_cd_3a4e01c462c0e4fe_40000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_50000000, "notifyAnswerRequest", 20, 1);
+    _0RL_cd_3a4e01c462c0e4fe_40000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_50000000, "sendMessage", 12, 1);
     
     _handle.upcall(this,_call_desc);
     return 1;
@@ -683,7 +699,7 @@ void _0RL_cd_3a4e01c462c0e4fe_80000000::marshalArguments(cdrStream& _n)
   _n.marshalString(arg_0,0);
   _n.marshalString(arg_1,0);
   _n.marshalString(arg_2,0);
-  teleger::ClientInterface::_marshalObjRef(arg_3,_n);
+  teleger::ClientInterface_Helper::marshalObjRef(arg_3,_n);
 
 }
 
@@ -695,7 +711,7 @@ void _0RL_cd_3a4e01c462c0e4fe_80000000::unmarshalArguments(cdrStream& _n)
   arg_1 = arg_1_.in();
   arg_2_ = _n.unmarshalString(0);
   arg_2 = arg_2_.in();
-  arg_3_ = teleger::ClientInterface::_unmarshalObjRef(_n);
+  arg_3_ = teleger::ClientInterface_Helper::unmarshalObjRef(_n);
   arg_3 = arg_3_.in();
 
 }
@@ -746,71 +762,11 @@ teleger::userFriends* teleger::_objref_ServerInterface::logIn(const char* userId
 //
 // Code for teleger::ServerInterface::logOut
 
-// Proxy call descriptor class. Mangled signature:
-//  _cboolean_i_cstring_i_cstring
-class _0RL_cd_3a4e01c462c0e4fe_a0000000
-  : public omniCallDescriptor
-{
-public:
-  inline _0RL_cd_3a4e01c462c0e4fe_a0000000(LocalCallFn lcfn, const char* op_, size_t oplen, _CORBA_Boolean upcall=0)
-    : omniCallDescriptor(lcfn, op_, oplen, 0, _user_exns, 0, upcall)
-  {
-    
-  }
-  
-  void marshalArguments(cdrStream&);
-  void unmarshalArguments(cdrStream&);
-
-  void unmarshalReturnedValues(cdrStream&);
-  void marshalReturnedValues(cdrStream&);
-  
-  
-  static const char* const _user_exns[];
-
-  ::CORBA::String_var arg_0_;
-  const char* arg_0;
-  ::CORBA::String_var arg_1_;
-  const char* arg_1;
-  ::CORBA::Boolean result;
-};
-
-void _0RL_cd_3a4e01c462c0e4fe_a0000000::marshalArguments(cdrStream& _n)
-{
-  _n.marshalString(arg_0,0);
-  _n.marshalString(arg_1,0);
-
-}
-
-void _0RL_cd_3a4e01c462c0e4fe_a0000000::unmarshalArguments(cdrStream& _n)
-{
-  arg_0_ = _n.unmarshalString(0);
-  arg_0 = arg_0_.in();
-  arg_1_ = _n.unmarshalString(0);
-  arg_1 = arg_1_.in();
-
-}
-
-void _0RL_cd_3a4e01c462c0e4fe_a0000000::marshalReturnedValues(cdrStream& _n)
-{
-  _n.marshalBoolean(result);
-
-}
-
-void _0RL_cd_3a4e01c462c0e4fe_a0000000::unmarshalReturnedValues(cdrStream& _n)
-{
-  result = _n.unmarshalBoolean();
-
-}
-
-const char* const _0RL_cd_3a4e01c462c0e4fe_a0000000::_user_exns[] = {
-  0
-};
-
 // Local call call-back function.
 static void
-_0RL_lcfn_3a4e01c462c0e4fe_b0000000(omniCallDescriptor* cd, omniServant* svnt)
+_0RL_lcfn_3a4e01c462c0e4fe_a0000000(omniCallDescriptor* cd, omniServant* svnt)
 {
-  _0RL_cd_3a4e01c462c0e4fe_a0000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_a0000000*)cd;
+  _0RL_cd_3a4e01c462c0e4fe_40000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_40000000*)cd;
   teleger::_impl_ServerInterface* impl = (teleger::_impl_ServerInterface*) svnt->_ptrToInterface(teleger::ServerInterface::_PD_repoId);
   tcd->result = impl->logOut(tcd->arg_0, tcd->arg_1);
 
@@ -819,7 +775,7 @@ _0RL_lcfn_3a4e01c462c0e4fe_b0000000(omniCallDescriptor* cd, omniServant* svnt)
 
 ::CORBA::Boolean teleger::_objref_ServerInterface::logOut(const char* userId, const char* userPassword)
 {
-  _0RL_cd_3a4e01c462c0e4fe_a0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_b0000000, "logOut", 7);
+  _0RL_cd_3a4e01c462c0e4fe_40000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_a0000000, "logOut", 7);
   _call_desc.arg_0 = userId;
   _call_desc.arg_1 = userPassword;
 
@@ -835,11 +791,11 @@ _0RL_lcfn_3a4e01c462c0e4fe_b0000000(omniCallDescriptor* cd, omniServant* svnt)
 
 // Proxy call descriptor class. Mangled signature:
 //  _cteleger_muserFriends_i_cstring
-class _0RL_cd_3a4e01c462c0e4fe_c0000000
+class _0RL_cd_3a4e01c462c0e4fe_b0000000
   : public omniCallDescriptor
 {
 public:
-  inline _0RL_cd_3a4e01c462c0e4fe_c0000000(LocalCallFn lcfn, const char* op_, size_t oplen, _CORBA_Boolean upcall=0)
+  inline _0RL_cd_3a4e01c462c0e4fe_b0000000(LocalCallFn lcfn, const char* op_, size_t oplen, _CORBA_Boolean upcall=0)
     : omniCallDescriptor(lcfn, op_, oplen, 0, _user_exns, 0, upcall)
   {
     
@@ -859,41 +815,41 @@ public:
   teleger::userFriends_var result;
 };
 
-void _0RL_cd_3a4e01c462c0e4fe_c0000000::marshalArguments(cdrStream& _n)
+void _0RL_cd_3a4e01c462c0e4fe_b0000000::marshalArguments(cdrStream& _n)
 {
   _n.marshalString(arg_0,0);
 
 }
 
-void _0RL_cd_3a4e01c462c0e4fe_c0000000::unmarshalArguments(cdrStream& _n)
+void _0RL_cd_3a4e01c462c0e4fe_b0000000::unmarshalArguments(cdrStream& _n)
 {
   arg_0_ = _n.unmarshalString(0);
   arg_0 = arg_0_.in();
 
 }
 
-void _0RL_cd_3a4e01c462c0e4fe_c0000000::marshalReturnedValues(cdrStream& _n)
+void _0RL_cd_3a4e01c462c0e4fe_b0000000::marshalReturnedValues(cdrStream& _n)
 {
   (const teleger::userFriends&) result >>= _n;
 
 }
 
-void _0RL_cd_3a4e01c462c0e4fe_c0000000::unmarshalReturnedValues(cdrStream& _n)
+void _0RL_cd_3a4e01c462c0e4fe_b0000000::unmarshalReturnedValues(cdrStream& _n)
 {
   result = new teleger::userFriends;
   (teleger::userFriends&)result <<= _n;
 
 }
 
-const char* const _0RL_cd_3a4e01c462c0e4fe_c0000000::_user_exns[] = {
+const char* const _0RL_cd_3a4e01c462c0e4fe_b0000000::_user_exns[] = {
   0
 };
 
 // Local call call-back function.
 static void
-_0RL_lcfn_3a4e01c462c0e4fe_d0000000(omniCallDescriptor* cd, omniServant* svnt)
+_0RL_lcfn_3a4e01c462c0e4fe_c0000000(omniCallDescriptor* cd, omniServant* svnt)
 {
-  _0RL_cd_3a4e01c462c0e4fe_c0000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_c0000000*)cd;
+  _0RL_cd_3a4e01c462c0e4fe_b0000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_b0000000*)cd;
   teleger::_impl_ServerInterface* impl = (teleger::_impl_ServerInterface*) svnt->_ptrToInterface(teleger::ServerInterface::_PD_repoId);
   tcd->result = impl->searchNewFriends(tcd->arg_0);
 
@@ -902,7 +858,7 @@ _0RL_lcfn_3a4e01c462c0e4fe_d0000000(omniCallDescriptor* cd, omniServant* svnt)
 
 teleger::userFriends* teleger::_objref_ServerInterface::searchNewFriends(const char* name)
 {
-  _0RL_cd_3a4e01c462c0e4fe_c0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_d0000000, "searchNewFriends", 17);
+  _0RL_cd_3a4e01c462c0e4fe_b0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_c0000000, "searchNewFriends", 17);
   _call_desc.arg_0 = name;
 
   _invoke(_call_desc);
@@ -916,12 +872,12 @@ teleger::userFriends* teleger::_objref_ServerInterface::searchNewFriends(const c
 // Code for teleger::ServerInterface::sendRequestForFriend
 
 // Proxy call descriptor class. Mangled signature:
-//  void_i_cteleger_mSafeUser_i_cteleger_mSafeUser
-class _0RL_cd_3a4e01c462c0e4fe_e0000000
+//  void_i_cteleger_mSafeUser_i_cstring
+class _0RL_cd_3a4e01c462c0e4fe_d0000000
   : public omniCallDescriptor
 {
 public:
-  inline _0RL_cd_3a4e01c462c0e4fe_e0000000(LocalCallFn lcfn, const char* op_, size_t oplen, _CORBA_Boolean upcall=0)
+  inline _0RL_cd_3a4e01c462c0e4fe_d0000000(LocalCallFn lcfn, const char* op_, size_t oplen, _CORBA_Boolean upcall=0)
     : omniCallDescriptor(lcfn, op_, oplen, 0, _user_exns, 0, upcall)
   {
     
@@ -936,51 +892,225 @@ public:
 
   teleger::SafeUser_var arg_0_;
   const teleger::SafeUser* arg_0;
-  teleger::SafeUser_var arg_1_;
-  const teleger::SafeUser* arg_1;
+  ::CORBA::String_var arg_1_;
+  const char* arg_1;
 };
 
-void _0RL_cd_3a4e01c462c0e4fe_e0000000::marshalArguments(cdrStream& _n)
+void _0RL_cd_3a4e01c462c0e4fe_d0000000::marshalArguments(cdrStream& _n)
 {
   (const teleger::SafeUser&) *arg_0 >>= _n;
-  (const teleger::SafeUser&) *arg_1 >>= _n;
+  _n.marshalString(arg_1,0);
 
 }
 
-void _0RL_cd_3a4e01c462c0e4fe_e0000000::unmarshalArguments(cdrStream& _n)
+void _0RL_cd_3a4e01c462c0e4fe_d0000000::unmarshalArguments(cdrStream& _n)
 {
   arg_0_ = new teleger::SafeUser;
   (teleger::SafeUser&)arg_0_ <<= _n;
   arg_0 = &arg_0_.in();
-  arg_1_ = new teleger::SafeUser;
-  (teleger::SafeUser&)arg_1_ <<= _n;
-  arg_1 = &arg_1_.in();
+  arg_1_ = _n.unmarshalString(0);
+  arg_1 = arg_1_.in();
 
 }
 
-const char* const _0RL_cd_3a4e01c462c0e4fe_e0000000::_user_exns[] = {
+const char* const _0RL_cd_3a4e01c462c0e4fe_d0000000::_user_exns[] = {
   0
 };
 
 // Local call call-back function.
 static void
-_0RL_lcfn_3a4e01c462c0e4fe_f0000000(omniCallDescriptor* cd, omniServant* svnt)
+_0RL_lcfn_3a4e01c462c0e4fe_e0000000(omniCallDescriptor* cd, omniServant* svnt)
 {
-  _0RL_cd_3a4e01c462c0e4fe_e0000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_e0000000*)cd;
+  _0RL_cd_3a4e01c462c0e4fe_d0000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_d0000000*)cd;
   teleger::_impl_ServerInterface* impl = (teleger::_impl_ServerInterface*) svnt->_ptrToInterface(teleger::ServerInterface::_PD_repoId);
-  impl->sendRequestForFriend(*tcd->arg_0, *tcd->arg_1);
+  impl->sendRequestForFriend(*tcd->arg_0, tcd->arg_1);
 
 
 }
 
-void teleger::_objref_ServerInterface::sendRequestForFriend(const ::teleger::SafeUser& user, const ::teleger::SafeUser& _cxx_friend)
+void teleger::_objref_ServerInterface::sendRequestForFriend(const ::teleger::SafeUser& user, const char* _cxx_friend)
 {
-  _0RL_cd_3a4e01c462c0e4fe_e0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_f0000000, "sendRequestForFriend", 21);
+  _0RL_cd_3a4e01c462c0e4fe_d0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_e0000000, "sendRequestForFriend", 21);
   _call_desc.arg_0 = &(::teleger::SafeUser&) user;
-  _call_desc.arg_1 = &(::teleger::SafeUser&) _cxx_friend;
+  _call_desc.arg_1 = _cxx_friend;
 
   _invoke(_call_desc);
 
+
+
+}
+
+
+//
+// Code for teleger::ServerInterface::notifyAnswerRequest
+
+// Proxy call descriptor class. Mangled signature:
+//  void_i_cstring_i_cstring_i_cstring_i_cboolean
+class _0RL_cd_3a4e01c462c0e4fe_f0000000
+  : public omniCallDescriptor
+{
+public:
+  inline _0RL_cd_3a4e01c462c0e4fe_f0000000(LocalCallFn lcfn, const char* op_, size_t oplen, _CORBA_Boolean upcall=0)
+    : omniCallDescriptor(lcfn, op_, oplen, 0, _user_exns, 0, upcall)
+  {
+    
+  }
+  
+  void marshalArguments(cdrStream&);
+  void unmarshalArguments(cdrStream&);
+
+    
+  
+  static const char* const _user_exns[];
+
+  ::CORBA::String_var arg_0_;
+  const char* arg_0;
+  ::CORBA::String_var arg_1_;
+  const char* arg_1;
+  ::CORBA::String_var arg_2_;
+  const char* arg_2;
+  ::CORBA::Boolean arg_3;
+};
+
+void _0RL_cd_3a4e01c462c0e4fe_f0000000::marshalArguments(cdrStream& _n)
+{
+  _n.marshalString(arg_0,0);
+  _n.marshalString(arg_1,0);
+  _n.marshalString(arg_2,0);
+  _n.marshalBoolean(arg_3);
+
+}
+
+void _0RL_cd_3a4e01c462c0e4fe_f0000000::unmarshalArguments(cdrStream& _n)
+{
+  arg_0_ = _n.unmarshalString(0);
+  arg_0 = arg_0_.in();
+  arg_1_ = _n.unmarshalString(0);
+  arg_1 = arg_1_.in();
+  arg_2_ = _n.unmarshalString(0);
+  arg_2 = arg_2_.in();
+  arg_3 = _n.unmarshalBoolean();
+
+}
+
+const char* const _0RL_cd_3a4e01c462c0e4fe_f0000000::_user_exns[] = {
+  0
+};
+
+// Local call call-back function.
+static void
+_0RL_lcfn_3a4e01c462c0e4fe_01000000(omniCallDescriptor* cd, omniServant* svnt)
+{
+  _0RL_cd_3a4e01c462c0e4fe_f0000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_f0000000*)cd;
+  teleger::_impl_ServerInterface* impl = (teleger::_impl_ServerInterface*) svnt->_ptrToInterface(teleger::ServerInterface::_PD_repoId);
+  impl->notifyAnswerRequest(tcd->arg_0, tcd->arg_1, tcd->arg_2, tcd->arg_3);
+
+
+}
+
+void teleger::_objref_ServerInterface::notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance)
+{
+  _0RL_cd_3a4e01c462c0e4fe_f0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_01000000, "notifyAnswerRequest", 20);
+  _call_desc.arg_0 = connectedUser;
+  _call_desc.arg_1 = pass;
+  _call_desc.arg_2 = _cxx_friend;
+  _call_desc.arg_3 = acceptance;
+
+  _invoke(_call_desc);
+
+
+
+}
+
+
+//
+// Code for teleger::ServerInterface::changePassword
+
+// Proxy call descriptor class. Mangled signature:
+//  _cboolean_i_cstring_i_cstring_i_cstring
+class _0RL_cd_3a4e01c462c0e4fe_11000000
+  : public omniCallDescriptor
+{
+public:
+  inline _0RL_cd_3a4e01c462c0e4fe_11000000(LocalCallFn lcfn, const char* op_, size_t oplen, _CORBA_Boolean upcall=0)
+    : omniCallDescriptor(lcfn, op_, oplen, 0, _user_exns, 0, upcall)
+  {
+    
+  }
+  
+  void marshalArguments(cdrStream&);
+  void unmarshalArguments(cdrStream&);
+
+  void unmarshalReturnedValues(cdrStream&);
+  void marshalReturnedValues(cdrStream&);
+  
+  
+  static const char* const _user_exns[];
+
+  ::CORBA::String_var arg_0_;
+  const char* arg_0;
+  ::CORBA::String_var arg_1_;
+  const char* arg_1;
+  ::CORBA::String_var arg_2_;
+  const char* arg_2;
+  ::CORBA::Boolean result;
+};
+
+void _0RL_cd_3a4e01c462c0e4fe_11000000::marshalArguments(cdrStream& _n)
+{
+  _n.marshalString(arg_0,0);
+  _n.marshalString(arg_1,0);
+  _n.marshalString(arg_2,0);
+
+}
+
+void _0RL_cd_3a4e01c462c0e4fe_11000000::unmarshalArguments(cdrStream& _n)
+{
+  arg_0_ = _n.unmarshalString(0);
+  arg_0 = arg_0_.in();
+  arg_1_ = _n.unmarshalString(0);
+  arg_1 = arg_1_.in();
+  arg_2_ = _n.unmarshalString(0);
+  arg_2 = arg_2_.in();
+
+}
+
+void _0RL_cd_3a4e01c462c0e4fe_11000000::marshalReturnedValues(cdrStream& _n)
+{
+  _n.marshalBoolean(result);
+
+}
+
+void _0RL_cd_3a4e01c462c0e4fe_11000000::unmarshalReturnedValues(cdrStream& _n)
+{
+  result = _n.unmarshalBoolean();
+
+}
+
+const char* const _0RL_cd_3a4e01c462c0e4fe_11000000::_user_exns[] = {
+  0
+};
+
+// Local call call-back function.
+static void
+_0RL_lcfn_3a4e01c462c0e4fe_21000000(omniCallDescriptor* cd, omniServant* svnt)
+{
+  _0RL_cd_3a4e01c462c0e4fe_11000000* tcd = (_0RL_cd_3a4e01c462c0e4fe_11000000*)cd;
+  teleger::_impl_ServerInterface* impl = (teleger::_impl_ServerInterface*) svnt->_ptrToInterface(teleger::ServerInterface::_PD_repoId);
+  tcd->result = impl->changePassword(tcd->arg_0, tcd->arg_1, tcd->arg_2);
+
+
+}
+
+::CORBA::Boolean teleger::_objref_ServerInterface::changePassword(const char* old, const char* _cxx_new, const char* user)
+{
+  _0RL_cd_3a4e01c462c0e4fe_11000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_21000000, "changePassword", 15);
+  _call_desc.arg_0 = old;
+  _call_desc.arg_1 = _cxx_new;
+  _call_desc.arg_2 = user;
+
+  _invoke(_call_desc);
+  return _call_desc.result;
 
 
 }
@@ -1032,7 +1162,7 @@ teleger::_impl_ServerInterface::_dispatch(omniCallHandle& _handle)
 
   if (omni::strMatch(op, "logOut")) {
 
-    _0RL_cd_3a4e01c462c0e4fe_a0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_b0000000, "logOut", 7, 1);
+    _0RL_cd_3a4e01c462c0e4fe_40000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_a0000000, "logOut", 7, 1);
     
     _handle.upcall(this,_call_desc);
     return 1;
@@ -1040,7 +1170,7 @@ teleger::_impl_ServerInterface::_dispatch(omniCallHandle& _handle)
 
   if (omni::strMatch(op, "searchNewFriends")) {
 
-    _0RL_cd_3a4e01c462c0e4fe_c0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_d0000000, "searchNewFriends", 17, 1);
+    _0RL_cd_3a4e01c462c0e4fe_b0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_c0000000, "searchNewFriends", 17, 1);
     
     _handle.upcall(this,_call_desc);
     return 1;
@@ -1048,7 +1178,23 @@ teleger::_impl_ServerInterface::_dispatch(omniCallHandle& _handle)
 
   if (omni::strMatch(op, "sendRequestForFriend")) {
 
-    _0RL_cd_3a4e01c462c0e4fe_e0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_f0000000, "sendRequestForFriend", 21, 1);
+    _0RL_cd_3a4e01c462c0e4fe_d0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_e0000000, "sendRequestForFriend", 21, 1);
+    
+    _handle.upcall(this,_call_desc);
+    return 1;
+  }
+
+  if (omni::strMatch(op, "notifyAnswerRequest")) {
+
+    _0RL_cd_3a4e01c462c0e4fe_f0000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_01000000, "notifyAnswerRequest", 20, 1);
+    
+    _handle.upcall(this,_call_desc);
+    return 1;
+  }
+
+  if (omni::strMatch(op, "changePassword")) {
+
+    _0RL_cd_3a4e01c462c0e4fe_11000000 _call_desc(_0RL_lcfn_3a4e01c462c0e4fe_21000000, "changePassword", 15, 1);
     
     _handle.upcall(this,_call_desc);
     return 1;

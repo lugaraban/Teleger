@@ -2,6 +2,8 @@
 #define _telger_idl
 
 module teleger{
+	interface ClientInterface;
+	
 	struct User{
 		string id;
 		string password;
@@ -12,7 +14,7 @@ module teleger{
 		string id;
 		string name;
 		string image;
-		string ip;
+		ClientInterface reference;
 	};
 
 	typedef sequence <SafeUser> userFriends;
@@ -20,7 +22,7 @@ module teleger{
 	interface ClientInterface{
 		void notifyConnection(in SafeUser connectedUser);
 		boolean receiveFriendRequest(in SafeUser user);
-		void notifyAnswerRequest(in SafeUser connectedUser, in boolean acceptance);
+		boolean sendMessage(in string message,in string type);
 	};
 
 	interface ServerInterface{
@@ -28,7 +30,9 @@ module teleger{
 		userFriends logIn(in string userId, in string userPassword, in string ip, in ClientInterface client);
 		boolean logOut(in string userId, in string userPassword);
 		userFriends searchNewFriends(in string name);
-		void sendRequestForFriend(in SafeUser user, in SafeUser friend);
+		void sendRequestForFriend(in SafeUser user, in string friend);
+		void notifyAnswerRequest(in string connectedUser, in string pass, in string friend, in boolean acceptance);
+		boolean changePassword(in string old, in string new, in string user);
 	};
 };
 

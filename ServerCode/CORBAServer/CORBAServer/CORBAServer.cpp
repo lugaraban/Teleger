@@ -5,15 +5,13 @@
 #include "../SQLite/sqlite3.h"
 #include "CORBAServer.h"
 #include "SQLConnector.h"
-#include <unordered_map>
-#include <string.h>
+#include <list>
 using namespace std;
 static CORBA::ORB_ptr orb;
 static sqlite3 *db;	
 static char * routeToFile = "../SQLite/teleger.db";
 static omni_mutex * mtx= new omni_mutex;
 static linkedList * lList= new linkedList();
-
 
 using namespace teleger;
 //The omni_thread allow to use threads
@@ -57,8 +55,9 @@ void telegerImpl::telegerImplInit()
 
 userFriends * telegerImpl::logIn(const char * userId, const char * userPassword, const char * ip, ::teleger::ClientInterface_ptr client)
 {
+	mtx->lock();
 	userFriends * userFriendsArray = new userFriends();
-
+	userFriends * userFriendsSol = new userFriends();
 	if (client->_is_nil()) {
 		cout << "Cliente vacio!!!" << endl;
 	}
@@ -82,11 +81,19 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 			int i = 1;
 			userFriendsArray->length(friendsNumber+1);
 			(*userFriendsArray)[0] = *loggedUser;
-			for (i = 1; i < friendsNumber+1; i++) {
+			for (i = 1; i < userFriendsArray->length(); i++) {
+				if (lList->search(friends[i - 1])->user.id != NULL)
 				if (strcmp(lList->search(friends[i-1])->user.id, friends[i - 1]) == 0) {
 					(*userFriendsArray)[i]=(lList->search(friends[i - 1])->user);
 					lList->search(friends[i - 1])->clientObject->notifyConnection(*loggedUser);
 				}
+			}
+			//Friends solitudes
+			connector->getFriendRequests(userId, &friendsNumber,&userFriendsSol);
+			cout << "friends number " << friendsNumber << endl;
+			for (i = 0; i < friendsNumber; i++) {
+				//lList->search(userId)->clientObject->receiveFriendRequest((*userFriendsSol)[i]);
+				client->receiveFriendRequest((*userFriendsSol)[i]);
 			}
 		}
 		else {
@@ -97,12 +104,15 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 			(*userFriendsArray)[0] = *dummyUser;
 		}
 	}
+	mtx->release();
 	return userFriendsArray;
 }
 
 
 ::CORBA::Boolean telegerImpl::logOut(const char* userId, const char* userPassword)
 {
+	cout << "id " << userId << endl;
+	cout << "pass " << userPassword << endl;
 	mtx->lock();
 	if (connector->login(userId,userPassword)) {
 		lList->_delete(userId);
@@ -111,22 +121,24 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 	}
 	mtx->unlock();
 	return false;
+	//lList->_delete(userId);
 }
 
 teleger::userFriends* telegerImpl::searchNewFriends(const char* name)
 {
+	cout << "nome -> " << name << endl;
 	int searchFriends;
-	teleger::userFriends * searchArray = new userFriends();
 	mtx->lock();
+	teleger::userFriends * searchArray= new userFriends();
 	connector->searchNewFriends(name,&searchFriends,&searchArray);
+	cout << "numero de busca " << searchArray->length() << endl;
 	mtx->unlock();
 	return searchArray;
 }
 
 void telegerImpl::sendRequestForFriend(const teleger::SafeUser& user, const teleger::SafeUser& _cxx_friend)
 {
-	//Revisar este if que non furrula ben
-	if (strcmp(lList->search(_cxx_friend.id)->user.id,_cxx_friend.id)) {
+	if (strcmp(lList->search(_cxx_friend.id)->user.id,_cxx_friend.id)==0) {
 		connector->insertFriendRequest(user.id, _cxx_friend.id);
 		lList->search(_cxx_friend.id)->clientObject->receiveFriendRequest(user);
 	}
@@ -150,10 +162,10 @@ int main(int argc, char** argv)
 				CORBA::Object_var ns_obj = orb->resolve_initial_references("NameService");
 				if (!CORBA::is_nil(ns_obj)) {
 					CosNaming::NamingContext_ptr nc = CosNaming::NamingContext::_narrow(ns_obj);
-					CosNaming::Name name;
+					CosNaming::Name name = * new CosNaming::Name;
 					name.length(1);
 					name[0].id = CORBA::string_dup("TestServer");
-					name[0].kind = CORBA::string_dup("");
+					//name[0].kind = CORBA::string_dup("");
 					nc->rebind(name, myserver->_this());
 					//Start the service
 					myserver->telegerImplInit();

@@ -22,7 +22,7 @@ public:
   // methods corresponding to defined IDL attributes and operations
   void notifyConnection(const teleger::SafeUser& connectedUser);
   ::CORBA::Boolean receiveFriendRequest(const teleger::SafeUser& user);
-  void notifyAnswerRequest(const teleger::SafeUser& connectedUser, ::CORBA::Boolean acceptance);
+  ::CORBA::Boolean sendMessage(const char* message, const char* type);
 };
 
 //
@@ -48,10 +48,10 @@ void teleger_ClientInterface_i::notifyConnection(const teleger::SafeUser& connec
   #warning "Code missing in function <::CORBA::Boolean teleger_ClientInterface_i::receiveFriendRequest(const teleger::SafeUser& user)>"
 }
 
-void teleger_ClientInterface_i::notifyAnswerRequest(const teleger::SafeUser& connectedUser, ::CORBA::Boolean acceptance)
+::CORBA::Boolean teleger_ClientInterface_i::sendMessage(const char* message, const char* type)
 {
   // insert code here and remove the warning
-  #warning "Code missing in function <void teleger_ClientInterface_i::notifyAnswerRequest(const teleger::SafeUser& connectedUser, ::CORBA::Boolean acceptance)>"
+  #warning "Code missing in function <::CORBA::Boolean teleger_ClientInterface_i::sendMessage(const char* message, const char* type)>"
 }
 
 
@@ -77,7 +77,9 @@ public:
   teleger::userFriends* logIn(const char* userId, const char* userPassword, const char* ip, teleger::ClientInterface_ptr client);
   ::CORBA::Boolean logOut(const char* userId, const char* userPassword);
   teleger::userFriends* searchNewFriends(const char* name);
-  void sendRequestForFriend(const teleger::SafeUser& user, const teleger::SafeUser& _cxx_friend);
+  void sendRequestForFriend(const teleger::SafeUser& user, const char* _cxx_friend);
+  void notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance);
+  ::CORBA::Boolean changePassword(const char* old, const char* _cxx_new, const char* user);
 };
 
 //
@@ -115,10 +117,22 @@ teleger::userFriends* teleger_ServerInterface_i::searchNewFriends(const char* na
   #warning "Code missing in function <teleger::userFriends* teleger_ServerInterface_i::searchNewFriends(const char* name)>"
 }
 
-void teleger_ServerInterface_i::sendRequestForFriend(const teleger::SafeUser& user, const teleger::SafeUser& _cxx_friend)
+void teleger_ServerInterface_i::sendRequestForFriend(const teleger::SafeUser& user, const char* _cxx_friend)
 {
   // insert code here and remove the warning
-  #warning "Code missing in function <void teleger_ServerInterface_i::sendRequestForFriend(const teleger::SafeUser& user, const teleger::SafeUser& _cxx_friend)>"
+  #warning "Code missing in function <void teleger_ServerInterface_i::sendRequestForFriend(const teleger::SafeUser& user, const char* _cxx_friend)>"
+}
+
+void teleger_ServerInterface_i::notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance)
+{
+  // insert code here and remove the warning
+  #warning "Code missing in function <void teleger_ServerInterface_i::notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance)>"
+}
+
+::CORBA::Boolean teleger_ServerInterface_i::changePassword(const char* old, const char* _cxx_new, const char* user)
+{
+  // insert code here and remove the warning
+  #warning "Code missing in function <::CORBA::Boolean teleger_ServerInterface_i::changePassword(const char* old, const char* _cxx_new, const char* user)>"
 }
 
 

@@ -56,6 +56,32 @@ _CORBA_MODULE teleger
 
 _CORBA_MODULE_BEG
 
+#ifndef __teleger_mClientInterface__
+#define __teleger_mClientInterface__
+  class ClientInterface;
+  class _objref_ClientInterface;
+  class _impl_ClientInterface;
+  
+  typedef _objref_ClientInterface* ClientInterface_ptr;
+  typedef ClientInterface_ptr ClientInterfaceRef;
+
+  class ClientInterface_Helper {
+  public:
+    typedef ClientInterface_ptr _ptr_type;
+
+    static _ptr_type _nil();
+    static _CORBA_Boolean is_nil(_ptr_type);
+    static void release(_ptr_type);
+    static void duplicate(_ptr_type);
+    static void marshalObjRef(_ptr_type, cdrStream&);
+    static _ptr_type unmarshalObjRef(cdrStream&);
+  };
+
+  typedef _CORBA_ObjRef_Var<_objref_ClientInterface, ClientInterface_Helper> ClientInterface_var;
+  typedef _CORBA_ObjRef_OUT_arg<_objref_ClientInterface,ClientInterface_Helper > ClientInterface_out;
+
+#endif
+
   struct User {
     typedef _CORBA_ConstrType_Variable_Var<User> _var_type;
 
@@ -88,7 +114,7 @@ _CORBA_MODULE_BEG
 
     ::CORBA::String_member image;
 
-    ::CORBA::String_member ip;
+    _CORBA_ObjRef_Member< _objref_ClientInterface, ClientInterface_Helper>  reference;
 
   
 
@@ -282,7 +308,7 @@ _CORBA_MODULE_BEG
     // IDL operations
     void notifyConnection(const ::teleger::SafeUser& connectedUser);
     ::CORBA::Boolean receiveFriendRequest(const ::teleger::SafeUser& user);
-    void notifyAnswerRequest(const ::teleger::SafeUser& connectedUser, ::CORBA::Boolean acceptance);
+    ::CORBA::Boolean sendMessage(const char* message, const char* type);
 
     // Constructors
     inline _objref_ClientInterface()  { _PR_setobj(0); }  // nil
@@ -319,7 +345,7 @@ _CORBA_MODULE_BEG
 
     virtual void notifyConnection(const ::teleger::SafeUser& connectedUser) = 0;
     virtual ::CORBA::Boolean receiveFriendRequest(const ::teleger::SafeUser& user) = 0;
-    virtual void notifyAnswerRequest(const ::teleger::SafeUser& connectedUser, ::CORBA::Boolean acceptance) = 0;
+    virtual ::CORBA::Boolean sendMessage(const char* message, const char* type) = 0;
     
   public:  // Really protected, workaround for xlC
     virtual _CORBA_Boolean _dispatch(omniCallHandle&);
@@ -403,7 +429,9 @@ _CORBA_MODULE_BEG
     userFriends* logIn(const char* userId, const char* userPassword, const char* ip, ::teleger::ClientInterface_ptr client);
     ::CORBA::Boolean logOut(const char* userId, const char* userPassword);
     userFriends* searchNewFriends(const char* name);
-    void sendRequestForFriend(const ::teleger::SafeUser& user, const ::teleger::SafeUser& _cxx_friend);
+    void sendRequestForFriend(const ::teleger::SafeUser& user, const char* _cxx_friend);
+    void notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance);
+    ::CORBA::Boolean changePassword(const char* old, const char* _cxx_new, const char* user);
 
     // Constructors
     inline _objref_ServerInterface()  { _PR_setobj(0); }  // nil
@@ -442,7 +470,9 @@ _CORBA_MODULE_BEG
     virtual userFriends* logIn(const char* userId, const char* userPassword, const char* ip, ::teleger::ClientInterface_ptr client) = 0;
     virtual ::CORBA::Boolean logOut(const char* userId, const char* userPassword) = 0;
     virtual userFriends* searchNewFriends(const char* name) = 0;
-    virtual void sendRequestForFriend(const ::teleger::SafeUser& user, const ::teleger::SafeUser& _cxx_friend) = 0;
+    virtual void sendRequestForFriend(const ::teleger::SafeUser& user, const char* _cxx_friend) = 0;
+    virtual void notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance) = 0;
+    virtual ::CORBA::Boolean changePassword(const char* old, const char* _cxx_new, const char* user) = 0;
     
   public:  // Really protected, workaround for xlC
     virtual _CORBA_Boolean _dispatch(omniCallHandle&);
