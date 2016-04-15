@@ -16,8 +16,8 @@ bool SQLConnector::registerNewUser(teleger::User user) {
 	//First It's checked if the id already exists
 	char * statement = (char *)malloc(200 * (sizeof(char)));
 	//statement[0]='\0';
-	strcpy_s(statement,sizeof("SELECT * FROM users WHERE id = '"), "SELECT * FROM users WHERE id = '");
-	strcat_s(statement,sizeof((&user)->id),(&user)->id);
+	strcpy(statement, "SELECT * FROM users WHERE id = '");
+	strcat(statement,(&user)->id);
 	strcat(statement, "'");
 	sqlite3_open("../SQLite/teleger.db", &db);
 	rc=sqlite3_get_table(db, statement, &results, &nRow, &nColumn, &zErrMsg);
@@ -32,9 +32,9 @@ bool SQLConnector::registerNewUser(teleger::User user) {
 		strcpy(statement, "INSERT INTO USERS values('");
 		strcat(statement, (&user)->id);
 		strcat(statement, "' , '");
-		strcat(statement, (&user)->name);
-		strcat(statement, "' , '");
 		strcat(statement, (&user)->password);
+		strcat(statement, "' , '");
+		strcat(statement, (&user)->name);
 		strcat(statement, "' , '");
 		strcat(statement, (&user)->image);
 		strcat(statement, "');");
@@ -167,7 +167,7 @@ void SQLConnector::insertFriendRequest(const char * solicitor, const char * requ
 	strcat(statement, "' , '");
 	strcat(statement, requested);
 	strcat(statement, "');");
-	sqlite3_prepare(db, statement, -1, &queryResult, NULL);
+	//sqlite3_prepare(db, statement, -1, &queryResult, NULL);
 	sqlite3_open(routeToFile, &db);
 	sqlite3_exec(db, statement, NULL, NULL, &zErrMsg);
 	sqlite3_close(db);

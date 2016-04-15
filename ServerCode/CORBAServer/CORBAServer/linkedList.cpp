@@ -52,15 +52,15 @@ bool linkedList::_delete(const char * id) {
 }
 struct node * linkedList::search(const char * id) {
 	struct node * iterator=nullptr;
-	struct node * dummy = nullptr;
+	/*struct node * dummy = nullptr;
 	dummy = (struct node *)malloc(sizeof(struct node));
 	dummy->user = * new teleger::SafeUser();
 	dummy->user.id = "23184093217598021393214432";
-	dummy->next = NULL;
+	dummy->next = NULL;*/
 
 	iterator = first;
 	std::cout << "id do iterator " << id << std::endl;
-	while (iterator->next != NULL) {
+	while (iterator->next != NULL && id!=nullptr) {
 		if (strcmp(iterator->next->user.id, id) == 0) {
 			return iterator->next;
 		}
@@ -72,7 +72,7 @@ struct node * linkedList::search(const char * id) {
 	//if (strcmp(iterator->user.id, id) == 0)
 	//	return iterator;
 	//else
-		return  dummy;
+		return  first;
 }
 linkedList::~linkedList()
 {

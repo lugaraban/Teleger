@@ -1,17 +1,18 @@
+#pragma once
 #include "stdafx.h"
 //#include "telegerImpl.h"
 #include "linkedList.h"
 #include "../SQLite/sqlite3.h"
 #include "CORBAServer.h"
 #include "SQLConnector.h"
-
+#include <unordered_map>
+#include <string.h>
 using namespace std;
 static CORBA::ORB_ptr orb;
 static sqlite3 *db;	
 static char * routeToFile = "../SQLite/teleger.db";
 static omni_mutex * mtx= new omni_mutex;
 static linkedList * lList= new linkedList();
-
 
 
 using namespace teleger;
@@ -124,7 +125,8 @@ teleger::userFriends* telegerImpl::searchNewFriends(const char* name)
 
 void telegerImpl::sendRequestForFriend(const teleger::SafeUser& user, const teleger::SafeUser& _cxx_friend)
 {
-	if (lList->search(_cxx_friend.id)->user.id != NULL) {
+	//Revisar este if que non furrula ben
+	if (strcmp(lList->search(_cxx_friend.id)->user.id,_cxx_friend.id)) {
 		connector->insertFriendRequest(user.id, _cxx_friend.id);
 		lList->search(_cxx_friend.id)->clientObject->receiveFriendRequest(user);
 	}
