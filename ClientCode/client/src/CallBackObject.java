@@ -1,8 +1,10 @@
 
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import org.omg.CORBA.ORB;
@@ -18,7 +20,8 @@ public class CallBackObject extends  ClientInterfacePOA{
 	String userPassword;
 	String userId;
 	JTextArea textArea;
-	SafeUser[] friends;
+	ArrayList<SafeUser> friends;
+	Message messagePanel;
 	
 	
 	public CallBackObject(JFrame inicio, ServerInterface server){
@@ -44,18 +47,15 @@ public class CallBackObject extends  ClientInterfacePOA{
 		System.out.println("User "+connectedUser.id+" has been conected");
 		
 		//Actualizar mi lista de amigos conectados
-		SafeUser[] newFriends = new SafeUser[friends.length+1];
-		int i;
-		for(i=0;i<friends.length;i++){
-			newFriends[i]=friends[i];
-			System.out.println(newFriends[i].id);
-		}
-		newFriends[friends.length]=connectedUser;
-		System.out.println(newFriends[friends.length].id);
 		
-		friends=newFriends;
-		for(i=0;i<friends.length;i++){
-			System.out.println(friends[i].id);
+		if(friends.contains(connectedUser)){
+			System.out.println("El usuario ya estaba conectado");
+		}else{
+			friends.add(connectedUser);
+		}
+		
+		for(SafeUser f: friends){
+			System.out.println(f.id);
 		}
 		
 		Popup p = new Popup("User "+connectedUser.id+" has been conected", inicio);
@@ -74,11 +74,10 @@ public class CallBackObject extends  ClientInterfacePOA{
 	
 	public boolean sendMessage(String message, String type){
 		if(type.equals("text")){
-			System.out.println(userId+" says:\n"+message);
-			textArea.append(userId+" says:\n");
-			textArea.append(message+"\n");
-			textArea.setCaretPosition(textArea.getDocument().getLength());
-			textArea.updateUI();
+			System.out.println("Mensaje recibido: "+message);
+			//textArea.append(message+"\n");
+			//textArea.setCaretPosition(textArea.getDocument().getLength());
+			//textArea.updateUI();
 			return true;
 		}
 		return false;
