@@ -38,7 +38,7 @@ import javax.swing.JTabbedPane;
 
 public class Message extends JPanel {
 	
-	SafeUser[] friends;
+	ArrayList<SafeUser> friends;
 	SafeUser newFriend;
 	Inicio v;
 	private JTextField textField;
@@ -54,10 +54,11 @@ public class Message extends JPanel {
     public void setV(Inicio v) {
         this.v = v;
     }
+    
 	/**
 	 * Create the panel.
 	 */
-	public Message(SafeUser[] f, ServerInterface server, ClientInterface client, String password, CallBackObject callBackClient) {
+	public Message(ArrayList<SafeUser> f, ServerInterface server, ClientInterface client, String password, CallBackObject callBackClient) {
 		friends=f;
 		
 		callBack=callBackClient;
@@ -123,18 +124,31 @@ public class Message extends JPanel {
 				System.out.println("Le mando a "+name+" el siguiente mensaje:"+message+"");
 				
 				//Meter mi mensaje en mi textarea
-				textArea.append(friends[0].id+" says:\n");
+				textArea.append(friends.get(0).id+" says:\n");
 				textArea.append(message+"\n");
 				textArea.setCaretPosition(textArea.getDocument().getLength());
 				//textArea.updateUI();
 				
 				int i;
-				System.out.println(friends.length);
-				for(i=0;i<friends.length;i++){
-					if(friends[i].id.equals(name)){
+				System.out.println(friends.size());
+				for(i=0;i<friends.size();i++){
+					if(friends.get(i).id.equals(name)){
 						//Mandar el mensaje al otro cliente
-						System.out.println(friends[i].reference);
-						friends[i].reference.sendMessage(message, "text");
+						System.out.println(friends.get(i).reference);
+						
+						//Comprobar si se puede enviar el mensaje
+						//Si no se puede es que el usuario está desconectado,
+						//y se eliminaría de la lista de amigos conectados.
+						if(friends.get(i).reference.sendMessage(message, "text")){
+							System.out.println("Se ha enviado el mensaje correctamente");
+						}else{
+							System.out.println("El usuario está desconectado");
+							Popup p = new Popup("The user is not connected",v);
+							//Eliminar al usuario de la lista
+							friends.remove(friends.get(i));
+							
+							//ACTUALIZAR EL SCROLLPANE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						}
 						
 //						//Meter mi mensaje en mi textarea
 //						textArea.append(friends[0].id+" says:\n");
@@ -189,7 +203,7 @@ public class Message extends JPanel {
 		}*/
 		
 		
-		JLabel lblNombreusuario = new JLabel(friends[0].id);
+		JLabel lblNombreusuario = new JLabel(friends.get(0).id);
 		lblNombreusuario.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNombreusuario.setBounds(115, 176, 106, 28);
 		panel.add(lblNombreusuario);
@@ -214,9 +228,9 @@ public class Message extends JPanel {
 				String actual = textField.getText();
 				String newPass = textField_2.getText();
 				
-				System.out.println(friends[0].id+" quiere cambiar de "+actual+" a "+newPass);
+				System.out.println(friends.get(0).id+" quiere cambiar de "+actual+" a "+newPass);
 				
-				if(server.changePassword(actual, newPass, friends[0].id)){
+				if(server.changePassword(actual, newPass, friends.get(0).id)){
 					Popup p = new Popup("Your password has been changed", v);
 					p.setVisible(true);
 				}
@@ -231,7 +245,7 @@ public class Message extends JPanel {
 		btnLogOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(server.logOut(friends[0].id, password)){
+				if(server.logOut(friends.get(0).id, password)){
 					System.out.println("User has sucessfully logged out");
 					
 					//Volver a la pantalla de inicio
@@ -292,14 +306,14 @@ public class Message extends JPanel {
 					System.out.println(newFriends[i].id);
 				}
 				
-				panel_5.add(new SearchFriendPanel(newFriend, server, friends[0]));
+				panel_5.add(new SearchFriendPanel(newFriend, server, friends.get(0)));
 				panel_5.updateUI();
 			}
 		});
 		panel_5.add(btnSearch);
 		
 		int i;
-		System.out.println(friends.length);
+		System.out.println(friends.size());
 		
 		//Disponer todos los amigos conectados unos debajo de otros en el scroll pane
 		//setHorizontalGroup
