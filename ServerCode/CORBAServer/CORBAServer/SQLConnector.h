@@ -24,6 +24,9 @@ public:
 	void searchNewFriends(const char * userName, int *friendNumber, teleger::userFriends ** friendsArray);
 	void getFriendRequests(const char * userName, int *friendNumber, serverSideUser  ** friendsArray);
 	void insertFriendRequest(const char *solicitor,const char *requested);
+	void updatePass(const char *user,const char * _cxx_new);
+	void removePetition(const char* _cxx_friend,const char* connectedUser);
+	void addFriend(const char* connectedUser,const char * _cxx_friend);
 	~SQLConnector() {};
 };
 

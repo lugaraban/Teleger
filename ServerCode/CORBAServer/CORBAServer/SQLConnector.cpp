@@ -103,7 +103,7 @@ void SQLConnector::getFriendsId(const char * userName,int *friendNumber,int *arr
 	rc = sqlite3_get_table(db, reinterpret_cast<const char *>(statement), &results, &nRow, &nColumn, &zErrMsg);
 	*friendsArray = (char**)malloc(nRow*100*sizeof(char));
 	int i,z=0;
-	for (i = 2; i < (nRow+1)*nColumn; i += 2) {
+	for (i = 2; i < (nRow + 2); i += 2) {
 		if (strcmp(userName, results[i]) == 0)
 			*friendsArray[z] = results[i + 1];
 		else
@@ -161,7 +161,7 @@ void SQLConnector::getFriendRequests(const char * userName, int * friendNumber, 
 	int i, z = 0;
 	//(*friendsArray)->length(nColumn*nRow + 1);
 	(*friendsArray) = (struct serverSideUser *)malloc(nRow*nColumn*sizeof(struct serverSideUser));
-	for (i = 3; i < (nRow + 1)*nColumn; i += 3) {
+	for (i = 3; i < (nRow + 3); i += 3) {
 		(*friendsArray)[i - 3].id = results[i];
 		(*friendsArray)[i - 3].name = results[i + 1];
 		(*friendsArray)[i - 3].image = results[i + 2];
@@ -185,6 +185,57 @@ void SQLConnector::insertFriendRequest(const char * solicitor, const char * requ
 	strcat(statement, requested);
 	strcat(statement, "');");
 	//sqlite3_prepare(db, statement, -1, &queryResult, NULL);
+	sqlite3_open(routeToFile, &db);
+	sqlite3_exec(db, reinterpret_cast<const char *>(statement), NULL, NULL, &zErrMsg);
+	sqlite3_close(db);
+	free(&zErrMsg);
+	free(statement);
+}
+
+void SQLConnector::updatePass(const char * user, const char * _cxx_new)
+{
+	char * statement;
+	statement = (char *)malloc(200 * (sizeof(char)));
+	//If it doesn't the user is added to the database
+	strcpy(statement, "UPDATE users SET password='");
+	strcat(statement, _cxx_new);
+	strcat(statement, "' where id='");
+	strcat(statement, user);
+	strcat(statement, "'");
+	sqlite3_open(routeToFile, &db);
+	sqlite3_exec(db, reinterpret_cast<const char *>(statement), NULL, NULL, &zErrMsg);
+	sqlite3_close(db);
+	free(&zErrMsg);
+	free(statement);
+}
+
+void SQLConnector::removePetition(const char * _cxx_friend, const char * connectedUser)
+{
+	char * statement;
+	statement = (char *)malloc(200 * (sizeof(char)));
+	//If it doesn't the user is added to the database
+	strcpy(statement, "DELETE FROM pendSol where applicant='");
+	strcat(statement, _cxx_friend);
+	strcat(statement, "' and requested='");
+	strcat(statement, connectedUser);
+	strcat(statement, "'");
+	sqlite3_open(routeToFile, &db);
+	sqlite3_exec(db, reinterpret_cast<const char *>(statement), NULL, NULL, &zErrMsg);
+	sqlite3_close(db);
+	free(&zErrMsg);
+	free(statement);
+}
+
+void SQLConnector::addFriend(const char * connectedUser, const char * _cxx_friend)
+{
+	char * statement;
+	statement = (char *)malloc(200 * (sizeof(char)));
+	//If it doesn't the user is added to the database
+	strcpy(statement, "INSERT INTO Friends values('");
+	strcat(statement, _cxx_friend);
+	strcat(statement, "','");
+	strcat(statement, connectedUser);
+	strcat(statement, "')");
 	sqlite3_open(routeToFile, &db);
 	sqlite3_exec(db, reinterpret_cast<const char *>(statement), NULL, NULL, &zErrMsg);
 	sqlite3_close(db);
