@@ -102,12 +102,12 @@ public class Message extends JPanel {
 		panel_2.add(label);
 		
 		JTextArea textArea = new JTextArea();
-		//textArea.setBorder(BorderFactory.createEmptyBorder());
-		//textArea.setBackground(new Color(0, 0, 0, 0));
+		textArea.setOpaque(false);
 		textArea.setLineWrap(true);
 		textArea.setEditable(false);
 		textArea.setBounds(250, 48, 314, 278);
 		add(textArea);
+		callBack.textArea=textArea;
 		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setLineWrap(true);
@@ -124,7 +124,7 @@ public class Message extends JPanel {
 				System.out.println("Le mando a "+name+" el siguiente mensaje:"+message+"");
 				
 				//Meter mi mensaje en mi textarea
-				textArea.append(message+"\n");
+				textArea.append(">"+message+"\n");
 				textArea.setCaretPosition(textArea.getDocument().getLength());
 				//textArea.updateUI();
 				
@@ -133,7 +133,6 @@ public class Message extends JPanel {
 				for(i=0;i<friends.size();i++){
 					if(friends.get(i).id.equals(name)){
 						//Mandar el mensaje al otro cliente
-						//System.out.println(friends.get(i).reference);
 						
 						//Comprobar si se puede enviar el mensaje
 						//Si no se puede es que el usuario está desconectado,
@@ -167,11 +166,12 @@ public class Message extends JPanel {
 		add(btnSend);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBackground(new Color(144, 238, 144));
+		tabbedPane.setBackground(new Color(204, 255, 204));
 		tabbedPane.setBounds(0, 40, 242, 361);
 		add(tabbedPane);
 		
 		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(new Color(204, 255, 204));
 		tabbedPane.addTab("Friends", null, panel_4, null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -310,6 +310,11 @@ public class Message extends JPanel {
 			}
 		});
 		panel_5.add(btnSearch);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Rapnika\\Documents\\3_curso\\Distribuida\\TerceraEntrega\\fondoMensajes.jpg"));
+		lblNewLabel.setBounds(240, 40, 334, 298);
+		add(lblNewLabel);
 		
 		int i;
 		System.out.println(friends.size());
