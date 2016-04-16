@@ -27,10 +27,13 @@ bool linkedList::_insert(serverSideUser user, teleger::ClientInterface_ptr clien
 		addedNode->next = NULL;
 		iterator = first;
 		while (iterator->next != NULL) {
-			if (strcmp(iterator->next->user.id, user.id) == 0)
+			if (strcmp(iterator->next->user.id, user.id) == 0) {
+				iterator->next->reference= teleger::ClientInterface::_duplicate(clientObject);
 				return false;
-			else
+			}
+			else {
 				iterator = iterator->next;
+			}
 		}
 		iterator->next = addedNode;
 		return true;
