@@ -74,11 +74,10 @@ public class CallBackObject extends  ClientInterfacePOA{
 	
 	public boolean sendMessage(String message, String type){
 		if(type.equals("text")){
-			System.out.println(userId+" says:\n"+message);
-			textArea.append(userId+" says:\n");
-			textArea.append(message+"\n");
-			textArea.setCaretPosition(textArea.getDocument().getLength());
-			textArea.updateUI();
+			System.out.println("Mensaje recibido: "+message);
+			//textArea.append(message+"\n");
+			//textArea.setCaretPosition(textArea.getDocument().getLength());
+			//textArea.updateUI();
 			return true;
 		}
 		return false;

@@ -124,7 +124,6 @@ public class Message extends JPanel {
 				System.out.println("Le mando a "+name+" el siguiente mensaje:"+message+"");
 				
 				//Meter mi mensaje en mi textarea
-				textArea.append(friends.get(0).id+" says:\n");
 				textArea.append(message+"\n");
 				textArea.setCaretPosition(textArea.getDocument().getLength());
 				//textArea.updateUI();
@@ -134,7 +133,7 @@ public class Message extends JPanel {
 				for(i=0;i<friends.size();i++){
 					if(friends.get(i).id.equals(name)){
 						//Mandar el mensaje al otro cliente
-						System.out.println(friends.get(i).reference);
+						//System.out.println(friends.get(i).reference);
 						
 						//Comprobar si se puede enviar el mensaje
 						//Si no se puede es que el usuario está desconectado,

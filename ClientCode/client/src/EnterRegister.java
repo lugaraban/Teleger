@@ -124,7 +124,7 @@ public class EnterRegister extends JPanel {
 					//Transformar el array de amigos conectados a un arraylist
 					ArrayList <SafeUser> connectedFriends = new ArrayList<>();
 					int i;
-					for(i=0;i<friends.length;i++){
+					for(i=0;i<friends.length-1;i++){
 						connectedFriends.add(friends[0]);
 						System.out.println(connectedFriends.get(i).id);
 					}
