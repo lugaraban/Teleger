@@ -1,4 +1,6 @@
 import javax.swing.JPanel;
+
+import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
 
@@ -29,6 +31,12 @@ public class EnterRegister extends JPanel {
 	
 	ClientInterface client;
 	ServerInterface server;
+	JPanel ContenedorCard= new JPanel();
+	TestPane friendsPanel; //panel de amigos
+	JLabel lblNombreamigo; // etiqueta superior
+	JLabel labelImage;// etiqueta imaxe
+	ArrayList<SafeUser> connectedFriends; // array de amigos conectados
+	
 	Inicio v=new Inicio();
 
 	public void setServer(ServerInterface server){
@@ -54,6 +62,7 @@ public class EnterRegister extends JPanel {
 		callBack=callBackClient;
 		client=c;
 		server=s;
+		friendsPanel=callBackClient.panelAmigos;
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -95,6 +104,20 @@ public class EnterRegister extends JPanel {
 		passwordField.setBounds(20, 107, 150, 20);
 		panel.add(passwordField);
 		
+		//CardPanel
+//		ContenedorCard = new JPanel();
+//		ContenedorCard.setBounds(240, 40, 334, 298);
+//		//add(contenedor);
+//		ContenedorCard.setLayout(null);
+//		callBack.contenedor = ContenedorCard;
+//		
+//		CardLayout cardLayout = new CardLayout();
+//		ContenedorCard.setLayout(cardLayout);
+
+		//panelContedor = new TestPane(connectedFriends,labelImage,lblNombreamigo, ContenedorCard);
+		
+	//	TestPane friendsSearched = new TestPane(friendsResult, labelImage, lblNombreamigo, ContenedorCard);
+		
 		JButton button = new JButton("Enter");
 		button.addMouseListener(new MouseAdapter() {
 			@Override
@@ -109,10 +132,9 @@ public class EnterRegister extends JPanel {
 				//también en la función de logIn)
 				callBack.userId=name;
 				callBack.userPassword=password;
-				
 				//Llamo a la función de logIn, recojo la lista de amigos
 				SafeUser[] friends;
-				friends=server.logIn(name, password, client);
+				friends=server.logIn(name, password,client);
 				if(friends.length>0 && friends[0].id.equals("NULL")){
 					//Si me devuelve el primero null significa que hubo un error en el loggeo
 					//porque siempre tiene que devolver al mismo usuario en la posición 0
@@ -122,19 +144,31 @@ public class EnterRegister extends JPanel {
 				}
 				else{
 					//Transformar el array de amigos conectados a un arraylist
+					System.out.println("Amigos conectados: "+friends.length);
+					
 					ArrayList <SafeUser> connectedFriends = new ArrayList<>();
 					int i;
-					for(i=0;i<friends.length-1;i++){
-						connectedFriends.add(friends[0]);
-						System.out.println(connectedFriends.get(i).id);
+					for(i=0;i<friends.length;i++){
+						if(friends[i].id.length()>1){
+							connectedFriends.add(friends[i]);
+							System.out.println(connectedFriends.get(i).id);
+						}
 					}
-					
+					System.out.println("Numero de amigos conectados: "+connectedFriends.size());
 					//Establezco el parametro de amigos conectados de la clase callBack
 					callBack.friends=connectedFriends;
-					
+					//callBack.panelAmigos = new TestPane();
+					callBack.panelAmigos.addFriends(connectedFriends);
+//					for(i=0;i<connectedFriends.size();i++){
+//						(callBack.contenedor.getComponent(i)).setName(connectedFriends.get(i).id);
+//					}
+					//(TestPane)(callBack.panelAmigos).add(connectedFriends);
 					//Mandamos la vista al panel de los mensajes
 					v.getContentPane().setVisible(false);
-			        Message msg=new Message(connectedFriends, server, client, password, callBack);
+					Message msg=new Message(connectedFriends, server, client, password, callBack);
+					for(i = 0;i<connectedFriends.size();i++){
+						(callBack.contenedor.getComponent(i)).setName(connectedFriends.get(i).id);
+					}
 			        msg.setVisible(true);
 			        msg.setV(v);
 			        v.setContentPane(msg);
@@ -222,18 +256,30 @@ public class EnterRegister extends JPanel {
 					ArrayList <SafeUser> connectedFriends = new ArrayList<>();
 					int i;
 					for(i=0;i<friends.length;i++){
-						connectedFriends.add(friends[0]);
-						System.out.println(connectedFriends.get(i).id);
+						if(friends[i].id.length()>1){
+							connectedFriends.add(friends[i]);
+							System.out.println(connectedFriends.get(i).id);
+						}
 					}
 					
 					//Establezco los parametros de la clase callBack
 					callBack.friends=connectedFriends;
 					callBack.userId=connectedFriends.get(0).id;
 					callBack.userPassword=password;
+					callBack.contenedor=new JPanel();
+					callBack.lblName= new JLabel();
+					callBack.lblImage= new JLabel();
+					callBack.panelAmigos=new TestPane(connectedFriends,callBack.lblImage,callBack.lblName,callBack.contenedor);
+					
+					callBack.panelAmigos.addFriends(connectedFriends);
+					
 					
 					//Mandamos la vista al panel de los mensajes
 					v.getContentPane().setVisible(false);
-			        Message msg=new Message(connectedFriends, server, client, password, callBack);
+					Message msg=new Message(connectedFriends, server, client, password, callBack);
+					for(i=0;i<connectedFriends.size();i++){
+						(callBack.contenedor.getComponent(i)).setName(connectedFriends.get(i).id);
+					}
 			        msg.setVisible(true);
 			        msg.setV(v);
 			        v.setContentPane(msg);
@@ -256,7 +302,6 @@ public class EnterRegister extends JPanel {
 		label_8.setBackground(Color.WHITE);
 		label_8.setBounds(172, 27, 298, 40);
 		add(label_8);
-		
 		JLabel label_9 = new JLabel("");
 		label_9.setIcon(new ImageIcon("C:\\Users\\Rapnika\\Documents\\3_curso\\Distribuida\\TerceraEntrega\\madera.jpg"));
 		label_9.setBounds(0, 0, 574, 401);

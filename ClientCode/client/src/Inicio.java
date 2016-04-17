@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -25,6 +26,7 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import teleger.ClientInterface;
 import teleger.ClientInterfaceHelper;
+import teleger.SafeUser;
 import teleger.ServerInterface;
 import teleger.ServerInterfaceHelper;
 
@@ -37,11 +39,11 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class Inicio extends JFrame {
 
 	private JPanel contentPane;
-	
 	
 	/**
 	 * Launch the application.
@@ -51,6 +53,12 @@ public class Inicio extends JFrame {
 			public void run() {
 				ServerInterface server = null;
 				ClientInterface client = null;
+				ArrayList<SafeUser> friends= new ArrayList<>();
+				JLabel imageBar= new JLabel();
+				JLabel nameBar= new JLabel();
+				JPanel contenedor = new JPanel();
+				TestPane friendsPanel= new TestPane(friends,imageBar,nameBar,contenedor);
+				
 				try {
 					try {
 						// Inicio el ORB
@@ -69,9 +77,8 @@ public class Inicio extends JFrame {
 						server = ServerInterfaceHelper.narrow(ncRef.resolve_str("TestServer"));
 						
 						Inicio frame = new Inicio();
-						CallBackObject callBackClient = new CallBackObject(frame, server);
+						CallBackObject callBackClient = new CallBackObject(frame, server,friendsPanel,contenedor,friends,nameBar,imageBar);
 						callBackClient.setORB(orb);
-						
 						Object ref = rootpoa.servant_to_reference(callBackClient);
 						client = ClientInterfaceHelper.narrow(ref);
 						

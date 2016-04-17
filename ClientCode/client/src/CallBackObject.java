@@ -1,9 +1,13 @@
 
 
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -19,14 +23,26 @@ public class CallBackObject extends  ClientInterfacePOA{
 	private ORB orb;
 	String userPassword;
 	String userId;
-	JTextArea textArea;
 	ArrayList<SafeUser> friends;
-	Message messagePanel;
+	TestPane panelAmigos;
+	JPanel contenedor;
+	JLabel lblName;
+	JLabel lblImage;
 	
-	
-	public CallBackObject(JFrame inicio, ServerInterface server){
+	public CallBackObject(JFrame inicio, ServerInterface server,TestPane friendsPanel,JPanel contenedor,ArrayList<SafeUser> friends,JLabel lblName,JLabel lblImage){
 		this.inicio=inicio;
 		this.server=server;
+		this.contenedor=contenedor;
+		this.contenedor.setBounds(240, 40, 334, 298);
+		this.contenedor.setLayout(null);
+		this.contenedor.setBackground(new Color(204, 255, 204));
+		
+		CardLayout cardLayout = new CardLayout();
+		this.contenedor.setLayout(cardLayout);
+		this.panelAmigos=friendsPanel;
+		this.friends=friends;
+		this.lblName=lblName;
+		this.lblImage=lblImage;
 	}
 	
 	public void setORB(ORB orb_val) {
@@ -57,9 +73,18 @@ public class CallBackObject extends  ClientInterfacePOA{
 		for(SafeUser f: friends){
 			System.out.println(f.id);
 		}
+		System.out.println("Numero de amigos conectados: "+friends.size());
 		
 		Popup p = new Popup("User "+connectedUser.id+" has been conected", inicio);
 		p.setVisible(true);
+		
+		//Actualizar el panel de amigos conectados
+		panelAmigos.addFriend(connectedUser);
+		//Actualizar el cardPannel
+		contenedor.add(connectedUser.id, new JTextArea());
+		contenedor.getComponent(contenedor.getComponentCount()-1).setName(connectedUser.id);
+
+        System.out.println("contenedooooooooor---->funcionando"+contenedor.getComponentCount());
 	}
 
 	@Override
@@ -73,12 +98,27 @@ public class CallBackObject extends  ClientInterfacePOA{
 	}
 	
 	public boolean sendMessage(String message, String type){
-		if(type.equals("text")){
-			System.out.println("Mensaje recibido: "+message);
-			textArea.append(">"+message+"\n");
-			textArea.setCaretPosition(textArea.getDocument().getLength());
-			textArea.updateUI();
-			return true;
+		JPanel card;
+		JTextArea textArea = null;
+		
+		System.out.println("Mensaje recibido: "+message);
+		
+		for(Component comp: contenedor.getComponents()){
+			System.out.println("nome   "+comp.getName());
+			//((CardLayout) contenedor.getLayout()).show(contenedor, type);
+			if(comp.getClass().equals(JTextArea.class)){
+				System.out.println("Primer if");
+			textArea=(JTextArea)comp;
+				if(type.equals(textArea.getName())){
+					System.out.println("Nombre textarea"+textArea.getName());
+					System.out.println("Nombre componente"+comp.getName());
+					textArea.append(type+" says:\n");
+					textArea.append(message+"\n");
+					textArea.setCaretPosition(textArea.getDocument().getLength());
+					textArea.updateUI();
+					return true;
+				}
+			}
 		}
 		return false;
 	}
