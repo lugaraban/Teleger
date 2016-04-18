@@ -169,10 +169,6 @@ public class Message extends JPanel {
 				String message = textArea_1.getText();
 				System.out.println("Le mando a "+name+" el siguiente mensaje:"+message+"");
 				
-				//Meter mi mensaje en mi textarea
-				//textArea.append(">"+message+"\n");
-				//textArea.setCaretPosition(textArea.getDocument().getLength());
-				//textArea.updateUI();
 				
 				int i;
 				for(i=0;i<friends.size();i++){
@@ -185,21 +181,37 @@ public class Message extends JPanel {
 						//y se eliminaría de la lista de amigos conectados.
 						if(friends.get(i).reference.sendMessage(message, friends.get(0).id)){
 							System.out.println("Se ha enviado el mensaje correctamente");
+							
+							friends.get(0).reference.sendMessage(message, friends.get(0).id);
+							
+							//Meter mi mensaje en mi textarea
+//							JTextArea textArea = null;
+//							
+//							for(Component comp: callBackClient.contenedor.getComponents()){
+//								if(comp.getClass().equals(JTextArea.class)){
+//									System.out.println("Primer if");
+//									textArea=(JTextArea)comp;
+//									if(friends.get(0).id.equals(textArea.getName())){
+//										System.out.println("Nombre textarea"+textArea.getName());
+//										System.out.println("Nombre componente"+comp.getName());
+//										textArea.append(friends.get(0).id+" says:\n");
+//										textArea.append(message+"\n");
+//										textArea.setCaretPosition(textArea.getDocument().getLength());
+//										textArea.updateUI();
+//									}
+//								}
+//							}
 						}else{
 							System.out.println("El usuario está desconectado");
 							Popup p = new Popup("The user is not connected",v);
+							p.setVisible(true);
+							
+							//ACTUALIZAR EL PANEL DE AMIGOS
+							((TestPane) callBackClient.panelAmigos).removeFriend(friends.get(i).id);
+							
 							//Eliminar al usuario de la lista
 							friends.remove(friends.get(i));
-							
-							//ACTUALIZAR EL SCROLLPANE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						}
-						
-//						//Meter mi mensaje en mi textarea
-//						textArea.append(friends[0].id+" says:\n");
-//						textArea.append(message+"\n");
-//						textArea.setCaretPosition(textArea.getDocument().getLength());
-						
-						//break;
 					}
 				}
 				textArea_1.setText("");
@@ -271,7 +283,7 @@ public class Message extends JPanel {
 			}
 		});
 		btnCambiar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCambiar.setBounds(45, 310, 125, 23);
+		btnCambiar.setBounds(45, 305, 125, 23);
 		panel.add(btnCambiar);
 		
 		JButton btnLogOut = new JButton("Log out");
@@ -279,6 +291,15 @@ public class Message extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if(server.logOut(friends.get(0).id, password)){
 					System.out.println("User has sucessfully logged out");
+					
+					//Borrar todos los amigos del panel
+					((TestPane) callBackClient.panelAmigos).removeLogOut();
+					
+					//Mandar mensaje a mis amigos de que estoy desconectado
+					int i;
+					for(i=0;i<friends.size();i++){
+						friends.get(i).reference.sendMessage("I'm disconnected", friends.get(0).id);
+					}
 					
 					//Volver a la pantalla de inicio
 					v.getContentPane().setVisible(false);
@@ -297,7 +318,7 @@ public class Message extends JPanel {
 			}
 		});
 		btnLogOut.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnLogOut.setBounds(45, 11, 118, 28);
+		btnLogOut.setBounds(0, 11, 118, 28);
 		panel.add(btnLogOut);
 		
 		JLabel lblNewPassword = new JLabel("New password:");
@@ -306,7 +327,7 @@ public class Message extends JPanel {
 		panel.add(lblNewPassword);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(45, 279, 125, 20);
+		textField_2.setBounds(45, 275, 125, 20);
 		panel.add(textField_2);
 		textField_2.setColumns(10);
 		
@@ -315,6 +336,26 @@ public class Message extends JPanel {
 		lblUserName.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblUserName.setBounds(23, 180, 82, 21);
 		panel.add(lblUserName);
+		
+		JButton btnUnregister = new JButton("Unregister");
+		btnUnregister.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(server.unRegister(friends.get(0).id, password)){
+					System.out.println("User has sucessfully unregister");
+					
+					//Volver a la pantalla de inicio
+					v.getContentPane().setVisible(false);
+			        EnterRegister er = new EnterRegister(server, client, callBackClient);
+			        er.setVisible(true);
+			        er.setV(v);
+			        v.setContentPane(er);
+				}
+			}
+		});
+		btnUnregister.setBackground(new Color(60, 169, 113));
+		btnUnregister.setBounds(124, 11, 113, 28);
+		panel.add(btnUnregister);
 		
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("Search", null, panel_5, null);

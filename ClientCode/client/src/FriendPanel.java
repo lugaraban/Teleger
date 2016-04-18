@@ -14,9 +14,11 @@ public class FriendPanel extends JPanel {
 	 * Create the panel.
 	 */
 	JPanel Contenedor;
+	String name;
 	
 	public FriendPanel(String image, String name, JLabel imageBar, JLabel nameBar, JPanel contenedor) {
 		this.Contenedor = contenedor;
+		this.name=name;
 		
 		setBackground(new Color(204, 255, 204));
 		setForeground(new Color(204, 255, 204));

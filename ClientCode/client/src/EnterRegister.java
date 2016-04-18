@@ -249,40 +249,14 @@ public class EnterRegister extends JPanel {
 				//System.out.println(password);
 				User user = new User(name, password, completeName, image);
 				if(server.register(user)){
-					SafeUser[] friends;
-					friends=server.logIn(name, password, client);
+					Popup p = new Popup("You can log in now", v);
+					p.setVisible(true);
 					
-					//Transformar el array de amigos conectados a un arraylist
-					ArrayList <SafeUser> connectedFriends = new ArrayList<>();
-					int i;
-					for(i=0;i<friends.length;i++){
-						if(friends[i].id.length()>1){
-							connectedFriends.add(friends[i]);
-							System.out.println(connectedFriends.get(i).id);
-						}
-					}
-					
-					//Establezco los parametros de la clase callBack
-					callBack.friends=connectedFriends;
-					callBack.userId=connectedFriends.get(0).id;
-					callBack.userPassword=password;
-					callBack.contenedor=new JPanel();
-					callBack.lblName= new JLabel();
-					callBack.lblImage= new JLabel();
-					callBack.panelAmigos=new TestPane(connectedFriends,callBack.lblImage,callBack.lblName,callBack.contenedor);
-					
-					callBack.panelAmigos.addFriends(connectedFriends);
-					
-					
-					//Mandamos la vista al panel de los mensajes
-					v.getContentPane().setVisible(false);
-					Message msg=new Message(connectedFriends, server, client, password, callBack);
-					for(i=0;i<connectedFriends.size();i++){
-						(callBack.contenedor.getComponent(i)).setName(connectedFriends.get(i).id);
-					}
-			        msg.setVisible(true);
-			        msg.setV(v);
-			        v.setContentPane(msg);
+					//Iniciarlizar todos los campos del register
+					textField_1.setText("");
+					textField_2.setText("");
+					textField_3.setText("");
+					passwordField_1.setText("");
 				}else{
 					System.out.println("Error al registrarse");
 					Popup p = new Popup("Can not register, maybe your userName is already taken, choose another", v);

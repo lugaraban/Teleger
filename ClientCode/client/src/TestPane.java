@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -35,18 +36,16 @@ import teleger.ServerInterface;
             add(new JScrollPane(mainList));
             if(friends!=null)
             for(int i=0; i<friends.size();i++){
-            	GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridwidth = GridBagConstraints.REMAINDER;
-                gbc.weightx = 1;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-
-                System.out.println("contenedooooooooor"+contenedor.getComponentCount());
-                mainList.add(new FriendPanel(friends.get(i).image, friends.get(i).id, this.imageBar, this.nameBar, contenedor), gbc, 0);
-                System.out.println("contenedooooooooor"+contenedor.getComponentCount());
-                validate();
-                repaint();
+            	for(Component comp: contenedor.getComponents()){
+    				GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridwidth = GridBagConstraints.REMAINDER;
+                    gbc.weightx = 1;
+                    gbc.fill = GridBagConstraints.HORIZONTAL;
+                    mainList.add(new FriendPanel(friends.get(i).image, friends.get(i).id, this.imageBar, this.nameBar, contenedor), gbc, 0);
+                    validate();
+                    repaint();
+        		}
             }
-            
             
         }
         
@@ -67,17 +66,18 @@ import teleger.ServerInterface;
         	mainList.removeAll();
         	mainList.revalidate();
         	for(int i=0; i<friends.size();i++){
-        		GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridwidth = GridBagConstraints.REMAINDER;
-                gbc.weightx = 1;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-                mainList.add(new SearchFriendPanel(friends.get(i), server, user), gbc, 0);
-                validate();
-                repaint();
+        		for(Component comp: contenedor.getComponents()){
+    				GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridwidth = GridBagConstraints.REMAINDER;
+                    gbc.weightx = 1;
+                    gbc.fill = GridBagConstraints.HORIZONTAL;
+                    mainList.add(new SearchFriendPanel(friends.get(i), server, user), gbc, 0);
+                    validate();
+                    repaint();
+        		}
         	}
         }
         public void addFriends(ArrayList<SafeUser> friends){
-        //	mainList.removeAll();
         	mainList.revalidate();
         	for(int i=0; i<friends.size();i++){
         		GridBagConstraints gbc = new GridBagConstraints();
@@ -90,6 +90,32 @@ import teleger.ServerInterface;
                 validate();
                 repaint();
         	}
+        }
+        
+        public void removeFriend(String friend){
+        	System.out.println("Tamano mainList"+mainList.getComponentCount());
+        	for(Component comp: mainList.getComponents()){
+        		
+        		if(((FriendPanel)(comp)).name.equals(friend)){
+        			mainList.remove(comp);
+        			mainList.invalidate();
+        			mainList.validate();
+                    repaint();
+        			
+        			System.out.println("Tamano mainList"+mainList.getComponentCount());
+        			System.out.println("Borro "+friend);
+        			System.out.println("Tamano contenedor "+contenedor.getComponentCount());
+        		}
+        	}
+        	
+        	
+        	
+        	
+        }
+        
+        public void removeLogOut(){
+        	mainList.removeAll();
+			mainList.revalidate();
         }
         
         public TestPane() {

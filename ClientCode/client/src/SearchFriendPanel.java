@@ -49,6 +49,7 @@ public class SearchFriendPanel extends JPanel {
 				//Enviar una petición de amistad
 				System.out.println(user.id+" envia peticion a "+friend.id);
 				server.sendRequestForFriend(user, friend.id);
+				
 			}
 		});
 		

@@ -63,12 +63,28 @@ public class CallBackObject extends  ClientInterfacePOA{
 		System.out.println("User "+connectedUser.id+" has been conected");
 		
 		//Actualizar mi lista de amigos conectados
+		int i, contador=0;
 		
-		if(friends.contains(connectedUser)){
-			System.out.println("El usuario ya estaba conectado");
-		}else{
-			friends.add(connectedUser);
+		System.out.println("añado a "+connectedUser.id);
+		for(i=0;i<friends.size();i++){
+			if(friends.get(i).id.equals(connectedUser.id)){
+				friends.remove(i);
+				friends.add(connectedUser);
+				contador=1;
+				System.out.println("actualizo la referencia");
+			}
 		}
+		if(contador==0){
+			friends.add(connectedUser);
+			System.out.println("añado normal");
+		}
+		
+		
+//		if(friends.contains(connectedUser)){
+//			System.out.println("El usuario ya estaba conectado");
+//		}else{
+//			friends.add(connectedUser);
+//		}
 		
 		for(SafeUser f: friends){
 			System.out.println(f.id);
@@ -116,6 +132,19 @@ public class CallBackObject extends  ClientInterfacePOA{
 					textArea.append(message+"\n");
 					textArea.setCaretPosition(textArea.getDocument().getLength());
 					textArea.updateUI();
+					
+					if(message.equals("I'm disconnected")){
+						panelAmigos.removeFriend(type);
+						panelAmigos.updateUI();
+						
+//						int i;
+//						for(i=0;i<friends.size();i++){
+//							if(friends.get(i).id.equals(type)){
+//								friends.remove(i);
+//							}
+//						}
+					}
+					
 					return true;
 				}
 			}
