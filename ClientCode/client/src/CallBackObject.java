@@ -65,26 +65,22 @@ public class CallBackObject extends  ClientInterfacePOA{
 		//Actualizar mi lista de amigos conectados
 		int i, contador=0;
 		
+		System.out.println("La referencia del cliente que se conecto: "+connectedUser.reference);
 		System.out.println("añado a "+connectedUser.id);
 		for(i=0;i<friends.size();i++){
+			System.out.println("Usuario "+friends.get(i).id);
 			if(friends.get(i).id.equals(connectedUser.id)){
+				System.out.println("actualizo la referencia"+friends.get(i).id);
 				friends.remove(i);
 				friends.add(connectedUser);
 				contador=1;
-				System.out.println("actualizo la referencia");
 			}
 		}
 		if(contador==0){
 			friends.add(connectedUser);
-			System.out.println("añado normal");
+			System.out.println("añado normal a "+connectedUser.id);
 		}
 		
-		
-//		if(friends.contains(connectedUser)){
-//			System.out.println("El usuario ya estaba conectado");
-//		}else{
-//			friends.add(connectedUser);
-//		}
 		
 		for(SafeUser f: friends){
 			System.out.println(f.id);
@@ -118,6 +114,7 @@ public class CallBackObject extends  ClientInterfacePOA{
 		JTextArea textArea = null;
 		
 		System.out.println("Mensaje recibido: "+message);
+		System.out.println("La referencia del cliente que recibe: "+friends.get(0).reference);
 		
 		for(Component comp: contenedor.getComponents()){
 			System.out.println("nome   "+comp.getName());
@@ -136,13 +133,8 @@ public class CallBackObject extends  ClientInterfacePOA{
 					if(message.equals("I'm disconnected")){
 						panelAmigos.removeFriend(type);
 						panelAmigos.updateUI();
+						contenedor.remove(comp);
 						
-//						int i;
-//						for(i=0;i<friends.size();i++){
-//							if(friends.get(i).id.equals(type)){
-//								friends.remove(i);
-//							}
-//						}
 					}
 					
 					return true;

@@ -179,28 +179,29 @@ public class Message extends JPanel {
 						//Comprobar si se puede enviar el mensaje
 						//Si no se puede es que el usuario está desconectado,
 						//y se eliminaría de la lista de amigos conectados.
+						System.out.println("La referencia del cliente al que mando: "+friends.get(i).reference);
 						if(friends.get(i).reference.sendMessage(message, friends.get(0).id)){
 							System.out.println("Se ha enviado el mensaje correctamente");
 							
-							friends.get(0).reference.sendMessage(message, friends.get(0).id);
+							//friends.get(0).reference.sendMessage(message, friends.get(0).id);
 							
 							//Meter mi mensaje en mi textarea
-//							JTextArea textArea = null;
-//							
-//							for(Component comp: callBackClient.contenedor.getComponents()){
-//								if(comp.getClass().equals(JTextArea.class)){
-//									System.out.println("Primer if");
-//									textArea=(JTextArea)comp;
-//									if(friends.get(0).id.equals(textArea.getName())){
-//										System.out.println("Nombre textarea"+textArea.getName());
-//										System.out.println("Nombre componente"+comp.getName());
-//										textArea.append(friends.get(0).id+" says:\n");
-//										textArea.append(message+"\n");
-//										textArea.setCaretPosition(textArea.getDocument().getLength());
-//										textArea.updateUI();
-//									}
-//								}
-//							}
+							JTextArea textArea = null;
+							
+							for(Component comp: callBackClient.contenedor.getComponents()){
+								if(comp.getClass().equals(JTextArea.class)){
+									System.out.println("Primer if");
+									textArea=(JTextArea)comp;
+									if(friends.get(i).id.equals(textArea.getName())){
+										System.out.println("Nombre textarea"+textArea.getName());
+										System.out.println("Nombre componente"+comp.getName());
+										textArea.append(friends.get(0).id+" says:\n");
+										textArea.append(message+"\n");
+										textArea.setCaretPosition(textArea.getDocument().getLength());
+										textArea.updateUI();
+									}
+								}
+							}
 						}else{
 							System.out.println("El usuario está desconectado");
 							Popup p = new Popup("The user is not connected",v);
