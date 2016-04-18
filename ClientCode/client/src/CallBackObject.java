@@ -1,10 +1,7 @@
 
 
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import org.omg.CORBA.ORB;
@@ -72,6 +69,7 @@ public class CallBackObject extends  ClientInterfacePOA{
 		
 	}
 	
+	@Override
 	public boolean sendMessage(String message, String type){
 		if(type.equals("text")){
 			System.out.println("Mensaje recibido: "+message);

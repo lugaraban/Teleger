@@ -20,17 +20,20 @@ public final class ClientInterfaceHolder implements org.omg.CORBA.portable.Strea
     value = initialValue;
   }
 
-  public void _read (org.omg.CORBA.portable.InputStream i)
+  @Override
+public void _read (org.omg.CORBA.portable.InputStream i)
   {
     value = teleger.ClientInterfaceHelper.read (i);
   }
 
-  public void _write (org.omg.CORBA.portable.OutputStream o)
+  @Override
+public void _write (org.omg.CORBA.portable.OutputStream o)
   {
     teleger.ClientInterfaceHelper.write (o, value);
   }
 
-  public org.omg.CORBA.TypeCode _type ()
+  @Override
+public org.omg.CORBA.TypeCode _type ()
   {
     return teleger.ClientInterfaceHelper.type ();
   }

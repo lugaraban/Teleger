@@ -90,7 +90,7 @@ bool SQLConnector::login(const char * id, const  char * pass)
 		return false;
 }
 
-void SQLConnector::getFriendsId(const char * userName,int *friendNumber,int *arraySize,char*** friendsArray)
+void SQLConnector::getFriendsId(const char * userName, int *friendNumber, int *arraySize, serverSideUser ** friendsArray)
 {
 	char * statement;
 	statement = (char *)malloc(200 * (sizeof(char)));
@@ -101,18 +101,24 @@ void SQLConnector::getFriendsId(const char * userName,int *friendNumber,int *arr
 	strcat(statement, "'");
 	sqlite3_open(routeToFile, &db);
 	rc = sqlite3_get_table(db, reinterpret_cast<const char *>(statement), &results, &nRow, &nColumn, &zErrMsg);
-	*friendsArray = (char**)malloc(nRow*100*sizeof(char));
+	//*friendsArray = (char**)malloc(nRow*nColumn*sizeof(struct serverSideUser));
+	*friendsArray = (struct serverSideUser *)malloc(nRow*nColumn * sizeof(struct serverSideUser)+sizeof(struct serverSideUser));
 	int i,z=0;
-	for (i = 2; i < (nRow + 2); i += 2) {
-		if (strcmp(userName, results[i]) == 0)
-			*friendsArray[z] = results[i + 1];
-		else
-			*friendsArray[z] = results[i];
-		//cout << *(friendsArray)[z] << endl;
-		z++;
+	cout << "numero de filas" << nRow << endl;
+	if(nRow>0)
+	for (i = 2; i < (nRow*nColumn)+2; i += 1) {
+		if (strcmp(userName, results[i]) != 0) {
+			cout << "amigo " << results[i] << endl;
+			(*friendsArray)[z].id = results[i];
+			z++;
+		}
+		
 	}
 	sqlite3_close(db);
-	*friendNumber = z;
+	if (z > 0)
+		*friendNumber = z;
+	else
+		*friendNumber = 0;
 	free(&zErrMsg);
 	free(statement);
 }
@@ -134,13 +140,14 @@ void SQLConnector::searchNewFriends(const char * userName, int * friendNumber, t
 	free(statement);
 	std::cout << "erro " << rc << std::endl;
 	int i, z = 0;
-	(*friendsArray)->length(nColumn*nRow+1);
+	(*friendsArray)->length(nRow);
 	cout << "length " << nRow + 1 << endl;
-	for (i = 4; i < (nRow + 1)*nColumn; i+=4) {
+	int size = (nColumn*nRow + 1);
+	for (i = 4; i < size; i+=4) {
 		std::cout << "i " << i << std::endl;
-		(*friendsArray)->get_buffer()[i - 4].id = results[i];
-		(*friendsArray)->get_buffer()[i - 4].name = results[i+2];
-		(*friendsArray)->get_buffer()[i - 4].image = results[i+3];
+		(*friendsArray)->get_buffer()[z].id = results[i];
+		(*friendsArray)->get_buffer()[z].name = results[i+2];
+		(*friendsArray)->get_buffer()[z].image = results[i+3];
 		z++;
 	}
 
@@ -237,6 +244,32 @@ void SQLConnector::addFriend(const char * connectedUser, const char * _cxx_frien
 	strcat(statement, connectedUser);
 	strcat(statement, "')");
 	sqlite3_open(routeToFile, &db);
+	sqlite3_exec(db, reinterpret_cast<const char *>(statement), NULL, NULL, &zErrMsg);
+	sqlite3_close(db);
+	free(&zErrMsg);
+	free(statement);
+}
+
+void SQLConnector::deleteUser(const char * userId)
+{
+	char * statement;
+	strcpy(statement, "DELETE FROM friends WHERE idFriend0='");
+	strcat(statement, userId);
+	strcat(statement, "' OR idFriend1='");
+	strcat(statement, userId);
+	strcat(statement, "'");
+	sqlite3_open(routeToFile, &db);
+	sqlite3_exec(db, reinterpret_cast<const char *>(statement), NULL, NULL, &zErrMsg);
+	strcpy(statement, "DELETE FROM pendSol WHERE applicant='");
+	strcat(statement, userId);
+	strcat(statement, "' OR requested='");
+	strcat(statement, userId);
+	strcat(statement, "'");
+	sqlite3_exec(db, reinterpret_cast<const char *>(statement), NULL, NULL, &zErrMsg);
+	statement = (char *)malloc(200 * (sizeof(char)));
+	strcpy(statement, "DELETE FROM users WHERE id='");
+	strcat(statement, userId);
+	strcat(statement, "'");
 	sqlite3_exec(db, reinterpret_cast<const char *>(statement), NULL, NULL, &zErrMsg);
 	sqlite3_close(db);
 	free(&zErrMsg);

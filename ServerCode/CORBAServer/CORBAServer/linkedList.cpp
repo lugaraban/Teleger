@@ -62,7 +62,6 @@ return false;
 struct node * linkedList::search(const char * id) {
 	struct node * iterator=nullptr;
 	iterator = first;
-	std::cout << "id do iterator " << id << std::endl;
 	while (iterator->next != NULL && id!=nullptr) {
 		if (strcmp(iterator->next->user.id, id) == 0) {
 			return iterator->next;

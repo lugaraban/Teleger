@@ -11,7 +11,8 @@ package teleger;
 public class _ServerInterfaceStub extends org.omg.CORBA.portable.ObjectImpl implements teleger.ServerInterface
 {
 
-  public boolean register (teleger.User userData)
+  @Override
+public boolean register (teleger.User userData)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -31,7 +32,8 @@ public class _ServerInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
             }
   } // register
 
-  public teleger.SafeUser[] logIn (String userId, String userPassword, teleger.ClientInterface client)
+  @Override
+public teleger.SafeUser[] logIn (String userId, String userPassword, teleger.ClientInterface client)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -53,7 +55,8 @@ public class _ServerInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
             }
   } // logIn
 
-  public boolean logOut (String userId, String userPassword)
+  @Override
+public boolean logOut (String userId, String userPassword)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -74,7 +77,8 @@ public class _ServerInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
             }
   } // logOut
 
-  public teleger.SafeUser[] searchNewFriends (String name)
+  @Override
+public teleger.SafeUser[] searchNewFriends (String name)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -94,7 +98,8 @@ public class _ServerInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
             }
   } // searchNewFriends
 
-  public void sendRequestForFriend (teleger.SafeUser user, String friend)
+  @Override
+public void sendRequestForFriend (teleger.SafeUser user, String friend)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -114,7 +119,8 @@ public class _ServerInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
             }
   } // sendRequestForFriend
 
-  public void notifyAnswerRequest (String connectedUser, String pass, String friend, boolean acceptance)
+  @Override
+public void notifyAnswerRequest (String connectedUser, String pass, String friend, boolean acceptance)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -136,7 +142,8 @@ public class _ServerInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
             }
   } // notifyAnswerRequest
 
-  public boolean changePassword (String old, String _new, String user)
+  @Override
+public boolean changePassword (String old, String _new, String user)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -162,9 +169,10 @@ public class _ServerInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
   private static String[] __ids = {
     "IDL:teleger/ServerInterface:1.0"};
 
-  public String[] _ids ()
+  @Override
+public String[] _ids ()
   {
-    return (String[])__ids.clone ();
+    return __ids.clone ();
   }
 
   private void readObject (java.io.ObjectInputStream s) throws java.io.IOException

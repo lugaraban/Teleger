@@ -1,35 +1,18 @@
 import javax.swing.JPanel;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import javax.swing.JLabel;
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.ParallelGroup;
-import javax.swing.GroupLayout.SequentialGroup;
-import javax.swing.ImageIcon;
 import java.awt.Color;
-import java.awt.Container;
-
-import javax.swing.border.LineBorder;
-
 import teleger.ClientInterface;
 import teleger.SafeUser;
 import teleger.ServerInterface;
-import teleger.User;
-
 import javax.swing.JTextField;
 import java.awt.Font;
-import java.awt.GridLayout;
-
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.UIManager;
-import java.awt.SystemColor;
+import javax.swing.SwingConstants;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -166,7 +149,7 @@ public class Message extends JPanel {
 		btnSend.setBounds(503, 337, 71, 64);
 		add(btnSend);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.setBackground(new Color(144, 238, 144));
 		tabbedPane.setBounds(0, 40, 242, 361);
 		add(tabbedPane);

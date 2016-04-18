@@ -21,17 +21,20 @@ public final class userFriendsHolder implements org.omg.CORBA.portable.Streamabl
     value = initialValue;
   }
 
-  public void _read (org.omg.CORBA.portable.InputStream i)
+  @Override
+public void _read (org.omg.CORBA.portable.InputStream i)
   {
     value = teleger.userFriendsHelper.read (i);
   }
 
-  public void _write (org.omg.CORBA.portable.OutputStream o)
+  @Override
+public void _write (org.omg.CORBA.portable.OutputStream o)
   {
     teleger.userFriendsHelper.write (o, value);
   }
 
-  public org.omg.CORBA.TypeCode _type ()
+  @Override
+public org.omg.CORBA.TypeCode _type ()
   {
     return teleger.userFriendsHelper.type ();
   }

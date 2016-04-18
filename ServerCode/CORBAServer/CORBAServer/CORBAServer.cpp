@@ -28,6 +28,7 @@ public:
 	void sendRequestForFriend(const teleger::SafeUser& user, const char* _cxx_friend);
 	void notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance);
 	::CORBA::Boolean changePassword(const char* old, const char* _cxx_new, const char* user);
+	::CORBA::Boolean unRegister(const char* userId, const char* userPassword);
 	virtual ~telegerImpl() {};
 };
 
@@ -73,42 +74,61 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 			connector->getUserData(userId, userPassword, &loggedUser);
 			lList->_insert(*loggedUser, client);
 			//I it exist, then I return a list with their connected friends  
-			char ** friends = nullptr;
+			serverSideUser * friends;
 			int arraySize, friendsNumber;
 			connector->getFriendsId(userId, &friendsNumber, &arraySize, &friends);
-			int i = 1;
+			int i;
 			userFriendsArray->length(friendsNumber+1);
 			(*userFriendsArray)[0].id = loggedUser->id;
 			(*userFriendsArray)[0].image = loggedUser->image;
 			(*userFriendsArray)[0].name = loggedUser->name;
 			(*userFriendsArray)[0].reference = teleger::ClientInterface::_duplicate(client);
-			for (i = 1; i < userFriendsArray->length(); i++) {
-				if (lList->search(friends[i - 1])->user.id != NULL)
-					if (strcmp(lList->search(friends[i - 1])->user.id, friends[i - 1]) == 0) {
-						(*userFriendsArray)[i].id = (lList->search(friends[i - 1])->user).id;
-						(*userFriendsArray)[i].image = (lList->search(friends[i - 1])->user).image;
-						(*userFriendsArray)[i].name = (lList->search(friends[i - 1])->user).name;
-						(*userFriendsArray)[i].reference = (lList->search(friends[i - 1])->reference);
-						(*userFriendsArray)[i].reference->notifyConnection((*userFriendsArray)[0]);
+			cout << "number of friends " << friendsNumber << endl;
+			//cout << "amigo 0" << friends[0].id << endl;
+			for (i = 0; i < friendsNumber ; i++) {
+				//if (lList->search(friends[i - 1])->user.id != NULL)
+				cout << "percorro o bucle de conectados " << friends[i].id << endl;
+					if (strcmp(lList->search(friends[i].id)->user.id, friends[i].id) == 0) {
+						cout << (lList->search(friends[i].id)->user).id << endl;
+						(*userFriendsArray)[i + 1] = * new SafeUser();
+						(*userFriendsArray)[i + 1].id = (lList->search(friends[i].id)->user).id;
+						cout << (lList->search(friends[i].id)->user).id << endl;
+						(*userFriendsArray)[i + 1].image = (lList->search(friends[i].id)->user).image;
+						cout << (lList->search(friends[i].id)->user).image << endl;
+						(*userFriendsArray)[i + 1].name = (lList->search(friends[i].id)->user).name;
+						cout << "amigo conectado" << (lList->search(friends[i].id)->user).id << endl;
+						if (!(lList->search(friends[i].id)->reference->_is_nil())) {
+						//	(*userFriendsArray)[i].reference = teleger::ClientInterface::_duplicate(lList->search(friends[i - 1].id)->reference);
+							cout << " a referencia non e null" << endl;
+							(*userFriendsArray)[i+1].reference = (lList->search(friends[i].id)->reference);
+							lList->search(friends[i].id)->reference->notifyConnection((*userFriendsArray)[0]);
+						}
+						else {
+							cout << "borrei " << endl;
+							lList->_delete((*userFriendsArray)[i].id);
+							i--;
+							friendsNumber -= 1;
+						}
 					}
 			}
 			////Friends solitudes
 			connector->getFriendRequests(userId, &friendsNumber, &userFriendsSol);
-			cout << "friends number " << friendsNumber << endl;
 			for (i = 0; i < friendsNumber; i++) {
-				cout << userFriendsSol[i].id << endl;
 				client->receiveFriendRequest((userFriendsSol[i]).id);
 			}
 		}
 		else {
 			//mtx->unlock();
 			userFriendsArray->length(1);
-			SafeUser * dummyUser = new SafeUser();
+			SafeUser * dummyUser=new SafeUser();
+			dummyUser->reference = teleger::ClientInterface::_duplicate(client);
 			dummyUser->id = "NULL";
+			cout << "envio dummy" << endl;
 			(*userFriendsArray)[0] = *dummyUser;
 		}
 	}
 	mtx->release();
+	cout << "returno " << endl;
 	return userFriendsArray;
 }
 
@@ -190,6 +210,17 @@ void telegerImpl::notifyAnswerRequest(const char * connectedUser, const char * p
 		return true;
 	}
 	mtx->unlock();
+	return false;
+}
+
+::CORBA::Boolean telegerImpl::unRegister(const char * userId, const char * userPassword)
+{
+	if (connector->login(userId, userPassword)) {
+		lList->_delete(userId);
+		connector->deleteUser(userId);
+		return true;
+
+	}
 	return false;
 }
 

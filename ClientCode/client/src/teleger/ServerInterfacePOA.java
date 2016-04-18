@@ -26,7 +26,8 @@ public abstract class ServerInterfacePOA extends org.omg.PortableServer.Servant
     _methods.put ("changePassword", new java.lang.Integer (6));
   }
 
-  public org.omg.CORBA.portable.OutputStream _invoke (String $method,
+  @Override
+public org.omg.CORBA.portable.OutputStream _invoke (String $method,
                                 org.omg.CORBA.portable.InputStream in,
                                 org.omg.CORBA.portable.ResponseHandler $rh)
   {
@@ -123,9 +124,10 @@ public abstract class ServerInterfacePOA extends org.omg.PortableServer.Servant
   private static String[] __ids = {
     "IDL:teleger/ServerInterface:1.0"};
 
-  public String[] _all_interfaces (org.omg.PortableServer.POA poa, byte[] objectId)
+  @Override
+public String[] _all_interfaces (org.omg.PortableServer.POA poa, byte[] objectId)
   {
-    return (String[])__ids.clone ();
+    return __ids.clone ();
   }
 
   public ServerInterface _this() 

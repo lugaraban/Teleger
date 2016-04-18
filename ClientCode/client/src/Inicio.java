@@ -1,15 +1,9 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import java.awt.Cursor;
 import java.awt.Color;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
-
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Object;
 import org.omg.CORBA.ORBPackage.InvalidName;
@@ -28,16 +22,6 @@ import teleger.ClientInterfaceHelper;
 import teleger.ServerInterface;
 import teleger.ServerInterfaceHelper;
 
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 public class Inicio extends JFrame {
 
 	private JPanel contentPane;
@@ -48,6 +32,7 @@ public class Inicio extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				ServerInterface server = null;
 				ClientInterface client = null;

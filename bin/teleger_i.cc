@@ -76,6 +76,7 @@ public:
   ::CORBA::Boolean _cxx_register(const teleger::User& userData);
   teleger::userFriends* logIn(const char* userId, const char* userPassword, teleger::ClientInterface_ptr client);
   ::CORBA::Boolean logOut(const char* userId, const char* userPassword);
+  ::CORBA::Boolean unRegister(const char* userId, const char* userPassword);
   teleger::userFriends* searchNewFriends(const char* name);
   void sendRequestForFriend(const teleger::SafeUser& user, const char* _cxx_friend);
   void notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance);
@@ -109,6 +110,12 @@ teleger::userFriends* teleger_ServerInterface_i::logIn(const char* userId, const
 {
   // insert code here and remove the warning
   #warning "Code missing in function <::CORBA::Boolean teleger_ServerInterface_i::logOut(const char* userId, const char* userPassword)>"
+}
+
+::CORBA::Boolean teleger_ServerInterface_i::unRegister(const char* userId, const char* userPassword)
+{
+  // insert code here and remove the warning
+  #warning "Code missing in function <::CORBA::Boolean teleger_ServerInterface_i::unRegister(const char* userId, const char* userPassword)>"
 }
 
 teleger::userFriends* teleger_ServerInterface_i::searchNewFriends(const char* name)

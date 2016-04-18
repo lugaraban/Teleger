@@ -22,7 +22,8 @@ public abstract class ClientInterfacePOA extends org.omg.PortableServer.Servant
     _methods.put ("sendMessage", new java.lang.Integer (2));
   }
 
-  public org.omg.CORBA.portable.OutputStream _invoke (String $method,
+  @Override
+public org.omg.CORBA.portable.OutputStream _invoke (String $method,
                                 org.omg.CORBA.portable.InputStream in,
                                 org.omg.CORBA.portable.ResponseHandler $rh)
   {
@@ -71,9 +72,10 @@ public abstract class ClientInterfacePOA extends org.omg.PortableServer.Servant
   private static String[] __ids = {
     "IDL:teleger/ClientInterface:1.0"};
 
-  public String[] _all_interfaces (org.omg.PortableServer.POA poa, byte[] objectId)
+  @Override
+public String[] _all_interfaces (org.omg.PortableServer.POA poa, byte[] objectId)
   {
-    return (String[])__ids.clone ();
+    return __ids.clone ();
   }
 
   public ClientInterface _this() 

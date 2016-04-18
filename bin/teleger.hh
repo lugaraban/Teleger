@@ -428,6 +428,7 @@ _CORBA_MODULE_BEG
     ::CORBA::Boolean _cxx_register(const ::teleger::User& userData);
     userFriends* logIn(const char* userId, const char* userPassword, ::teleger::ClientInterface_ptr client);
     ::CORBA::Boolean logOut(const char* userId, const char* userPassword);
+    ::CORBA::Boolean unRegister(const char* userId, const char* userPassword);
     userFriends* searchNewFriends(const char* name);
     void sendRequestForFriend(const ::teleger::SafeUser& user, const char* _cxx_friend);
     void notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance);
@@ -469,6 +470,7 @@ _CORBA_MODULE_BEG
     virtual ::CORBA::Boolean _cxx_register(const ::teleger::User& userData) = 0;
     virtual userFriends* logIn(const char* userId, const char* userPassword, ::teleger::ClientInterface_ptr client) = 0;
     virtual ::CORBA::Boolean logOut(const char* userId, const char* userPassword) = 0;
+    virtual ::CORBA::Boolean unRegister(const char* userId, const char* userPassword) = 0;
     virtual userFriends* searchNewFriends(const char* name) = 0;
     virtual void sendRequestForFriend(const ::teleger::SafeUser& user, const char* _cxx_friend) = 0;
     virtual void notifyAnswerRequest(const char* connectedUser, const char* pass, const char* _cxx_friend, ::CORBA::Boolean acceptance) = 0;

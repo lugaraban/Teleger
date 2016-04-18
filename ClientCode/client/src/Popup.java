@@ -1,16 +1,9 @@
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import teleger.ClientInterface;
-import teleger.ServerInterface;
 
 import javax.swing.SwingConstants;
 

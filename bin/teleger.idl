@@ -29,6 +29,7 @@ module teleger{
 		boolean register(in User userData);
 		userFriends logIn(in string userId, in string userPassword, in ClientInterface client);
 		boolean logOut(in string userId, in string userPassword);
+		boolean unRegister(in string userId, in string userPassword);
 		userFriends searchNewFriends(in string name);
 		void sendRequestForFriend(in SafeUser user, in string friend);
 		void notifyAnswerRequest(in string connectedUser, in string pass, in string friend, in boolean acceptance);

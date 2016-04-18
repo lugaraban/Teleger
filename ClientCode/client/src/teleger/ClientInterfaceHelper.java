@@ -47,7 +47,7 @@ abstract public class ClientInterfaceHelper
 
   public static void write (org.omg.CORBA.portable.OutputStream ostream, teleger.ClientInterface value)
   {
-    ostream.write_Object ((org.omg.CORBA.Object) value);
+    ostream.write_Object (value);
   }
 
   public static teleger.ClientInterface narrow (org.omg.CORBA.Object obj)

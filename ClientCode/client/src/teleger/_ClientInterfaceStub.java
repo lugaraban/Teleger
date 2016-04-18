@@ -11,7 +11,8 @@ package teleger;
 public class _ClientInterfaceStub extends org.omg.CORBA.portable.ObjectImpl implements teleger.ClientInterface
 {
 
-  public void notifyConnection (teleger.SafeUser connectedUser)
+  @Override
+public void notifyConnection (teleger.SafeUser connectedUser)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -30,7 +31,8 @@ public class _ClientInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
             }
   } // notifyConnection
 
-  public void receiveFriendRequest (String user)
+  @Override
+public void receiveFriendRequest (String user)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -49,7 +51,8 @@ public class _ClientInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
             }
   } // receiveFriendRequest
 
-  public boolean sendMessage (String message, String type)
+  @Override
+public boolean sendMessage (String message, String type)
   {
             org.omg.CORBA.portable.InputStream $in = null;
             try {
@@ -74,9 +77,10 @@ public class _ClientInterfaceStub extends org.omg.CORBA.portable.ObjectImpl impl
   private static String[] __ids = {
     "IDL:teleger/ClientInterface:1.0"};
 
-  public String[] _ids ()
+  @Override
+public String[] _ids ()
   {
-    return (String[])__ids.clone ();
+    return __ids.clone ();
   }
 
   private void readObject (java.io.ObjectInputStream s) throws java.io.IOException

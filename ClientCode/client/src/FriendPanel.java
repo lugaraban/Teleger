@@ -1,5 +1,4 @@
 import javax.swing.JPanel;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
