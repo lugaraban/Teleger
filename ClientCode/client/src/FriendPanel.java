@@ -40,10 +40,6 @@ public class FriendPanel extends JPanel {
 			}
 		});
 		
-		JLabel lblImagen = new JLabel("Imagen");
-		lblImagen.setBounds(0, 0, 62, 55);
-		add(lblImagen);
-		
 		JLabel lblNombreAmigo = new JLabel("Nombre Amigo");
 		lblNombreAmigo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNombreAmigo.setBounds(83, 19, 62, 15);

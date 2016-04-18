@@ -166,8 +166,8 @@ public class EnterRegister extends JPanel {
 					//Mandamos la vista al panel de los mensajes
 					v.getContentPane().setVisible(false);
 					Message msg=new Message(connectedFriends, server, client, password, callBack);
-					for(i = 0;i<connectedFriends.size();i++){
-						(callBack.contenedor.getComponent(i)).setName(connectedFriends.get(i).id);
+					for(i = 1;i<connectedFriends.size();i++){
+						(callBack.contenedor.getComponent(i-1)).setName(connectedFriends.get(i).id);
 					}
 			        msg.setVisible(true);
 			        msg.setV(v);
@@ -277,7 +277,7 @@ public class EnterRegister extends JPanel {
 		label_8.setBounds(172, 27, 298, 40);
 		add(label_8);
 		JLabel label_9 = new JLabel("");
-		label_9.setIcon(new ImageIcon("C:\\Users\\Rapnika\\Documents\\3_curso\\Distribuida\\TerceraEntrega\\madera.jpg"));
+		label_9.setIcon(new ImageIcon("C:\\Users\\Rapnika\\Documents\\3_curso\\Distribuida\\TerceraEntrega\\clientSimpleMarcos\\client\\madera.jpg"));
 		label_9.setBounds(0, 0, 574, 401);
 		add(label_9);
 

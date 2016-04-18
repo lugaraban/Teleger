@@ -23,9 +23,6 @@ public class SearchFriendPanel extends JPanel {
 		setLocation(new Point(20, 45));
 		setBackground(new Color(204, 255, 204));
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JLabel label = new JLabel("Imagen");
-		add(label);
 		//setLayout(null);
 		
 		JLabel lblNombreusuario = new JLabel("NombreUsuario");

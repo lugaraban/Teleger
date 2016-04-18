@@ -61,6 +61,7 @@ public class Message extends JPanel {
 	JPanel friendsSearched;
 	JLabel lblNombreAmigo;
 	JPanel panel_4;
+	String password;
 	//CallBackObject callBack;
 
     public Inicio getV() {
@@ -74,10 +75,11 @@ public class Message extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Message(ArrayList<SafeUser> f, ServerInterface server, ClientInterface client, String password, CallBackObject callBackClient) {
+	public Message(ArrayList<SafeUser> f, ServerInterface server, ClientInterface client, String Password, CallBackObject callBackClient) {
 		friends=f;
 		this.server=server;
 		this.client=client;
+		this.password=Password;
 		//callBack=callBackClient;
 		friendsResult = new ArrayList<>();
 		setBackground(new Color(204, 255, 204));
@@ -123,12 +125,12 @@ public class Message extends JPanel {
 		//panel_4 = callBackClient.contenedor;
 		friendsSearched = new TestPane(friendsResult, label, lblNombreAmigo, callBackClient.contenedor);
 		
-		for(int i=0;i<friends.size();i++){
+		for(int i=1;i<friends.size();i++){
 			//JTextArea txtArea = new JTextArea();
 			//txtArea.setName(friends.get(i).id);
 			//txtArea.setOpaque(false);
-			callBackClient.contenedor.add(friends.get(i).id, new JTextArea(friends.get(i).id));
-			callBackClient.contenedor.getComponent(i).setName(friends.get(i).id);
+			callBackClient.contenedor.add(friends.get(i).id, new JTextArea());
+			callBackClient.contenedor.getComponent(i-1).setName(friends.get(i).id);
 			//(JTextArea)(contenedor.getComponent(i)).setOpaque(false);
 		}
 		
@@ -151,9 +153,13 @@ public class Message extends JPanel {
 		lblImagen.setBounds(0, 0, 46, 41);
 		panel_1.add(lblImagen);
 		
+		JLabel lblNombrePropio = new JLabel(friends.get(0).id);
+		lblNombrePropio.setBounds(72, 11, 82, 19);
+		panel_1.add(lblNombrePropio);
+		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setLineWrap(true);
-		textArea_1.setBounds(240, 337, 265, 64);
+		textArea_1.setBounds(240, 348, 265, 53);
 		add(textArea_1);
 		
 		JButton btnSend = new JButton("Send");
@@ -221,7 +227,7 @@ public class Message extends JPanel {
 		
 		
 		btnSend.setBackground(new Color(60, 179, 113));
-		btnSend.setBounds(503, 337, 71, 64);
+		btnSend.setBounds(503, 348, 71, 53);
 		add(btnSend);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -234,12 +240,14 @@ public class Message extends JPanel {
 		
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
 		tabbedPane.addTab("My profile", null, panel, null);
 		panel.setLayout(null);
 		
 		//JLabel lblImage = new JLabel("");
 		JLabel lblImage = new JLabel("Image");
-		lblImage.setBounds(28, 44, 177, 131);
+		lblImage.setIcon(new ImageIcon("C:\\Users\\Rapnika\\Documents\\3_curso\\Distribuida\\TerceraEntrega\\clientSimpleMarcos\\client\\imagenGrande.png"));
+		lblImage.setBounds(42, 50, 128, 128);
 		panel.add(lblImage);
 		
 		
@@ -280,6 +288,7 @@ public class Message extends JPanel {
 				if(server.changePassword(actual, newPass, friends.get(0).id)){
 					Popup p = new Popup("Your password has been changed", v);
 					p.setVisible(true);
+					password=newPass;
 				}
 			}
 		});
@@ -342,9 +351,21 @@ public class Message extends JPanel {
 		btnUnregister.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(server.unRegister(friends.get(0).id, password)){
-					System.out.println("User has sucessfully unregister");
+				if(server.logOut(friends.get(0).id, password)){
+					System.out.println("User has sucessfully logged out");
 					
+					//Borrar todos los amigos del panel
+					((TestPane) callBackClient.panelAmigos).removeLogOut();
+					
+					//Mandar mensaje a mis amigos de que estoy desconectado
+					int i;
+					for(i=0;i<friends.size();i++){
+						friends.get(i).reference.sendMessage("I'm disconnected", friends.get(0).id);
+					}
+					
+					if(server.unRegister(friends.get(0).id, password)){
+						System.out.println("User has sucessfully unregister");
+					}
 					//Volver a la pantalla de inicio
 					v.getContentPane().setVisible(false);
 			        EnterRegister er = new EnterRegister(server, client, callBackClient);
@@ -352,6 +373,7 @@ public class Message extends JPanel {
 			        er.setV(v);
 			        v.setContentPane(er);
 				}
+				
 			}
 		});
 		btnUnregister.setBackground(new Color(60, 169, 113));

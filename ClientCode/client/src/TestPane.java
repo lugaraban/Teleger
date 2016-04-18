@@ -79,7 +79,7 @@ import teleger.ServerInterface;
         }
         public void addFriends(ArrayList<SafeUser> friends){
         	mainList.revalidate();
-        	for(int i=0; i<friends.size();i++){
+        	for(int i=1; i<friends.size();i++){
         		GridBagConstraints gbc = new GridBagConstraints();
                 gbc.gridwidth = GridBagConstraints.REMAINDER;
                 gbc.weightx = 1;

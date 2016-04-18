@@ -55,8 +55,11 @@ public class Inicio extends JFrame {
 				ClientInterface client = null;
 				ArrayList<SafeUser> friends= new ArrayList<>();
 				JLabel imageBar= new JLabel();
+				imageBar.setIcon(new ImageIcon("C:\\Users\\Rapnika\\Documents\\3_curso\\Distribuida\\TerceraEntrega\\clientSimpleMarcos\\client\\imagenGrande.png"));
+				//imageBar.setBounds(0, 0, 128, 128);
 				JLabel nameBar= new JLabel();
 				JPanel contenedor = new JPanel();
+				contenedor.setBackground(new Color(255, 255, 255));
 				TestPane friendsPanel= new TestPane(friends,imageBar,nameBar,contenedor);
 				
 				try {
