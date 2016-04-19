@@ -5,7 +5,8 @@
 #include "../SQLite/sqlite3.h"
 #include "CORBAServer.h"
 #include "SQLConnector.h"
-#include <list>
+#include <omnithread.h>
+
 using namespace std;
 static CORBA::ORB_ptr orb;
 static sqlite3 *db;	
@@ -63,7 +64,7 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 	userFriends * userFriendsArray = new userFriends();
 	serverSideUser * userFriendsSol = new serverSideUser();
 	if (client->_is_nil()) {
-		cout << "Cliente vacio!!!" << endl;
+		std::cout << "Cliente vacio!!!" << endl;
 	}
 	else {
 		if (connector->login(userId, userPassword)) {
@@ -83,32 +84,32 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 			(*userFriendsArray)[0].image = loggedUser->image;
 			(*userFriendsArray)[0].name = loggedUser->name;
 			(*userFriendsArray)[0].reference = teleger::ClientInterface::_duplicate(client);
-			cout << "number of friends " << friendsNumber << endl;
+			std::cout << "number of friends " << friendsNumber << endl;
 			//cout << "amigo 0" << friends[0].id << endl;
 			for (i = 0; i < friendsNumber ; i++) {
 				//if (lList->search(friends[i - 1])->user.id != NULL)
-				cout << "percorro o bucle de conectados " << friends[i].id << endl;
+				std::cout << "percorro o bucle de conectados " << friends[i].id << endl;
 					if (strcmp(lList->search(friends[i].id)->user.id, friends[i].id) == 0) {
-						cout << (lList->search(friends[i].id)->user).id << endl;
+						std::cout << (lList->search(friends[i].id)->user).id << endl;
 						(*userFriendsArray)[i + 1] = * new SafeUser();
 						(*userFriendsArray)[i + 1].id = (lList->search(friends[i].id)->user).id;
-						cout << (lList->search(friends[i].id)->user).id << endl;
+						std::cout << (lList->search(friends[i].id)->user).id << endl;
 						(*userFriendsArray)[i + 1].image = (lList->search(friends[i].id)->user).image;
-						cout << (lList->search(friends[i].id)->user).image << endl;
+						std::cout << (lList->search(friends[i].id)->user).image << endl;
 						(*userFriendsArray)[i + 1].name = (lList->search(friends[i].id)->user).name;
-						cout << "amigo conectado" << (lList->search(friends[i].id)->user).id << endl;
-						if (!(lList->search(friends[i].id)->reference->_is_nil())) {
+						//cout << "amigo conectado" << (lList->search(friends[i].id)->user).id << endl;
+					//	if (!(lList->search(friends[i].id)->reference->_is_nil())) {
 						//	(*userFriendsArray)[i].reference = teleger::ClientInterface::_duplicate(lList->search(friends[i - 1].id)->reference);
-							cout << " a referencia non e null" << endl;
-							(*userFriendsArray)[i+1].reference = (lList->search(friends[i].id)->reference);
+					//		cout << " a referencia non e null" << endl;
+							(*userFriendsArray)[i+1].reference = teleger::ClientInterface::_duplicate(lList->search(friends[i].id)->reference);
 							lList->search(friends[i].id)->reference->notifyConnection((*userFriendsArray)[0]);
-						}
+					/*	}
 						else {
 							cout << "borrei " << endl;
 							lList->_delete((*userFriendsArray)[i].id);
 							i--;
 							friendsNumber -= 1;
-						}
+						}*/
 					}
 			}
 			////Friends solitudes
@@ -123,12 +124,12 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 			SafeUser * dummyUser=new SafeUser();
 			dummyUser->reference = teleger::ClientInterface::_duplicate(client);
 			dummyUser->id = "NULL";
-			cout << "envio dummy" << endl;
+			std::cout << "envio dummy" << endl;
 			(*userFriendsArray)[0] = *dummyUser;
 		}
 	}
-	mtx->release();
-	cout << "returno " << endl;
+	mtx->unlock();
+	std::cout << "returno " << endl;
 	return userFriendsArray;
 }
 
@@ -138,6 +139,7 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 	mtx->lock();
 	if (connector->login(userId, userPassword)) {
 		lList->_delete(userId);
+		std::cout << "mecaguendios!" << endl;
 		mtx->unlock();
 		return true;
 	}
@@ -147,12 +149,12 @@ userFriends * telegerImpl::logIn(const char * userId, const char * userPassword,
 
 teleger::userFriends* telegerImpl::searchNewFriends(const char* name)
 {
-	cout << "nome -> " << name << endl;
+	std::cout << "nome -> " << name << endl;
 	int searchFriends;
 	mtx->lock();
 	teleger::userFriends * searchArray = new userFriends();
 	connector->searchNewFriends(name, &searchFriends, &searchArray);
-	cout << "numero de busca " << searchArray->length() << endl;
+	std::cout << "numero de busca " << searchArray->length() << endl;
 	mtx->unlock();
 	return searchArray;
 }
@@ -173,10 +175,10 @@ void telegerImpl::sendRequestForFriend(const teleger::SafeUser& user, const char
 void telegerImpl::notifyAnswerRequest(const char * connectedUser, const char * pass, const char * _cxx_friend, ::CORBA::Boolean acceptance)
 {
 	mtx->lock();
-	cout << connectedUser << endl;
-	cout << pass << endl;
-	cout << _cxx_friend << endl;
-	cout << acceptance << endl;
+	std::cout << connectedUser << endl;
+	std::cout << pass << endl;
+	std::cout << _cxx_friend << endl;
+	std::cout << acceptance << endl;
 	if (connector->login(connectedUser, pass)) {
 			connector->removePetition(_cxx_friend, connectedUser);
 			if (acceptance) {
@@ -191,7 +193,7 @@ void telegerImpl::notifyAnswerRequest(const char * connectedUser, const char * p
 				friendUser.id = lList->search(_cxx_friend)->user.id;
 				friendUser.image = lList->search(_cxx_friend)->user.image;
 				friendUser.name = lList->search(_cxx_friend)->user.name;
-				friendUser.reference = lList->search(_cxx_friend)->reference;
+				friendUser.reference = teleger::ClientInterface::_duplicate(lList->search(_cxx_friend)->reference);
 				selfUser.reference->notifyConnection(friendUser);
 				friendUser.reference->notifyConnection(selfUser);
 			}
@@ -245,7 +247,7 @@ int main(int argc, char** argv)
 					nc->rebind(name, myserver->_this());
 					//Start the service
 					myserver->telegerImplInit();
-					cout << "Server is running ..." << endl;
+					std::cout << "Server is running ..." << endl;
 				}
 			}
 			catch (CosNaming::NamingContext::NotFound &) {

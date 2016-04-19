@@ -112,31 +112,31 @@ d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(245): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(256): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(257): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(257): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(258): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(259): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(260): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(263): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(264): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(261): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(264): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(265): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(266): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(267): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
-d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(270): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(271): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(268): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(271): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(272): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(273): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
   linkedList.cpp
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\stdafx.h(22): warning C4091: 'static ': ignored on left of 'serverSideUser' when no variable is declared
@@ -144,7 +144,6 @@ d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\stdafx.h(22): warning C4091: 'static ': ignored on left of 'serverSideUser' when no variable is declared
   telegerSK.cc
   Generating Code...
-d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\corbaserver\sqlconnector.cpp(256): warning C4700: uninitialized local variable 'statement' used
   sqlite3.c
 d:\usc\terceiro\cuatrimestre_2\corba\teleger\servercode\corbaserver\sqlite\sqlite3.c(36050): warning C4996: 'GetVersionExA': was declared deprecated
   c:\program files (x86)\windows kits\8.1\include\um\sysinfoapi.h(433): note: see declaration of 'GetVersionExA'

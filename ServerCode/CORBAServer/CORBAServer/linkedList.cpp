@@ -48,9 +48,10 @@ bool linkedList::_delete(const char * id) {
 		if (strcmp(iterator->next->user.id, id) == 0) {
 			std::cout << "borro " << iterator->next->user.id << std::endl;
 			tmp = iterator->next->next;
-			iterator->next->user.id = "23184093217598021393214432";
-			free(iterator->next);
+			/*iterator->next->user.id = "23184093217598021393214432";
+			std::cout << "borrei o usuario: " << iterator->next->user.id << std::endl;*/
 			iterator->next = tmp;
+			free(iterator->next);
 			return true;
 		}else{
 			iterator = iterator->next;

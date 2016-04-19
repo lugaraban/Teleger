@@ -253,6 +253,7 @@ void SQLConnector::addFriend(const char * connectedUser, const char * _cxx_frien
 void SQLConnector::deleteUser(const char * userId)
 {
 	char * statement;
+	statement = (char *)malloc(200 * (sizeof(char)));
 	strcpy(statement, "DELETE FROM friends WHERE idFriend0='");
 	strcat(statement, userId);
 	strcat(statement, "' OR idFriend1='");
